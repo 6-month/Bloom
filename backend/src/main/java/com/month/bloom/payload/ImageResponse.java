@@ -1,8 +1,12 @@
 package com.month.bloom.payload;
 
+import java.util.List;
+
+import com.month.bloom.model.ImageInPost;
+
 public class ImageResponse {	
 	private long id;
-	private byte [] data;
+	private List<ImageInPost> images;
 	
 	public long getId() {
 		return id;
@@ -10,13 +14,11 @@ public class ImageResponse {
 	public void setId(long id) {
 		this.id = id;
 	}
-	public byte[] getData() {
-		return data;
+	public List<ImageInPost> getImages() {
+		return images;
 	}
-	public void setData(byte[] data) {
-		this.data = data;
-	}
-	
-	
+	public void setImages(List<ImageInPost> images) {
+		this.images = images;
+	}	
 
 }

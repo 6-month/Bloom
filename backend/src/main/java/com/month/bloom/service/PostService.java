@@ -3,6 +3,7 @@ package com.month.bloom.service;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
@@ -22,6 +23,7 @@ import org.springframework.web.multipart.MultipartFile;
 import com.month.bloom.exception.BadRequestException;
 import com.month.bloom.exception.FileStorageException;
 import com.month.bloom.model.Image;
+import com.month.bloom.model.ImageInPost;
 import com.month.bloom.model.Like;
 import com.month.bloom.model.LikeCount;
 import com.month.bloom.model.Post;
@@ -84,11 +86,14 @@ public class PostService {
 		Map<Long, User> creatorMap = getPostCreatorMap(posts.getContent());
 		System.out.println(creatorMap);
 		
+		// post 별로 저장된 image 
+		Map<Long, List> imageInPostMap = getImageInPostMap(postIds);
 
 		List<PostResponse> postResponse = posts.map(post -> {
 			return ModelMapper.mapPostToPostResponse(post, 
 					totalLikeCountMap.get(post.getId()), 
 					creatorMap.get(post.getCreatedBy()),
+					imageInPostMap,
 					postUserLikeMap == null ? null : postUserLikeMap.getOrDefault(post.getId(), null));
 		}).getContent();
 		
@@ -117,22 +122,6 @@ public class PostService {
 		return postRepository.save(post);
 	}
 	
-//	public PostResponse getPostById(Long postId, UserPrincipal currentUser) {
-//		Post post = postRepository.findById(postId).orElseThrow(
-//				() -> new ResourceNotFoundException("Post", "id", postId));
-//		
-//		Map<Long, byte[]> postImageMap = null;
-//		
-//		
-//		
-//		postImageMap = images.stream()
-//				.collect(Collectors.toMap(ImageInPost::getPostId, ImageInPost::getImage));
-//		
-//		User creator = userRepository.findById(post.getCreatedBy())
-//				.orElseThrow(() -> new ResourceNotFoundException("User", "id", post.getCreatedBy()));
-//	
-//				
-//	}
 	
 	private void validatePageNumberAndSize(int page, int size) {
         if(page < 0) {
@@ -188,5 +177,19 @@ public class PostService {
 		return creatorMap;
 	}
 
-	
+	private Map<Long,List> getImageInPostMap(List<Long> postIds) {
+		List result = new ArrayList<>();
+		List<ImageInPost> images = null;
+		Map<Long, List> imageInPostMap = new HashMap<>();
+		
+		for(Long postId : postIds) {
+			// images : List => {ImageInPost 1 , ImageInPost 2 ... }
+			images = imageRepository.findByPostId(postId);
+			result.add(images);
+			imageInPostMap.put(postId, images);
+		}
+		
+		return imageInPostMap;
+		
+	}
 }
