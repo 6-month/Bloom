@@ -11,27 +11,24 @@ import com.month.bloom.payload.PostResponse;
 import com.month.bloom.payload.UserSummary;
 
 public class ModelMapper {
-//	public static PostResponse mapPostToPostResponse(Post post, Long totalLikesCount, User creator, Long userLike, byte[] postImage) {
-//		PostResponse postResponse = new PostResponse();
-//		postResponse.setId(post.getId());
-//		postResponse.setContent(post.getContent());
-//		postResponse.setCreationDateTime(post.getCreatedAt());
-//		
-//		postResponse.setImage(postImage);
-//		UserSummary creatorSummary = new UserSummary(creator.getId(), creator.getName(), creator.getUsername());
-//		postResponse.setCreatedBy(creatorSummary);
-//		
-//		if(userLike != null) {
-//			postResponse.setPushedLike(userLike);
-//		}
-//		long totalLikes = 0;
-//		if(postResponse.getTotalLikes() != null) {
-//			totalLikes = postResponse.getTotalLikes();
-//		}
-//		
-//		postResponse.setTotalLikes(totalLikes);
-//		
-//		return postResponse;
-//	}
-//	
+	public static PostResponse mapPostToPostResponse(Post post, Long totalLikesCount, User creator, Long userLike) {
+		PostResponse postResponse = new PostResponse();
+		postResponse.setId(post.getId());
+		postResponse.setContent(post.getContent());
+		postResponse.setCreationDateTime(post.getCreatedAt());
+		
+		UserSummary creatorSummary = new UserSummary(creator.getId(), creator.getName(), creator.getUsername());
+		postResponse.setCreatedBy(creatorSummary);
+		
+		// totalLikeCountMap : {postId : totalLikeCount}
+		postResponse.setTotalLikes(totalLikesCount);
+		
+		if(userLike != null) {
+			postResponse.setPushedLike(true);
+		} else
+			postResponse.setPushedLike(false);
+		
+		return postResponse;
+	}
+	
 }
