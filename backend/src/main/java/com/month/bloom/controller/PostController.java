@@ -10,11 +10,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
@@ -22,7 +24,9 @@ import com.month.bloom.model.Post;
 import com.month.bloom.payload.ApiResponse;
 import com.month.bloom.payload.LikeRequest;
 import com.month.bloom.payload.LikeResponse;
+import com.month.bloom.payload.PagedResponse;
 import com.month.bloom.payload.PostRequest;
+import com.month.bloom.payload.PostResponse;
 import com.month.bloom.repository.LikeRepository;
 import com.month.bloom.repository.PostRepository;
 import com.month.bloom.repository.UserRepository;
@@ -30,6 +34,7 @@ import com.month.bloom.security.CurrentUser;
 import com.month.bloom.security.UserPrincipal;
 import com.month.bloom.service.LikeService;
 import com.month.bloom.service.PostService;
+import com.month.bloom.util.AppConstants;
 
 @RestController
 @RequestMapping("/api/posts")
@@ -52,12 +57,12 @@ public class PostController {
 	
 	private static final Logger logger = LoggerFactory.getLogger(PostController.class);
 
-//	@GetMapping
-//	public PagedResponse<PostResponse> getAllPosts(@CurrentUser UserPrincipal currentUser,
-//            									@RequestParam(value = "page", defaultValue = AppConstants.DEFAULT_PAGE_NUMBER) int page,
-//            									@RequestParam(value = "size", defaultValue = AppConstants.DEFAULT_PAGE_SIZE) int size) {
-//		return postService.getAllPosts(currentUser, page, size);
-//	}
+	@GetMapping
+	public PagedResponse<PostResponse> getAllPosts(@CurrentUser UserPrincipal currentUser,
+            									@RequestParam(value = "page", defaultValue = AppConstants.DEFAULT_PAGE_NUMBER) int page,
+            									@RequestParam(value = "size", defaultValue = AppConstants.DEFAULT_PAGE_SIZE) int size) {
+		return postService.getAllPosts(currentUser, page, size);
+	}
 	
 	@PostMapping
 	@PreAuthorize("hasRole('USER')")
