@@ -8,7 +8,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 public class PostResponse {
 	private Long id;
 	private String content;
-//	private List<ImageResponse> images;
+	private List<ImageResponse> images;
 	private UserSummary createdBy;
 	private Instant creationDateTime;
 	
@@ -28,12 +28,12 @@ public class PostResponse {
 	public void setContent(String content) {
 		this.content = content;
 	}
-//	public List<ImageResponse> getImages() {
-//		return images;
-//	}
-//	public void setImages(List<ImageResponse> images) {
-//		this.images = images;
-//	}
+	public List<ImageResponse> getImages() {
+		return images;
+	}
+	public void setImages(List<ImageResponse> images) {
+		this.images = images;
+	}
 	public UserSummary getCreatedBy() {
 		return createdBy;
 	}

@@ -11,9 +11,7 @@ import com.month.bloom.model.ImageInPost;
 
 public interface ImageRepository extends JpaRepository<Image, String>{
 
-	@Query("SELECT NEW com.month.bloom.model.ImageInPost(i.post.id, i.data) FROM Image i WHERE i.post.id =:postId")
+	@Query("SELECT NEW com.month.bloom.model.ImageInPost(i.post.id, i.data) FROM Image i WHERE i.post.id = :postId")
 	List<ImageInPost> findByPostId(@Param("postId") Long postId);
 	
-//	@Query("SELECT i.post.id, i.data FROM Image i WHERE i.post.id = :postId")
-//	List<Object[]> findByPostId(@Param("postId") List<Long> postIds);
 }

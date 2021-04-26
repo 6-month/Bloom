@@ -63,11 +63,9 @@ export function login(loginRequest) {
 }
 
 export function signup(signupRequest) {
-    console.log(API_BASE_URL);
     return request({
         url: API_BASE_URL + "/auth/signup",
         method: 'POST',
-        // Json.stringify : 자바스크립트의 값을 json 문자열로 변환한다.
         body: JSON.stringify(signupRequest)
     });
 }

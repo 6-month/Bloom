@@ -57,31 +57,19 @@ public class Post extends UserDateAudit {
 		this.content = content;
 	}
 
-//	public List<Image> getImages() {
-//		return images;
-//	}
-//
-//	public void setImages(List<Image> images) {
-//		this.images = images;
-//	}
-		
-//	public List<MultipartFile> getImages() {
-//		return images;
-//	}
-//
-//	public void setImages(List<MultipartFile> images) {
-//		this.images = images;
-//	}
+	public List<Image> getImages() {
+		return images;
+	}
 
+	public void setImages(List<Image> images) {
+		this.images = images;
+	}
+		
 	public void addImage(Image image) {
 		images.add(image);
 		image.setPost(this);
 	}
 	
-//	public void addImage(Image image) {
-//		images.add((MultipartFile) image);
-//		image.setPost(this);
-//	}	
 	
 	public void removeImage(Image image) {
 		images.remove(image);
