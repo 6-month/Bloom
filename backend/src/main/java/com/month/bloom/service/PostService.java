@@ -3,7 +3,6 @@ package com.month.bloom.service;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
@@ -23,7 +22,6 @@ import org.springframework.web.multipart.MultipartFile;
 import com.month.bloom.exception.BadRequestException;
 import com.month.bloom.exception.FileStorageException;
 import com.month.bloom.model.Image;
-import com.month.bloom.model.ImageInPost;
 import com.month.bloom.model.Like;
 import com.month.bloom.model.LikeCount;
 import com.month.bloom.model.Post;
@@ -51,9 +49,6 @@ public class PostService {
 	@Autowired 
 	private UserRepository userRepository;
 	
-	@Autowired
-	private ImageRepository imageRepository;
-	
 	private static final Logger logger = LoggerFactory.getLogger(PostService.class);
 
 	public PagedResponse<PostResponse> getAllPosts(UserPrincipal currentUser, int page, int size) {
@@ -76,7 +71,7 @@ public class PostService {
 		
 		// post 별로 총 like 수 map = {postId : totalLikes} 
 		Map<Long, Long> totalLikeCountMap = getTotalLikesMap(postIds);
-		System.out.println("totalLikeCountMap : "+totalLikeCountMap);
+		System.out.println(totalLikeCountMap);
 		
 		// post 별로 로그인 유저가 좋아요를 눌렀는지 표시 ex) {1 : 1} => {userId : post_id}
 		Map<Long, Long> postUserLikeMap = getPostUserLikeMap(currentUser, postIds);
@@ -86,21 +81,17 @@ public class PostService {
 		Map<Long, User> creatorMap = getPostCreatorMap(posts.getContent());
 		System.out.println(creatorMap);
 		
-		// post 별로 저장된 image 
-		Map<Long, List> imageInPostMap = getImageInPostMap(postIds);
-
 		List<PostResponse> postResponse = posts.map(post -> {
 			return ModelMapper.mapPostToPostResponse(post, 
 					totalLikeCountMap.get(post.getId()), 
 					creatorMap.get(post.getCreatedBy()),
-					imageInPostMap,
 					postUserLikeMap == null ? null : postUserLikeMap.getOrDefault(post.getId(), null));
 		}).getContent();
 		
 		return new PagedResponse<>(postResponse, posts.getNumber(),
 				posts.getSize(), posts.getTotalElements(), posts.getTotalPages(), posts.isLast());
 	}
-	
+
 
 	public Post createPost(PostRequest postRequest) {
 		Post post = new Post();
@@ -177,19 +168,4 @@ public class PostService {
 		return creatorMap;
 	}
 
-	private Map<Long,List> getImageInPostMap(List<Long> postIds) {
-		List result = new ArrayList<>();
-		List<ImageInPost> images = null;
-		Map<Long, List> imageInPostMap = new HashMap<>();
-		
-		for(Long postId : postIds) {
-			// images : List => {ImageInPost 1 , ImageInPost 2 ... }
-			images = imageRepository.findByPostId(postId);
-			result.add(images);
-			imageInPostMap.put(postId, images);
-		}
-		
-		return imageInPostMap;
-		
-	}
 }

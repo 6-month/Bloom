@@ -101,9 +101,9 @@ export function getAllPosts(page, size) {
     size = size || POST_LIST_SIZE;
 
     return request({
-        url : API_BASE_URL + "/post?page=" + page+ "&size" +size,
-        method : 'GET'
-    })
+        url: API_BASE_URL + "/posts?page=" + page + "&size=" + size,
+        method: 'GET'
+    });
 }
 
 export function getUserCreatedPosts(username, page, size) {

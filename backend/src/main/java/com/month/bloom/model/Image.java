@@ -81,5 +81,12 @@ public class Image {
 		this.post = post;
 	}
 
+	public byte[] getData() {
+		return data;
+	}
+
+	public void setData(byte[] data) {
+		this.data = data;
+	}
 	
 }
