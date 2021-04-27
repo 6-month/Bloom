@@ -8,16 +8,13 @@ public class UserProfile {
 	private String name;
 	private Instant joinedAt;
 	private Long postCount;
-	private Long lidkeCount;
 	
-	public UserProfile(Long id, String username, String name, Instant joinedAt, Long postCount, Long lidkeCount) {
-		super();
+	public UserProfile(Long id, String username, String name, Instant joinedAt, Long postCount) {
 		this.id = id;
 		this.username = username;
 		this.name = name;
 		this.joinedAt = joinedAt;
 		this.postCount = postCount;
-		this.lidkeCount = lidkeCount;
 	}
 
 	public Long getId() {
@@ -58,14 +55,6 @@ public class UserProfile {
 
 	public void setPostCount(Long postCount) {
 		this.postCount = postCount;
-	}
-
-	public Long getLidkeCount() {
-		return lidkeCount;
-	}
-
-	public void setLidkeCount(Long lidkeCount) {
-		this.lidkeCount = lidkeCount;
 	}
 	
 	

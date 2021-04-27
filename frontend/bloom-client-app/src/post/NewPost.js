@@ -4,6 +4,7 @@ import ImageUploader from 'react-images-upload';
 import {Form, Input, notification, Button} from 'antd';
 import { ACCESS_TOKEN, API_BASE_URL } from '../constants';
 import {post} from 'axios';
+import { useHistory } from 'react-router-dom';
 
 import { Upload } from 'antd';
 import { UploadOutlined } from '@ant-design/icons';
@@ -12,6 +13,8 @@ import { UploadOutlined } from '@ant-design/icons';
 const {TextArea} = Input;
 
 function NewPost() {
+  let history = useHistory();
+  
   const [content, setContent] = useState({
     value : ''
   });
@@ -84,6 +87,7 @@ function NewPost() {
           message : 'Bloom',
           description : 'Successfully create post!'
         })
+        history.push("/")
       })
       .catch(error => {
         notification.error({
