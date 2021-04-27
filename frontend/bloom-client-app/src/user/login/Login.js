@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { login } from '../../util/APIUtils';
 import { ACCESS_TOKEN } from '../../constants';
-import 'antd/dist/antd.css';
 import { useHistory } from 'react-router-dom';
 import { Form, Input, Button, notification} from 'antd';
 
@@ -27,7 +26,7 @@ function Login() {
                     description: "You're successfully logged in.",
                   });
                 history.push({
-                    pathname : '/',
+                    pathname : '/post/new',
                 })
             })
             .catch(error => {

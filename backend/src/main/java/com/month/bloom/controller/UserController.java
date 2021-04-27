@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.month.bloom.exception.ResourceNotFoundException;
 import com.month.bloom.model.User;
 import com.month.bloom.payload.PagedResponse;
+import com.month.bloom.payload.PostResponse;
 import com.month.bloom.payload.UserIdentityAvailability;
 import com.month.bloom.payload.UserProfile;
 import com.month.bloom.payload.UserSummary;
@@ -21,6 +22,8 @@ import com.month.bloom.repository.PostRepository;
 import com.month.bloom.repository.UserRepository;
 import com.month.bloom.security.CurrentUser;
 import com.month.bloom.security.UserPrincipal;
+import com.month.bloom.service.PostService;
+import com.month.bloom.util.AppConstants;
 
 @RestController
 @RequestMapping("/api")
@@ -35,6 +38,8 @@ public class UserController {
 	@Autowired
 	private LikeRepository likeRepository;
 	
+	@Autowired
+	private PostService postService;
 	
 	private static final Logger logger = LoggerFactory.getLogger(UserController.class);
 
@@ -55,5 +60,26 @@ public class UserController {
     public UserIdentityAvailability checkEmailAvailability(@RequestParam(value = "email") String email) {
         Boolean isAvailable = !userRepository.existsByEmail(email);
         return new UserIdentityAvailability(isAvailable);
+    }
+    
+    @GetMapping("users/{username}")
+    public UserProfile getUserProfile(@PathVariable(value= "username") String username) {
+    	User user = userRepository.findByUsername(username)
+    			.orElseThrow(() -> new ResourceNotFoundException("User", "username", username));
+    	
+    	long postCount = postRepository.countByCreatedBy(user.getId());
+    	
+    	UserProfile userProfile = new UserProfile(user.getId(), user.getUsername(),
+    			user.getName(), user.getCreatedAt(), postCount);
+    	
+    	return userProfile;
+    }
+    
+    @GetMapping("/users/{username}/posts")
+    public PagedResponse<PostResponse> getPollsCreatedBy(@PathVariable(value = "username") String username,
+                                                         @CurrentUser UserPrincipal currentUser,
+                                                         @RequestParam(value = "page", defaultValue = AppConstants.DEFAULT_PAGE_NUMBER) int page,
+                                                         @RequestParam(value = "size", defaultValue = AppConstants.DEFAULT_PAGE_SIZE) int size) {
+        return postService.getPostsCreatedBy(username, currentUser, page, size);
     }
 }

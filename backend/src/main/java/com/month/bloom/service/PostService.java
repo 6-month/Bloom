@@ -17,11 +17,11 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
-import org.springframework.validation.FieldError;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.month.bloom.exception.BadRequestException;
 import com.month.bloom.exception.FileStorageException;
+import com.month.bloom.exception.ResourceNotFoundException;
 import com.month.bloom.model.Image;
 import com.month.bloom.model.Like;
 import com.month.bloom.model.LikeCount;
@@ -30,7 +30,6 @@ import com.month.bloom.model.User;
 import com.month.bloom.payload.PagedResponse;
 import com.month.bloom.payload.PostRequest;
 import com.month.bloom.payload.PostResponse;
-import com.month.bloom.repository.ImageRepository;
 import com.month.bloom.repository.LikeRepository;
 import com.month.bloom.repository.PostRepository;
 import com.month.bloom.repository.UserRepository;
@@ -90,6 +89,36 @@ public class PostService {
 		}).getContent();
 		
 		return new PagedResponse<>(postResponse, posts.getNumber(),
+				posts.getSize(), posts.getTotalElements(), posts.getTotalPages(), posts.isLast());
+	}
+	
+	public PagedResponse<PostResponse> getPostsCreatedBy(String username, UserPrincipal currentUser, int page, int size) {
+		validatePageNumberAndSize(page, size);
+
+        User user = userRepository.findByUsername(username)
+                .orElseThrow(() -> new ResourceNotFoundException("User", "username", username));
+
+        // Retrieve all posts created by the given username
+        Pageable pageable = PageRequest.of(page, size, Sort.Direction.DESC, "createdAt");
+        Page<Post> posts = postRepository.findByCreatedBy(user.getId(), pageable);
+	
+        if (posts.getNumberOfElements() == 0) {
+            return new PagedResponse<>(Collections.emptyList(), posts.getNumber(),
+                    posts.getSize(), posts.getTotalElements(), posts.getTotalPages(), posts.isLast());
+        }
+        
+        List<Long> postIds = posts.map(Post::getId).getContent();
+        Map<Long, Long> totalLikeCountMap = getTotalLikesMap(postIds);
+        Map<Long, Long> postUserLikeMap = getPostUserLikeMap(currentUser, postIds);
+        
+        List<PostResponse> postResponse = posts.map(post -> {
+        	return ModelMapper.mapPostToPostResponse(post,
+        			totalLikeCountMap.get(post.getId()),
+        			user,
+        			postUserLikeMap == null ? null : postUserLikeMap.getOrDefault(post.getId(), null));
+        }).getContent();
+        
+        return new PagedResponse<>(postResponse, posts.getNumber(),
 				posts.getSize(), posts.getTotalElements(), posts.getTotalPages(), posts.isLast());
 	}
 

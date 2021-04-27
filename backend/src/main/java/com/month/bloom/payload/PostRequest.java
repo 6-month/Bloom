@@ -17,7 +17,7 @@ public class PostRequest {
 	
 	@NotNull
 	@Valid
-	private MultipartFile[] file;
+	private MultipartFile[] images;
 
 	public String getContent() {
 		return content;
@@ -28,11 +28,13 @@ public class PostRequest {
 	}
 
 	public MultipartFile[] getImages() {
-		return file;
+		return images;
 	}
 
 	public void setImages(MultipartFile[] images) {
-		this.file = images;
+		this.images = images;
 	}
+
+
 	
 }
