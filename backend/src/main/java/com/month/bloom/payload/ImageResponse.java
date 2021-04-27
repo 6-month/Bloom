@@ -2,23 +2,29 @@ package com.month.bloom.payload;
 
 import java.util.List;
 
-import com.month.bloom.model.ImageInPost;
-
 public class ImageResponse {	
-	private long id;
-	private List<ImageInPost> images;
+	private String imageId;
+	private byte[] data;
+//	private String imageName;
 	
-	public long getId() {
-		return id;
+	public String getImageId() {
+		return imageId;
 	}
-	public void setId(long id) {
-		this.id = id;
+	public void setImageId(String imageId) {
+		this.imageId = imageId;
 	}
-	public List<ImageInPost> getImages() {
-		return images;
+//	public String getImageName() {
+//		return imageName;
+//	}
+//	public void setImageName(String imageName) {
+//		this.imageName = imageName;
+//	}
+	
+	public byte[] getData() {
+		return data;
 	}
-	public void setImages(List<ImageInPost> images) {
-		this.images = images;
-	}	
+	public void setData(byte[] data) {
+		this.data = data;
+	}
 
 }
