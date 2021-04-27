@@ -13,7 +13,9 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.NotBlank;
 
+
 import org.hibernate.annotations.GenericGenerator;
+import org.springframework.core.io.Resource;
 
 import lombok.Builder;
 
@@ -35,6 +37,8 @@ public class Image {
 	@Lob
 	private byte[] data;
 	
+//	private Resource resource;
+	
 	@ManyToOne(fetch = FetchType.LAZY, optional = false)
 	@JoinColumn(name = "post_id", nullable = false)
 	private Post post;
@@ -48,6 +52,14 @@ public class Image {
 		this.fileType = fileType;
 		this.data = data;
 	}
+	
+//	public Image(String fileName, String fileType, byte[] data, Resource resource) {
+//		this.fileName = fileName;
+//		this.fileType = fileType;
+//		this.data = data;
+//		this.resource = resource;
+//	}
+
 
 	public String getId() {
 		return id;

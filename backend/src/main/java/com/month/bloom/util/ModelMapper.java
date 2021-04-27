@@ -26,7 +26,8 @@ public class ModelMapper {
 		List<ImageResponse> imageResponses = post.getImages().stream().map(image -> {
 			ImageResponse imageResponse = new ImageResponse();
 			imageResponse.setImageId(image.getId());
-			imageResponse.setImageName(image.getFileName());
+//			imageResponse.setImageName(image.getFileName());
+			imageResponse.setData(image.getData());
 			return imageResponse;
 		}).collect(Collectors.toList());
 		postResponse.setImages(imageResponses);
