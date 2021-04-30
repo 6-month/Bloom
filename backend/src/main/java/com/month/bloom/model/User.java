@@ -1,11 +1,9 @@
 package com.month.bloom.model;
 
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -14,7 +12,6 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
-import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
@@ -37,8 +34,10 @@ import com.month.bloom.model.audit.DateAudit;
  **/
 
 @Entity
-@Table(name = "users", uniqueConstraints = { @UniqueConstraint(columnNames = { "username" }),
-		@UniqueConstraint(columnNames = { "email" }), @UniqueConstraint(columnNames = { "phoneNumber" })
+@Table(name = "users", uniqueConstraints = { 
+		@UniqueConstraint(columnNames = { "username" }),
+		@UniqueConstraint(columnNames = { "email" }), 
+		@UniqueConstraint(columnNames = { "phoneNumber" })
 
 })
 public class User extends DateAudit {
@@ -76,6 +75,23 @@ public class User extends DateAudit {
 					@JoinColumn(name = "role_id"))
 	private Set<Role> roles = new HashSet<>();
 
+	//relation Follow (Recursive Relationship , ManyToMany Relationship)
+	@OneToMany
+	@JoinTable(name = "followes",
+				joinColumns = 
+					@JoinColumn(name="follower_id"),
+				inverseJoinColumns = 
+					@JoinColumn(name = "following_id"))
+	private List<User> followers;
+	
+	@ManyToMany
+	@JoinTable(name = "followes",
+				joinColumns = 
+					@JoinColumn(name="following_id"),
+				inverseJoinColumns = 
+					@JoinColumn(name = "follower_id"))
+	private List<User> followings;
+	
 	
 	public User() {
 
@@ -145,5 +161,39 @@ public class User extends DateAudit {
 		this.roles = roles;
 	}
 
+	public List<User> getFollowers() {
+		return followers;
+	}
+
+	public void setFollowers(List<User> followers) {
+		this.followers = followers;
+	}
+
+	public List<User> getFollowings() {
+		return followings;
+	}
+
+	public void setFollowings(List<User> followings) {
+		this.followings = followings;
+	}
+
+	public void addFollower(User follower) {
+		followers.add(follower);
+		follower.setFollowers(followers);
+	}
 	
+	public void removeFollower(User follower) {
+		followers.remove(follower);
+		follower.setFollowers(followers);
+	}
+	
+	public void addFollowing(User following) {
+		followings.add(following);
+		following.setFollowings(followings);
+	}
+	
+	public void removeFollowing(User following) {
+		followings.remove(following);
+		following.setFollowings(followings);
+	}
 }

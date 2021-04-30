@@ -38,7 +38,6 @@ public class Like extends DateAudit{
 	}
 	
 	public Like(Post post, User user) {
-		super();
 		this.post = post;
 		this.user = user;
 	}

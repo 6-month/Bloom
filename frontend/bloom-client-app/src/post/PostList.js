@@ -46,14 +46,19 @@ function PostList({username, type}) {
         loadPostList(page +1);
     }
 
+    const postViews = [];
+    posts.forEach((post, postIdx) => {
+        postViews.push(
+            <Post 
+                key = {post.id}
+                post = {post}
+            />
+        )
+    })
     return (
         <div className="posts-container">
-            <h1>PollList</h1>
-            {
-                posts.map(post => {
-                    <Post />
-                })
-            } 
+            <h1>Post List</h1>
+            {postViews}
             {
                 isLoading && posts.length === 0 ? (
                     <div className="no-posts-found">

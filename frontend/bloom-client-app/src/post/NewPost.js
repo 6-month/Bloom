@@ -29,6 +29,9 @@ function NewPost() {
       images.validateStatus === 'success' 
     )
   }
+  useEffect(() => {
+    console.log(images)
+  },[images])
 
   const onChangedContent = (e) => {
     var {value} = e.target;

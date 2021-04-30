@@ -52,14 +52,6 @@ public class Image {
 		this.fileType = fileType;
 		this.data = data;
 	}
-	
-//	public Image(String fileName, String fileType, byte[] data, Resource resource) {
-//		this.fileName = fileName;
-//		this.fileType = fileType;
-//		this.data = data;
-//		this.resource = resource;
-//	}
-
 
 	public String getId() {
 		return id;
