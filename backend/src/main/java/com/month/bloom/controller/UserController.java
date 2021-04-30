@@ -3,6 +3,7 @@ package com.month.bloom.controller;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -12,6 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.month.bloom.exception.ResourceNotFoundException;
 import com.month.bloom.model.User;
+import com.month.bloom.payload.ApiResponse;
 import com.month.bloom.payload.PagedResponse;
 import com.month.bloom.payload.PostResponse;
 import com.month.bloom.payload.UserIdentityAvailability;
@@ -22,6 +24,7 @@ import com.month.bloom.repository.PostRepository;
 import com.month.bloom.repository.UserRepository;
 import com.month.bloom.security.CurrentUser;
 import com.month.bloom.security.UserPrincipal;
+import com.month.bloom.service.FollowService;
 import com.month.bloom.service.PostService;
 import com.month.bloom.util.AppConstants;
 
@@ -40,6 +43,9 @@ public class UserController {
 	
 	@Autowired
 	private PostService postService;
+	
+	@Autowired
+	private FollowService followService;
 	
 	private static final Logger logger = LoggerFactory.getLogger(UserController.class);
 
@@ -81,5 +87,32 @@ public class UserController {
                                                          @RequestParam(value = "page", defaultValue = AppConstants.DEFAULT_PAGE_NUMBER) int page,
                                                          @RequestParam(value = "size", defaultValue = AppConstants.DEFAULT_PAGE_SIZE) int size) {
         return postService.getPostsCreatedBy(username, currentUser, page, size);
+    }
+    
+    //username : follow를 할 User의 username
+    @GetMapping("/users/{username}/follow")
+    public ResponseEntity<?> followUser(@CurrentUser UserPrincipal currentUser, 
+    								@PathVariable(value = "username") String username) {    	
+    	User user = userRepository.findByUsername(username)
+    			.orElseThrow(() ->  new ResourceNotFoundException("User", "username", username));
+    	
+    	followService.followUser(currentUser, user);
+    	
+    	return ResponseEntity.created(null)
+    			.body(new ApiResponse(true, "Successfully followed"));
+    	
+    }
+    
+    @GetMapping("/users/{username}/unfollow")
+    public ResponseEntity<?> unfollowUser(@CurrentUser UserPrincipal currentUser, 
+    								@PathVariable(value = "username") String username) {    	
+    	User user = userRepository.findByUsername(username)
+    			.orElseThrow(() ->  new ResourceNotFoundException("User", "username", username));
+    	
+    	followService.unfollowUser(currentUser, user);
+    	
+    	return ResponseEntity.created(null)
+    			.body(new ApiResponse(true, "Successfully unFollowed"));
+    	
     }
 }

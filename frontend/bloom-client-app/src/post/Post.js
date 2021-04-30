@@ -20,11 +20,11 @@ function Post({post}) {
 
     useEffect(() => {
         // console.log(post);
-        // const image = post.images;
-        // post.images.map((image) => {
-        //     console.log(image.imageId)
-        //     console.log(image.data)
-        // })
+        const image = post.images;
+        post.images.map((image) => {
+            console.log(image.imageId)
+            console.log(image.data)
+        })
     }, [])
 
     return (
