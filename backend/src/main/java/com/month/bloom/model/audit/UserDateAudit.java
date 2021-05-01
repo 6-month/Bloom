@@ -14,10 +14,11 @@ import javax.persistence.MappedSuperclass;
 )
 public abstract class UserDateAudit extends DateAudit {
     @CreatedBy
-    @Column(updatable = false)
+    @Column(nullable = false, updatable = false)
     private Long createdBy;
 
     @LastModifiedBy
+    @Column(nullable = false)
     private Long updatedBy;
 
     public Long getCreatedBy() {

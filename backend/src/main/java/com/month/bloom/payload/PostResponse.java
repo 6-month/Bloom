@@ -9,6 +9,7 @@ public class PostResponse {
 	private Long id;
 	private String content;
 	private List<ImageResponse> images;
+	private List<CommentResponse> comments;
 	private UserSummary createdBy;
 	private Instant creationDateTime;
 	
@@ -58,7 +59,11 @@ public class PostResponse {
 	public void setTotalLikes(Long totalLikes) {
 		this.totalLikes = totalLikes;
 	}
+	public List<CommentResponse> getComments() {
+		return comments;
+	}
+	public void setComments(List<CommentResponse> comments) {
+		this.comments = comments;
+	}
 	
-	
-
 }

@@ -41,6 +41,13 @@ public class Post extends UserDateAudit {
     @BatchSize(size = 30)
     private List<Image> images = new ArrayList<>();
 
+	@OneToMany(
+			mappedBy="post",
+			cascade = CascadeType.ALL,
+			fetch = FetchType.EAGER,
+			orphanRemoval = true)
+	private List<Comment> comments = new ArrayList<>();
+	
 	public Long getId() {
 		return id;
 	}
@@ -76,4 +83,21 @@ public class Post extends UserDateAudit {
 		image.setPost(this);
 	}
 
+	public List<Comment> getComments() {
+		return comments;
+	}
+
+	public void setComments(List<Comment> comments) {
+		this.comments = comments;
+	}
+	
+	public void addComment(Comment comment) {
+		comments.add(comment);
+		comment.setPost(this);
+	}
+	
+	public void removeComment(Comment comment) {
+		comments.remove(comment);
+		comment.setPost(this);
+	}
 }

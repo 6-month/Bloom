@@ -19,11 +19,11 @@ public class Follow extends DateAudit{
     private Long id;
 	
 	@ManyToOne
-	@JoinColumn(name = "following_id")
+	@JoinColumn(name = "following_id", nullable = false)
 	User following;
 	
 	@ManyToOne
-	@JoinColumn(name = "follower_id")
+	@JoinColumn(name = "follower_id", nullable = false)
 	User follower;
 	
 
