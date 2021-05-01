@@ -20,8 +20,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import com.month.bloom.model.Comment;
 import com.month.bloom.model.Post;
 import com.month.bloom.payload.ApiResponse;
+import com.month.bloom.payload.CommentRequest;
 import com.month.bloom.payload.LikeRequest;
 import com.month.bloom.payload.LikeResponse;
 import com.month.bloom.payload.PagedResponse;
@@ -102,6 +104,18 @@ public class PostController {
 		}
 		return ResponseEntity.created(null)
 				.body(new ApiResponse(true, "Successfully canceled"));
+	}
+
+	// comment
+	@PostMapping("/{postId}/comments")
+	@PreAuthorize("hasRole('USER')")
+	public ResponseEntity<?> saveComment(@CurrentUser UserPrincipal currentUser, 
+										@PathVariable Long postId,
+									    @Valid @RequestBody CommentRequest commentRequest) {
+		Comment comment = postService.createComment(currentUser, postId, commentRequest);
+		
+		return ResponseEntity.created(null)
+				.body(new ApiResponse(true, "Comment Successfully registered"));
 	}
 
 }

@@ -22,14 +22,18 @@ import org.springframework.web.multipart.MultipartFile;
 import com.month.bloom.exception.BadRequestException;
 import com.month.bloom.exception.FileStorageException;
 import com.month.bloom.exception.ResourceNotFoundException;
+import com.month.bloom.model.Comment;
 import com.month.bloom.model.Image;
 import com.month.bloom.model.Like;
 import com.month.bloom.model.LikeCount;
 import com.month.bloom.model.Post;
 import com.month.bloom.model.User;
+import com.month.bloom.payload.CommentRequest;
+import com.month.bloom.payload.CommentResponse;
 import com.month.bloom.payload.PagedResponse;
 import com.month.bloom.payload.PostRequest;
 import com.month.bloom.payload.PostResponse;
+import com.month.bloom.repository.CommentRepository;
 import com.month.bloom.repository.LikeRepository;
 import com.month.bloom.repository.PostRepository;
 import com.month.bloom.repository.UserRepository;
@@ -48,6 +52,9 @@ public class PostService {
 	
 	@Autowired 
 	private UserRepository userRepository;
+	
+	@Autowired
+	private CommentRepository commentRepository;
 	
 	private static final Logger logger = LoggerFactory.getLogger(PostService.class);
 
@@ -143,6 +150,32 @@ public class PostService {
 		return postRepository.save(post);
 	}
 	
+	public Comment createComment(UserPrincipal currentUser, Long postId, 
+											CommentRequest commentRequest) {
+		Comment comment = new Comment();
+		comment.setText(commentRequest.getText());
+		
+		Post post = postRepository.getOne(postId);
+		comment.setPost(post);
+		User user = userRepository.getOne(currentUser.getId());
+		comment.setUser(user);
+		
+		comment.setDeleted(false);
+		
+		if(commentRequest.getP_comment_id() != null) {
+			Comment subComment = new Comment();
+			subComment.setText(commentRequest.getText());
+			subComment.setPost(post);
+			subComment.setUser(user);
+			subComment.setDeleted(false);
+			subComment.setComment(comment);
+			
+			comment.addComment(subComment);
+			commentRepository.save(subComment);
+		} 
+	
+		return commentRepository.save(comment);
+	}
 	
 	private void validatePageNumberAndSize(int page, int size) {
         if(page < 0) {

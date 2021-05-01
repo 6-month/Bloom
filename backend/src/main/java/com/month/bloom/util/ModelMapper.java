@@ -1,12 +1,11 @@
 package com.month.bloom.util;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import com.month.bloom.model.Image;
 import com.month.bloom.model.Post;
 import com.month.bloom.model.User;
+import com.month.bloom.payload.CommentResponse;
 import com.month.bloom.payload.ImageResponse;
 import com.month.bloom.payload.PostResponse;
 import com.month.bloom.payload.UserSummary;
@@ -21,8 +20,6 @@ public class ModelMapper {
 		UserSummary creatorSummary = new UserSummary(creator.getId(), creator.getName(), creator.getUsername());
 		postResponse.setCreatedBy(creatorSummary);
 		
-		System.out.println(post.getImages());
-		
 		List<ImageResponse> imageResponses = post.getImages().stream().map(image -> {
 			ImageResponse imageResponse = new ImageResponse();
 			imageResponse.setImageId(image.getId());
@@ -31,6 +28,19 @@ public class ModelMapper {
 			return imageResponse;
 		}).collect(Collectors.toList());
 		postResponse.setImages(imageResponses);
+		
+		List<CommentResponse> commentResponses = post.getComments().stream().map(comment -> {
+			CommentResponse commentResponse = new CommentResponse();
+			commentResponse.setId(comment.getId());
+			commentResponse.setText(comment.getText());
+			User createUser = comment.getUser();
+			UserSummary userSummary = new UserSummary(createUser.getId(), createUser.getName(), createUser.getUsername());
+			commentResponse.setCreatedBy(creatorSummary);
+			commentResponse.setCreationDateTime(comment.getCreatedAt());
+			commentResponse.setChildComments(comment.getComments());
+			return commentResponse;
+		}).collect(Collectors.toList());
+		postResponse.setComments(commentResponses);
 		
 		// totalLikeCountMap : {postId : totalLikeCount}
 		postResponse.setTotalLikes(totalLikesCount);

@@ -1,5 +1,8 @@
 package com.month.bloom.model;
 
+import java.util.List;
+
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -8,9 +11,10 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
-import javax.validation.constraints.NotNull;
+import javax.validation.constraints.NotBlank;
 
 import com.month.bloom.model.audit.UserDateAudit;
 
@@ -28,29 +32,28 @@ public class Comment extends UserDateAudit{
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	
-	@ManyToOne(fetch = FetchType.LAZY, optional = false)
+	// Post and User ManyToMany Relation
+	@ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "post_id", nullable = false)
     private Post post;
 	
-	@ManyToOne(fetch = FetchType.LAZY, optional = false)
+	@ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
 	
-	@NotNull
+	// Comment recursive Relationship(sub comments list)
+	@ManyToOne
+	@JoinColumn(name = "groupName", referencedColumnName = "comment_id")
+	private Comment comment;
+	
+	@OneToMany(mappedBy = "comment", cascade = CascadeType.ALL)
+	private List<Comment> comments;
+
+	@NotBlank
 	private String text;
 	
-	private int parents;
-	
-	@JoinColumn(name = "groupName", referencedColumnName = "comment_id")
-	@ManyToOne
-	private Comment comments;
+	private boolean isDeleted;
 
-	private int isDeleted;
-	
-	public Comment () {
-		
-	}
-	
 	public Long getId() {
 		return id;
 	}
@@ -75,6 +78,22 @@ public class Comment extends UserDateAudit{
 		this.user = user;
 	}
 
+	public Comment getComment() {
+		return comment;
+	}
+
+	public void setComment(Comment comment) {
+		this.comment = comment;
+	}
+
+	public List<Comment> getComments() {
+		return comments;
+	}
+
+	public void setComments(List<Comment> comments) {
+		this.comments = comments;
+	}
+
 	public String getText() {
 		return text;
 	}
@@ -82,24 +101,23 @@ public class Comment extends UserDateAudit{
 	public void setText(String text) {
 		this.text = text;
 	}
-
-	public int getParents() {
-		return parents;
+	
+	public boolean isDeleted() {
+		return isDeleted;
 	}
 
-	public void setParents(int parents) {
-		this.parents = parents;
+	public void setDeleted(boolean isDeleted) {
+		this.isDeleted = isDeleted;
 	}
 
-	public Comment getComments() {
-		return comments;
+	public void addComment(Comment comment) {
+		comments.add(comment);
+		comment.setComment(this);
+	}
+	
+	public void removeComment(Comment comment) {
+		comments.remove(comment);
+		comment.setComment(this);
 	}
 
-	public void setComments(Comment comments) {
-		this.comments = comments;
-	}
-	
-	
-	
-	
 }
