@@ -20,11 +20,11 @@ function Post({post}) {
 
     useEffect(() => {
         // console.log(post);
-        const image = post.images;
-        post.images.map((image) => {
-            console.log(image.imageId)
-            console.log(image.data)
-        })
+        // const image = post.images;
+        // post.images.map((image) => {
+        //     console.log(image.imageId)
+        //     console.log(image.data)
+        // })
     }, [])
 
     return (
@@ -52,10 +52,9 @@ function Post({post}) {
                 </div>
                 <div className="post-image">
                    {
-                    post.images.map((image) => {
-                        const data = image.data;
-                        <img src={`data:image/jpeg;base64,${data}`} />
-                    })
+                    post.images.map((image) => 
+                        <img src={`data:image/jpeg;base64,${image.data}`} />
+                        )
                    }
                 </div>
             </div>

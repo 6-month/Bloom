@@ -74,19 +74,15 @@ public class PostService {
 		// Map Posts to PostResponses containing like counts and post creator details
 		// postIds : 현재 페이지에 존재하는 모든 post에 해당하는 post_id 의 List
 		List<Long> postIds = posts.map(Post::getId).getContent();
-		System.out.println(postIds);
 		
 		// post 별로 총 like 수 map = {postId : totalLikes} 
 		Map<Long, Long> totalLikeCountMap = getTotalLikesMap(postIds);
-		System.out.println(totalLikeCountMap);
 		
 		// post 별로 로그인 유저가 좋아요를 눌렀는지 표시 ex) {1 : 1} => {userId : post_id}
 		Map<Long, Long> postUserLikeMap = getPostUserLikeMap(currentUser, postIds);
-		System.out.println(postUserLikeMap);
 		
 		// post 별로 해당 포스터를 만든 user 정보 반환
 		Map<Long, User> creatorMap = getPostCreatorMap(posts.getContent());
-		System.out.println(creatorMap);
 		
 		List<PostResponse> postResponse = posts.map(post -> {
 			return ModelMapper.mapPostToPostResponse(post, 

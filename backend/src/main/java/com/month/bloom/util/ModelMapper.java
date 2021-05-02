@@ -29,8 +29,6 @@ public class ModelMapper {
 		}).collect(Collectors.toList());
 		postResponse.setImages(imageResponses);
 		
-		System.out.println(postResponse.getImages());
-		
 		List<CommentResponse> commentResponses = post.getComments().stream().map(comment -> {
 			CommentResponse commentResponse = new CommentResponse();
 			commentResponse.setId(comment.getId());
@@ -39,7 +37,7 @@ public class ModelMapper {
 			UserSummary userSummary = new UserSummary(createUser.getId(), createUser.getName(), createUser.getUsername());
 			commentResponse.setCreatedBy(creatorSummary);
 			commentResponse.setCreationDateTime(comment.getCreatedAt());
-			commentResponse.setChildComments(comment.getComments());
+			
 			return commentResponse;
 		}).collect(Collectors.toList());
 		postResponse.setComments(commentResponses);
@@ -52,7 +50,10 @@ public class ModelMapper {
 		} else
 			postResponse.setPushedLike(false);
 		
+		System.out.println(postResponse);
+		
 		return postResponse;
+		
 	}
 	
 }
