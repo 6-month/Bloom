@@ -9,8 +9,8 @@ public class CommentResponse {
 	private Long id;
 	private String text;
 	private UserSummary createdBy;
-//	private List<Comment> childComments;
 	private Instant creationDateTime;
+	private Long p_comment_id; 
 	
 	public Long getId() {
 		return id;
@@ -36,11 +36,13 @@ public class CommentResponse {
 	public void setCreationDateTime(Instant creationDateTime) {
 		this.creationDateTime = creationDateTime;
 	}
-//	public List<Comment> getChildComments() {
-//		return childComments;
-//	}
-//	public void setChildComments(List<Comment> childComments) {
-//		this.childComments = childComments;
-//	}
+	public Long getP_comment_id() {
+		return p_comment_id;
+	}
+	public void setP_comment_id(Long p_comment_id) {
+		this.p_comment_id = p_comment_id;
+	}
+	
+	
 
 }

@@ -46,6 +46,7 @@ function PostList({username, type}) {
         loadPostList(page +1);
     }
 
+    // comment 의 p_comment_id 별로 list를 만들고 add 작업이 필요함
     const postViews = [];
     posts.forEach((post, postIdx) => {
         postViews.push(
