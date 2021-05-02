@@ -25,7 +25,22 @@ function Post({post}) {
         //     console.log(image.imageId)
         //     console.log(image.data)
         // })
+        console.log(post.comments)
     }, [])
+
+    const commentView = [];
+    post.comments.forEach((comment) => {
+        if(comment.p_comment_id === null) {
+            commentView.push(
+                <h1>{comment.text}</h1>
+            )
+        } else {
+            commentView.push(
+                <h3>{comment.text}</h3>
+            )
+        }
+
+    })
 
     return (
         <div className="post-content">
@@ -56,6 +71,9 @@ function Post({post}) {
                         <img src={`data:image/jpeg;base64,${image.data}`} />
                         )
                    }
+                </div>
+                <div className="post-comment-container">
+                    {commentView}
                 </div>
             </div>
         </div>

@@ -46,7 +46,7 @@ function NewPost() {
   const onChangedImages = (e) => {
     setImages({
       ...images,
-      value : e.target.files[0],
+      value : [...images.value, {value : e.target.files[0]}],
       validateStatus : 'success',
       errorMsg : null
     });
@@ -71,7 +71,10 @@ function NewPost() {
   const handleSubmit = () => {
     const formData = new FormData();
     formData.append('content',content.value);
-    formData.append('images', images.value);
+
+    for(var i = 0; i<images.value.length; i++) {
+      formData.append('images', images.value[i].value);
+    }
 
     const config = {
       headers : {
