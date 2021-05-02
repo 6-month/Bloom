@@ -3,6 +3,7 @@ import { login } from '../../util/APIUtils';
 import { ACCESS_TOKEN } from '../../constants';
 import { useHistory } from 'react-router-dom';
 import { Form, Input, Button, notification} from 'antd';
+import { Link, NavLink } from 'react-router-dom';
 
 const layout = {
     labelCol: { span: 8 },
@@ -74,6 +75,7 @@ function Login() {
                 <Button type="primary" htmlType="submit">
                 Submit
                 </Button>
+                Haven't you signed up yet? <Link to="/signup">Signup now!</Link>
             </Form.Item>
         </Form>
     );

@@ -152,28 +152,32 @@ public class PostService {
 	
 	public Comment createComment(UserPrincipal currentUser, Long postId, 
 											CommentRequest commentRequest) {
+		if(commentRequest.getP_comment_id() != null) {
+			Comment mainComment = commentRepository.getOne(commentRequest.getP_comment_id());
+			
+			Comment subComment = new Comment();
+			subComment.setText(commentRequest.getText());
+			subComment.setPost(mainComment.getPost());
+			subComment.setUser(mainComment.getUser());
+			subComment.setDeleted(false);
+			subComment.setComment(mainComment);
+			
+			mainComment.addComment(subComment);
+			
+			return commentRepository.save(mainComment);
+		} 
+		
 		Comment comment = new Comment();
 		comment.setText(commentRequest.getText());
 		
 		Post post = postRepository.getOne(postId);
 		comment.setPost(post);
+		
 		User user = userRepository.getOne(currentUser.getId());
 		comment.setUser(user);
 		
 		comment.setDeleted(false);
 		
-		if(commentRequest.getP_comment_id() != null) {
-			Comment subComment = new Comment();
-			subComment.setText(commentRequest.getText());
-			subComment.setPost(post);
-			subComment.setUser(user);
-			subComment.setDeleted(false);
-			subComment.setComment(comment);
-			
-			comment.addComment(subComment);
-			commentRepository.save(subComment);
-		} 
-	
 		return commentRepository.save(comment);
 	}
 	

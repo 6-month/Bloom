@@ -29,6 +29,8 @@ public class ModelMapper {
 		}).collect(Collectors.toList());
 		postResponse.setImages(imageResponses);
 		
+		System.out.println(postResponse.getImages());
+		
 		List<CommentResponse> commentResponses = post.getComments().stream().map(comment -> {
 			CommentResponse commentResponse = new CommentResponse();
 			commentResponse.setId(comment.getId());

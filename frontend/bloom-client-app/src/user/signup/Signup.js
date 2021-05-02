@@ -6,13 +6,14 @@ import {
     EMAIL_MAX_LENGTH,
     PASSWORD_MIN_LENGTH, PASSWORD_MAX_LENGTH, ACCESS_TOKEN
 } from '../../constants';
-import { Link, NavLink } from 'react-router-dom';
+import { Link, NavLink ,useHistory} from 'react-router-dom';
 
 import { Form, Input, Button, notification } from 'antd';
 
 const FormItem = Form.Item;
 
 function SignupFuction() {
+    let history = useHistory();
     
     const [name, setName] = useState({
         value : '',
@@ -49,7 +50,8 @@ function SignupFuction() {
                 notification.success({
                     message: 'Polling App',
                     description: "Thank you! You're successfully registered. Please Login to continue!",
-                });          
+                });
+                history.push("/login");          
             }).catch(error => {
                 notification.error({
                     message: 'Polling App',
@@ -304,7 +306,8 @@ function SignupFuction() {
                     >
                         <Input 
                          size="large"
-                         name="username"
+                         type="password"
+                         name="password"
                          authoComplete="off"
                          placeholder="A password between 6 to 20 characters"
                          onChange={(e) => {onChangedPassword(e)}}
