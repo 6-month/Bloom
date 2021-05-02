@@ -1,5 +1,6 @@
 package com.month.bloom.model;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.CascadeType;
@@ -19,12 +20,7 @@ import javax.validation.constraints.NotBlank;
 import com.month.bloom.model.audit.UserDateAudit;
 
 @Entity
-@Table(name = "comments", uniqueConstraints = {
-		@UniqueConstraint(columnNames = {
-				"post_id",
-				"user_id"
-		})
-})
+@Table(name = "comments")
 public class Comment extends UserDateAudit{
 	
 	@Id
@@ -43,11 +39,11 @@ public class Comment extends UserDateAudit{
 	
 	// Comment recursive Relationship(sub comments list)
 	@ManyToOne
-	@JoinColumn(name = "groupName", referencedColumnName = "comment_id")
+	@JoinColumn(name = "groupId", referencedColumnName = "comment_id")
 	private Comment comment;
 	
 	@OneToMany(mappedBy = "comment", cascade = CascadeType.ALL)
-	private List<Comment> comments;
+	private List<Comment> comments = new ArrayList<>();
 
 	@NotBlank
 	private String text;
@@ -112,12 +108,13 @@ public class Comment extends UserDateAudit{
 
 	public void addComment(Comment comment) {
 		comments.add(comment);
-		comment.setComment(this);
+		comment.setComments(comments);
 	}
 	
 	public void removeComment(Comment comment) {
 		comments.remove(comment);
-		comment.setComment(this);
+		comment.setComments(comments);
 	}
+	
 
 }
