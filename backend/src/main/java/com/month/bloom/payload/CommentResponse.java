@@ -9,7 +9,7 @@ public class CommentResponse {
 	private Long id;
 	private String text;
 	private UserSummary createdBy;
-	private List<Comment> childComments;
+//	private List<Comment> childComments;
 	private Instant creationDateTime;
 	
 	public Long getId() {
@@ -36,11 +36,11 @@ public class CommentResponse {
 	public void setCreationDateTime(Instant creationDateTime) {
 		this.creationDateTime = creationDateTime;
 	}
-	public List<Comment> getChildComments() {
-		return childComments;
-	}
-	public void setChildComments(List<Comment> childComments) {
-		this.childComments = childComments;
-	}
+//	public List<Comment> getChildComments() {
+//		return childComments;
+//	}
+//	public void setChildComments(List<Comment> childComments) {
+//		this.childComments = childComments;
+//	}
 
 }
