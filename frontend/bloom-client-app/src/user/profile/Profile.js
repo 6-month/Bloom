@@ -1,19 +1,20 @@
 import { notification } from 'antd';
 import Avatar from 'antd/lib/avatar/avatar';
 import React ,{ useEffect, useState } from 'react';
+import { useParams } from 'react-router';
 import { getUserProfile } from '../../util/APIUtils';
 import {getAvatarColor} from '../../util/Colors';
 import { formatDateTime } from '../../util/Helpers';
 
-function Profile({isAuthenticated, currentUser}) {
+function Profile(props) {
     const [user, setUser] = useState(null);
     const [isLoading, setIsLoading] = useState(false);
 
-
     useEffect(() => {
-        const username = currentUser.username;
+        //
 
-        loadUserProfile(username);
+        // loadUserProfile (username) => username 자리에 db에 등록된 username을 입력하면 해당 유저의 profile정보를 표시해줌
+        loadUserProfile("seongbin.95");
     }, [])
 
     const loadUserProfile = (username) => {

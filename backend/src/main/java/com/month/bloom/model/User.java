@@ -11,6 +11,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
+import javax.persistence.Lob;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
@@ -65,7 +66,13 @@ public class User extends DateAudit {
 
 	@Size(max = 50)
 	private String phoneNumber;
+	
+	@Size(max = 300)
+	private String bio;
 
+	@Lob
+	private byte[] profileImage;
+	
 	// relation Role
 	@ManyToMany(fetch = FetchType.LAZY)
 	@JoinTable(name = "user_roles", 
@@ -103,6 +110,17 @@ public class User extends DateAudit {
 		this.email = email;
 		this.password = password;
 		this.phoneNumber = phoneNumber;
+	}
+	
+	public User(String name, String username, String email, String password, String phoneNumber,
+			String bio, byte[] profileImage) {
+		this.name = name;
+		this.username = username;
+		this.email = email;
+		this.password = password;
+		this.phoneNumber = phoneNumber;
+		this.bio = bio;
+		this.profileImage = profileImage;
 	}
 	
 	public Long getId() {
@@ -175,6 +193,22 @@ public class User extends DateAudit {
 
 	public void setFollowings(List<User> followings) {
 		this.followings = followings;
+	}
+	
+	public String getBio() {
+		return bio;
+	}
+
+	public void setBio(String bio) {
+		this.bio = bio;
+	}
+
+	public byte[] getProfileImage() {
+		return profileImage;
+	}
+
+	public void setProfileImage(byte[] profileImage) {
+		this.profileImage = profileImage;
 	}
 
 	public void addFollower(User follower) {
