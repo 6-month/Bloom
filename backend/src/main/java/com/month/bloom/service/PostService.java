@@ -95,6 +95,12 @@ public class PostService {
 				posts.getSize(), posts.getTotalElements(), posts.getTotalPages(), posts.isLast());
 	}
 	
+	public void deletePost(Long postId) {
+		Post post = postRepository.findById(postId).orElseThrow();
+		
+		postRepository.delete(post);
+	}
+	
 	public PagedResponse<PostResponse> getPostsCreatedBy(String username, UserPrincipal currentUser, int page, int size) {
 		validatePageNumberAndSize(page, size);
 

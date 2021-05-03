@@ -1,39 +1,21 @@
-.app-title {
-    float: left;
-}
-
-.app-title a {
-    text-decoration: none;
-    line-height: 64px;
-    font-size: 21px;
-    display: inline-block;
-}
-
-.app-title a:hover {
-    text-decoration: none;
-}
-
 .app-header {
-    position: fixed;
-    width: 100%;
-    box-shadow: 0 2px 8px #f0f1f2;
-    z-index: 10;
-    padding: 0;
+    border: 1px solid black;
+    display: flex;
+    flex-direction: row;
+    align-items: flex-end;
 }
 
-.app-menu {
-    float: right;
+.home {
+    border: 1px solid black;
 }
 
-.app-menu > li {
-    padding: 0 20px;
+.menu {
+    border: 1px solid black;
 }
 
-.app-menu > li > a {
-    padding: 0 20px;
-    margin: 0 -20px;
-}
-
-.app-menu > li > a > i {
-    margin-right: 0 !important;
+.nav-icon {
+    padding: 10px;
+    margin: 10px;
+    max-width: 100px;
+    height: 20px;
 }

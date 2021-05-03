@@ -84,6 +84,15 @@ public class PostController {
 				.body(new ApiResponse(true, "Post Created Successfully"));
 	}	
 	
+	@DeleteMapping("{postId}")
+	@PreAuthorize("hasRole('USER')")
+	public ResponseEntity<?> deletePost(@PathVariable Long postId) {
+		postService.deletePost(postId);
+		
+		return ResponseEntity.created(null)
+				.body(new ApiResponse(true, "Post Successfully deleted"));
+	}
+	
 	@PostMapping("/{postId}/likes")
 	@PreAuthorize("hasRole('USER')")
 	public LikeResponse addLike(@CurrentUser UserPrincipal currentUser, 

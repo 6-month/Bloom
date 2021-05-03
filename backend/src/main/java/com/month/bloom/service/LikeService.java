@@ -76,22 +76,6 @@ public class LikeService {
 	
 	}
 	
-//	public List<String> countLikes(Long postId, UserPrincipal currentUser) {
-//		Post post = postRepository.findById(postId).orElseThrow();
-//		Long postLikeCount = likeRepository.countByPost(post);
-//		
-//		List<String> result = 
-//				new ArrayList<>(Arrays.asList(String.valueOf(postLikeCount)));
-//		
-//		User user = userRepository.getOne(currentUser.getId());
-//		if(Objects.nonNull(currentUser)) {
-//			result.add(String.valueOf(isNotAlreadyLike(user, post)));
-//			return result;
-//			
-//		}
-//		return result;
-//	}
-	
 	private boolean isNotAlreadyLike(User user,  Post post) {
 		return likeRepository.findByUserAndPost(user, post).isEmpty();
 	}
