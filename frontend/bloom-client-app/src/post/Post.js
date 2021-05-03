@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 import { getAvatarColor } from '../util/Colors';
 import { formatDateTime } from '../util/Helpers';
 import { RadioGroup } from '@material-ui/core';
-
+import './Post.css'
 
 function Post({post}) {
     const [content, setContent ] = useState('')
@@ -65,10 +65,10 @@ function Post({post}) {
                 <div className="post-content">
                     {post.content}
                 </div>
-                <div className="post-image">
+                <div className="post-image-container">
                    {
                     post.images.map((image) => 
-                        <img src={`data:image/jpeg;base64,${image.data}`} />
+                        <img src={`data:image/jpeg;base64,${image.data}`} className= "post-image"/>
                         )
                    }
                 </div>

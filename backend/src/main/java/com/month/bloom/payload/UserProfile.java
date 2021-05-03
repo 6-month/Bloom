@@ -8,13 +8,21 @@ public class UserProfile {
 	private String name;
 	private Instant joinedAt;
 	private Long postCount;
-	
-	public UserProfile(Long id, String username, String name, Instant joinedAt, Long postCount) {
+	// 팔로우, 팔로잉 수 
+	private Long totalFollowers;
+	private Long totalFollwings;
+
+
+	public UserProfile(Long id, String username, String name, Instant joinedAt, Long postCount, Long totalFollowers,
+			Long totalFollwings) {
+		super();
 		this.id = id;
 		this.username = username;
 		this.name = name;
 		this.joinedAt = joinedAt;
 		this.postCount = postCount;
+		this.totalFollowers = totalFollowers;
+		this.totalFollwings = totalFollwings;
 	}
 
 	public Long getId() {
@@ -56,6 +64,21 @@ public class UserProfile {
 	public void setPostCount(Long postCount) {
 		this.postCount = postCount;
 	}
-	
+
+	public Long getTotalFollowers() {
+		return totalFollowers;
+	}
+
+	public void setTotalFollowers(Long totalFollowers) {
+		this.totalFollowers = totalFollowers;
+	}
+
+	public Long getTotalFollwings() {
+		return totalFollwings;
+	}
+
+	public void setTotalFollwings(Long totalFollwings) {
+		this.totalFollwings = totalFollwings;
+	}
 	
 }

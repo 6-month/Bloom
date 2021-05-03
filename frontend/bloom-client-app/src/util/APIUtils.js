@@ -96,6 +96,13 @@ export function getCurrentUser() {
     });
 }
 
+export function getUserProfile(username) {
+    return request({
+        url: API_BASE_URL + "/users/" + username,
+        method: 'GET'
+    });
+}
+
 export function getAllPosts(page, size) {
     page = page || 0;
     size = size || POST_LIST_SIZE;

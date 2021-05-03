@@ -19,6 +19,7 @@ import com.month.bloom.payload.PostResponse;
 import com.month.bloom.payload.UserIdentityAvailability;
 import com.month.bloom.payload.UserProfile;
 import com.month.bloom.payload.UserSummary;
+import com.month.bloom.repository.FollowRepository;
 import com.month.bloom.repository.LikeRepository;
 import com.month.bloom.repository.PostRepository;
 import com.month.bloom.repository.UserRepository;
@@ -40,6 +41,9 @@ public class UserController {
 	
 	@Autowired
 	private LikeRepository likeRepository;
+	
+	@Autowired
+	private FollowRepository followRepository;
 	
 	@Autowired
 	private PostService postService;
@@ -73,10 +77,16 @@ public class UserController {
     	User user = userRepository.findByUsername(username)
     			.orElseThrow(() -> new ResourceNotFoundException("User", "username", username));
     	
-    	long postCount = postRepository.countByCreatedBy(user.getId());
+    	Long postCount = postRepository.countByCreatedBy(user.getId());
     	
+    	// total followers : count(following_id = user_id)
+    	// total followings : count(follower_id = user_id)
+    	Long totalFollowers = followRepository.countByFollowerId(user.getId());
+    	
+    	Long totalFollowings = followRepository.countByFollowingId(user.getId());
+    			
     	UserProfile userProfile = new UserProfile(user.getId(), user.getUsername(),
-    			user.getName(), user.getCreatedAt(), postCount);
+    			user.getName(), user.getCreatedAt(), postCount, totalFollowers, totalFollowings);
     	
     	return userProfile;
     }
@@ -115,4 +125,5 @@ public class UserController {
     			.body(new ApiResponse(true, "Successfully unFollowed"));
     	
     }
+     
 }
