@@ -1,21 +1,13 @@
 .app-header {
-    border: 1px solid black;
+    /* border: 1px solid black; */
+    background-color: white;
     display: flex;
     flex-direction: row;
-    align-items: flex-end;
-}
-
-.home {
-    border: 1px solid black;
-}
-
-.menu {
-    border: 1px solid black;
+    align-items: stretch;
 }
 
 .nav-icon {
     padding: 10px;
     margin: 10px;
-    max-width: 100px;
-    height: 20px;
+    font-size: 30px;
 }

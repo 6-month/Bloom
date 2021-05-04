@@ -4,6 +4,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -11,8 +12,10 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
+import javax.persistence.Lob;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 import javax.validation.constraints.Email;
@@ -22,16 +25,7 @@ import javax.validation.constraints.Size;
 import org.hibernate.annotations.NaturalId;
 
 import com.month.bloom.model.audit.DateAudit;
-/*id : Primary Key
- *name : not null                        
- *username : A unique username  
- *email : A unique email
- *password : A password which will be stored in encrypted format
- *roles : A set of roles(Role : admin, user) (Many to Many relationship with Role entity)
- *phoneNumber : A unique phoneNumber
- *following : A following users 
- *follower : A follewer users (will make)
- **/
+
 
 @Entity
 @Table(name = "users", uniqueConstraints = { 
@@ -65,6 +59,9 @@ public class User extends DateAudit {
 
 	@Size(max = 50)
 	private String phoneNumber;
+	
+	@Size(max = 300)
+	private String bio;
 
 	// relation Role
 	@ManyToMany(fetch = FetchType.LAZY)
@@ -92,6 +89,10 @@ public class User extends DateAudit {
 					@JoinColumn(name = "follower_id"))
 	private List<User> followings;
 	
+	@OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "image_id", referencedColumnName = "id")
+    private UserProfileImage userProfileImage;
+	
 	
 	public User() {
 
@@ -104,6 +105,7 @@ public class User extends DateAudit {
 		this.password = password;
 		this.phoneNumber = phoneNumber;
 	}
+	
 	
 	public Long getId() {
 		return id;
@@ -176,6 +178,14 @@ public class User extends DateAudit {
 	public void setFollowings(List<User> followings) {
 		this.followings = followings;
 	}
+	
+	public String getBio() {
+		return bio;
+	}
+
+	public void setBio(String bio) {
+		this.bio = bio;
+	}
 
 	public void addFollower(User follower) {
 		followers.add(follower);
@@ -196,4 +206,14 @@ public class User extends DateAudit {
 		followings.remove(following);
 		following.setFollowings(followings);
 	}
+
+	public UserProfileImage getUserProfileImage() {
+		return userProfileImage;
+	}
+
+	public void setUserProfileImage(UserProfileImage userProfileImage) {
+		this.userProfileImage = userProfileImage;
+	}
+	
+	
 }

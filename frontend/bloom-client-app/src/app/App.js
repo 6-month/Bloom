@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Route,  useHistory } from 'react-router-dom';
+import { Route,  useHistory, useParams } from 'react-router-dom';
 import { getCurrentUser } from '../util/APIUtils';
 import { ACCESS_TOKEN } from '../constants';
 import Login from '../user/login/Login';

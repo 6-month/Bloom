@@ -14,7 +14,7 @@ function AppHeader({isAuthenticated, currentUser, onLogout}) {
       </div>
       <div className="menu">
         <Link to = "/login">
-          <LoginOutlined className="nav-icon"/>
+          <LoginOutlined className="nav-icon" />
         </Link>
         <Link to = "/">
           <LogoutOutlined className="nav-icon"/>
