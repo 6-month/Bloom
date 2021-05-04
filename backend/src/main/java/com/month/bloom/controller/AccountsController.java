@@ -106,9 +106,9 @@ public class AccountsController {
         
 	}
 	
-	@PostMappping("/accounts/edit/password")
-	@PreAuthorize("hasRole('USER')")
-	public ResponseEntity<?> editUserPassword(@Valid @RequestBody PasswordRequest passwordRequest){
-		
-	}
+//	@PostMappping("/accounts/edit/password")
+//	@PreAuthorize("hasRole('USER')")
+//	public ResponseEntity<?> editUserPassword(@Valid @RequestBody PasswordRequest passwordRequest){
+//		
+//	}
 }

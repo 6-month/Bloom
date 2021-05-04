@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.month.bloom.exception.ResourceNotFoundException;
 import com.month.bloom.model.User;
+import com.month.bloom.model.UserProfileImage;
 import com.month.bloom.payload.ApiResponse;
 import com.month.bloom.payload.PagedResponse;
 import com.month.bloom.payload.PostResponse;
@@ -85,8 +86,11 @@ public class UserController {
     	
     	Long totalFollowings = followRepository.countByFollowingId(user.getId());
     			
+    	UserProfileImage userProfileImage = user.getUserProfileImage();
+    	
+    	
     	UserProfile userProfile = new UserProfile(user.getId(), user.getUsername(),
-    			user.getName(), user.getCreatedAt(), postCount, totalFollowers, totalFollowings);
+    			user.getName(), user.getCreatedAt(), postCount, userProfileImage.getData(), totalFollowers, totalFollowings);
     	
     	return userProfile;
     }

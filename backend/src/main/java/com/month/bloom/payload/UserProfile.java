@@ -8,19 +8,23 @@ public class UserProfile {
 	private String name;
 	private Instant joinedAt;
 	private Long postCount;
+	// 프로필 이미지
+	private byte[] profileImage;
 	// 팔로우, 팔로잉 수 
 	private Long totalFollowers;
 	private Long totalFollwings;
 
 
-	public UserProfile(Long id, String username, String name, Instant joinedAt, Long postCount, Long totalFollowers,
-			Long totalFollwings) {
-		super();
+
+
+	public UserProfile(Long id, String username, String name, Instant joinedAt, Long postCount, byte[] profileImage,
+			Long totalFollowers, Long totalFollwings) {
 		this.id = id;
 		this.username = username;
 		this.name = name;
 		this.joinedAt = joinedAt;
 		this.postCount = postCount;
+		this.profileImage = profileImage;
 		this.totalFollowers = totalFollowers;
 		this.totalFollwings = totalFollwings;
 	}
@@ -80,5 +84,14 @@ public class UserProfile {
 	public void setTotalFollwings(Long totalFollwings) {
 		this.totalFollwings = totalFollwings;
 	}
+
+	public byte[] getProfileImage() {
+		return profileImage;
+	}
+
+	public void setProfileImage(byte[] profileImage) {
+		this.profileImage = profileImage;
+	}
+	
 	
 }
