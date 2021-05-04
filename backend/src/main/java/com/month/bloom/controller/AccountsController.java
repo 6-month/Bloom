@@ -42,15 +42,17 @@ public class AccountsController {
 	// 2. Change Password
 	// Old Password => true => New Password, Confirm New Password
 	
-	@GetMapping("/accounts")
+	@PostMapping("/accounts/edits/image")
 	@PreAuthorize("hasRole('USER')")
 	public ResponseEntity<?> editUserProfileImage(@CurrentUser UserPrincipal currentUser,
 										@Valid @ModelAttribute ProfileImageRequest imageRequest) {
-		MultipartFile file = imageRequest.getImages();
+		MultipartFile file = imageRequest.getImage();
 		
 		String fileName = StringUtils.cleanPath(file.getOriginalFilename());
 		
         User user = userRepository.getOne(currentUser.getId());
+        
+        
 		try {
             if(fileName.contains("..")) {
                 throw new FileStorageException("Sorry! Filename contains invalid path sequence " + fileName);
@@ -74,23 +76,24 @@ public class AccountsController {
 	}
 	
 	
-	@PostMapping("/accounts")
+	@PostMapping("/accounts/edit")
 	@PreAuthorize("hasRole('USER')")
 	public ResponseEntity<?> editUserInfo(@Valid @RequestBody UserEditInfo userEditInfo) {
-		if(userRepository.existsByUsername(userEditInfo.getUsername())) {
-            return new ResponseEntity(new ApiResponse(false, "Username is already taken!"),
-                    HttpStatus.BAD_REQUEST);
-        }
-
-        if(userRepository.existsByEmail(userEditInfo.getEmail())) {
-            return new ResponseEntity(new ApiResponse(false, "Email Address already in use!"),
-                    HttpStatus.BAD_REQUEST);
-        }
-        
-        User user = userRepository.getOne(userEditInfo.getUserId());
-        
-
-        
+		User user = userRepository.getOne(userEditInfo.getUserId());
+		
+		if(!user.getUsername().equals(userEditInfo.getUsername())) {
+			if(userRepository.existsByUsername(userEditInfo.getUsername())) {
+	            return new ResponseEntity(new ApiResponse(false, "Username is already taken!"),
+	                    HttpStatus.BAD_REQUEST);
+	        }
+		}
+		if(!user.getEmail().equals(userEditInfo.getEmail())) {
+	        if(userRepository.existsByEmail(userEditInfo.getEmail())) {
+	            return new ResponseEntity(new ApiResponse(false, "Email Address already in use!"),
+	                    HttpStatus.BAD_REQUEST);
+	        }
+		}
+          
         userRepository.updateUser(userEditInfo.getUserId(),
         						userEditInfo.getUsername(),
         						userEditInfo.getName(),
@@ -101,5 +104,11 @@ public class AccountsController {
         return ResponseEntity.created(null)
         		.body(new ApiResponse(true, "User Info Successfully Udated!"));
         
+	}
+	
+	@PostMappping("/accounts/edit/password")
+	@PreAuthorize("hasRole('USER')")
+	public ResponseEntity<?> editUserPassword(@Valid @RequestBody PasswordRequest passwordRequest){
+		
 	}
 }

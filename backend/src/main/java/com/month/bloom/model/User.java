@@ -25,16 +25,7 @@ import javax.validation.constraints.Size;
 import org.hibernate.annotations.NaturalId;
 
 import com.month.bloom.model.audit.DateAudit;
-/*id : Primary Key
- *name : not null                        
- *username : A unique username  
- *email : A unique email
- *password : A password which will be stored in encrypted format
- *roles : A set of roles(Role : admin, user) (Many to Many relationship with Role entity)
- *phoneNumber : A unique phoneNumber
- *following : A following users 
- *follower : A follewer users (will make)
- **/
+
 
 @Entity
 @Table(name = "users", uniqueConstraints = { 
@@ -72,9 +63,6 @@ public class User extends DateAudit {
 	@Size(max = 300)
 	private String bio;
 
-	@Lob
-	private byte[] profileImage;
-	
 	// relation Role
 	@ManyToMany(fetch = FetchType.LAZY)
 	@JoinTable(name = "user_roles", 
@@ -197,14 +185,6 @@ public class User extends DateAudit {
 
 	public void setBio(String bio) {
 		this.bio = bio;
-	}
-
-	public byte[] getProfileImage() {
-		return profileImage;
-	}
-
-	public void setProfileImage(byte[] profileImage) {
-		this.profileImage = profileImage;
 	}
 
 	public void addFollower(User follower) {
