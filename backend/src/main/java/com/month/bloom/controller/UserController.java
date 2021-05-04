@@ -85,12 +85,17 @@ public class UserController {
     	Long totalFollowers = followRepository.countByFollowerId(user.getId());
     	
     	Long totalFollowings = followRepository.countByFollowingId(user.getId());
-    			
+    	
     	UserProfileImage userProfileImage = user.getUserProfileImage();
     	
+    	if(userProfileImage != null ) {
+    		UserProfile userProfile = new UserProfile(user.getId(), user.getUsername(),
+        			user.getName(), user.getCreatedAt(), postCount, userProfileImage.getData(), totalFollowers, totalFollowings);
+    		return userProfile;
+    	}
+		UserProfile userProfile = new UserProfile(user.getId(), user.getUsername(),
+			user.getName(), user.getCreatedAt(), postCount, null, totalFollowers, totalFollowings);
     	
-    	UserProfile userProfile = new UserProfile(user.getId(), user.getUsername(),
-    			user.getName(), user.getCreatedAt(), postCount, userProfileImage.getData(), totalFollowers, totalFollowings);
     	
     	return userProfile;
     }
