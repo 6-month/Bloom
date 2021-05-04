@@ -1,45 +1,78 @@
-import React, {useState, useEffect } from 'react';
+import React, {useState, useEffect, createElement } from 'react';
 import { Avatar, Icon, Radio, Button } from 'antd';
 import { Link } from 'react-router-dom';
 import { getAvatarColor } from '../util/Colors';
 import { formatDateTime } from '../util/Helpers';
 import { RadioGroup } from '@material-ui/core';
 import './Post.css'
+import { Comment, Tooltip } from 'antd';
+import moment from 'moment';
+import { DislikeOutlined, LikeOutlined, LikeFilled } from '@ant-design/icons';
+
 
 function Post({post}) {
-    const [content, setContent ] = useState('')
-    const [images, setImages] = useState(null);
-    const [createdBy, setCreatedBy]= useState({
-        id : null,
-        name : '',
-        username : ''
-    })
-    const [creationDateTime, setCreationDateTime] = useState("");
-    const [pushedLike, setPushedLike] = useState(null);
-    const [totalLikes, setTotalLikes] = useState(null);
+    // const [content, setContent ] = useState('')
+    // const [images, setImages] = useState(null);
+    // const [createdBy, setCreatedBy]= useState({
+    //     id : null,
+    //     name : '',
+    //     username : ''
+    // })
+    // const [creationDateTime, setCreationDateTime] = useState("");
+    // const [pushedLike, setPushedLike] = useState(null);
+    // const [totalLikes, setTotalLikes] = useState(null);
+    const [likes, setLikes] = useState(0);
+    const [dislikes, setDislikes] = useState(0);
+    const [action, setAction] = useState(null);
 
-    useEffect(() => {
-        // console.log(post);
-        // const image = post.images;
-        // post.images.map((image) => {
-        //     console.log(image.imageId)
-        //     console.log(image.data)
-        // })
-        console.log(post.comments)
-    }, [])
+    // 현재 like수 와 like를 누르는 기능 구현
+    const like = () => {
+        setLikes(1);
+        setAction('liked');
+    };
+
+    // comment를 다는 기능과 comment에 comment를 다는 기능 구현 필요 
+
+    const actions = [
+        <Tooltip key="comment-basic-like" title="Like">
+          <span onClick={like}>
+            {createElement(action === 'liked' ? LikeFilled : LikeOutlined)}
+            <span className="comment-action">{likes}</span>
+          </span>
+        </Tooltip>,
+        <span key="comment-basic-reply-to">Reply to</span>,
+      ];
 
     const commentView = [];
     post.comments.forEach((comment) => {
         if(comment.p_comment_id === null) {
             commentView.push(
-                <h1>{comment.text}</h1>
+                <Comment
+                    actions={actions}
+                    author={comment.createdBy.username}
+                    avatar={
+                        <Avatar className="post-creator-avatar"
+                            src={`data:image/jpeg;base64,${comment.createdBy.profileImage}`} />  
+                    }
+                    content={
+                        <p>
+                            {comment.text}
+                        </p>
+                    }
+                    datetime={
+                        <Tooltip title={moment().format('YYYY-MM-DD HH:mm:ss')}>
+                            <span>{moment().fromNow()}</span>
+                        </Tooltip>
+                    }
+                >
+
+                </Comment>
             )
         } else {
             commentView.push(
                 <h3>{comment.text}</h3>
             )
         }
-
     })
 
     return (
@@ -48,7 +81,7 @@ function Post({post}) {
                 <div className="post-creator-info">
                     <Link className="creator-link">
                         <Avatar className="post-creator-avatar"
-                            style={{ backgroundColor: getAvatarColor(post.createdBy.name)}}>  
+                            src={`data:image/jpeg;base64,${post.createdBy.profileImage}`}>  
                             {post.createdBy.name}
                         </Avatar>
                         <span className="post-creator-name">
