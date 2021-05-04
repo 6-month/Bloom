@@ -46,7 +46,7 @@ function Profile(props) {
                                     Joined {formatDateTime(user.joinedAt)}
                                 </div>
                                 <div className="followers">Followers : {user.totalFollowers}</div>
-                                <div className="followings">Follwings : {user.totalFollowings}</div>
+                                <div className="followings">Followings : {user.totalFollowings}</div>
                             </div>
                         </div>
                     </div>

@@ -12,13 +12,13 @@ public class UserProfile {
 	private byte[] profileImage;
 	// 팔로우, 팔로잉 수 
 	private Long totalFollowers;
-	private Long totalFollwings;
+	private Long totalFollowings;
 
 
 
 
 	public UserProfile(Long id, String username, String name, Instant joinedAt, Long postCount, byte[] profileImage,
-			Long totalFollowers, Long totalFollwings) {
+			Long totalFollowers, Long totalFollowings) {
 		this.id = id;
 		this.username = username;
 		this.name = name;
@@ -26,7 +26,7 @@ public class UserProfile {
 		this.postCount = postCount;
 		this.profileImage = profileImage;
 		this.totalFollowers = totalFollowers;
-		this.totalFollwings = totalFollwings;
+		this.totalFollowings = totalFollowings;
 	}
 
 	public Long getId() {
@@ -77,12 +77,12 @@ public class UserProfile {
 		this.totalFollowers = totalFollowers;
 	}
 
-	public Long getTotalFollwings() {
-		return totalFollwings;
+	public Long gettotalFollowings() {
+		return totalFollowings;
 	}
 
-	public void setTotalFollwings(Long totalFollwings) {
-		this.totalFollwings = totalFollwings;
+	public void settotalFollowings(Long totalFollowings) {
+		this.totalFollowings = totalFollowings;
 	}
 
 	public byte[] getProfileImage() {
