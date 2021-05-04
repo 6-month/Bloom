@@ -4,14 +4,22 @@ public class UserSummary {
     private Long id;
     private String username;
     private String name;
-
+    private byte[] profileImage;
+    
     public UserSummary(Long id, String username, String name) {
-        this.id = id;
-        this.username = username;
-        this.name = name;
-    }
+		this.id = id;
+		this.username = username;
+		this.name = name;
+	}
 
-    public Long getId() {
+	public UserSummary(Long id, String username, String name, byte[] profileImage) {
+		this.id = id;
+		this.username = username;
+		this.name = name;
+		this.profileImage = profileImage;
+	}
+
+	public Long getId() {
         return id;
     }
 
@@ -34,4 +42,13 @@ public class UserSummary {
     public void setName(String name) {
         this.name = name;
     }
+
+	public byte[] getProfileImage() {
+		return profileImage;
+	}
+
+	public void setProfileImage(byte[] profileImage) {
+		this.profileImage = profileImage;
+	}
+    
 }

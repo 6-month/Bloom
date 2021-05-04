@@ -17,7 +17,7 @@ public class ModelMapper {
 		postResponse.setContent(post.getContent());
 		postResponse.setCreationDateTime(post.getCreatedAt());
 		
-		UserSummary creatorSummary = new UserSummary(creator.getId(), creator.getName(), creator.getUsername());
+		UserSummary creatorSummary = new UserSummary(creator.getId(), creator.getName(), creator.getUsername(), creator.getUserProfileImage().getData());
 		postResponse.setCreatedBy(creatorSummary);
 		
 		List<ImageResponse> imageResponses = post.getImages().stream().map(image -> {
@@ -34,7 +34,7 @@ public class ModelMapper {
 			commentResponse.setId(comment.getId());
 			commentResponse.setText(comment.getText());
 			User createUser = comment.getUser();
-			UserSummary userSummary = new UserSummary(createUser.getId(), createUser.getName(), createUser.getUsername());
+			UserSummary userSummary = new UserSummary(createUser.getId(), createUser.getUsername(), createUser.getName(), createUser.getUserProfileImage().getData());
 			commentResponse.setCreatedBy(creatorSummary);
 			commentResponse.setCreationDateTime(comment.getCreatedAt());
 			if(comment.getComment() != null) {
