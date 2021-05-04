@@ -4,6 +4,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -14,6 +15,7 @@ import javax.persistence.JoinTable;
 import javax.persistence.Lob;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 import javax.validation.constraints.Email;
@@ -99,6 +101,10 @@ public class User extends DateAudit {
 					@JoinColumn(name = "follower_id"))
 	private List<User> followings;
 	
+	@OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "image_id", referencedColumnName = "id")
+    private UserProfileImage userProfileImage;
+	
 	
 	public User() {
 
@@ -112,16 +118,6 @@ public class User extends DateAudit {
 		this.phoneNumber = phoneNumber;
 	}
 	
-	public User(String name, String username, String email, String password, String phoneNumber,
-			String bio, byte[] profileImage) {
-		this.name = name;
-		this.username = username;
-		this.email = email;
-		this.password = password;
-		this.phoneNumber = phoneNumber;
-		this.bio = bio;
-		this.profileImage = profileImage;
-	}
 	
 	public Long getId() {
 		return id;
@@ -230,4 +226,14 @@ public class User extends DateAudit {
 		followings.remove(following);
 		following.setFollowings(followings);
 	}
+
+	public UserProfileImage getUserProfileImage() {
+		return userProfileImage;
+	}
+
+	public void setUserProfileImage(UserProfileImage userProfileImage) {
+		this.userProfileImage = userProfileImage;
+	}
+	
+	
 }

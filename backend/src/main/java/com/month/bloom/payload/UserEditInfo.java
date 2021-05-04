@@ -7,7 +7,6 @@ public class UserEditInfo {
 	private String bio;
 	private String email;
 	private String phoneNumber;
-	private byte[] profileImage;
 	
 	public Long getUserId() {
 		return userId;
@@ -45,13 +44,5 @@ public class UserEditInfo {
 	public void setPhoneNumber(String phoneNumber) {
 		this.phoneNumber = phoneNumber;
 	}
-	public byte[] getProfileImage() {
-		return profileImage;
-	}
-	public void setProfileImage(byte[] profileImage) {
-		this.profileImage = profileImage;
-	}
-	
-	
 	
 }
