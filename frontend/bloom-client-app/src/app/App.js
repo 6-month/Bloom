@@ -30,6 +30,7 @@ function App() {
         duration: 3,
     }); 
 
+    // 문제 => 로그인 이후에 바로 Header가 전환되지 않고 새로 고침이후에 전환된다.
     useEffect(() => {
       loadCurrentUser();
       console.log(currentUser)

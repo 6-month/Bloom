@@ -4,6 +4,7 @@ import { ACCESS_TOKEN } from '../../constants';
 import { useHistory } from 'react-router-dom';
 import { Form, Input, Button, notification} from 'antd';
 import { Link, NavLink } from 'react-router-dom';
+import "./Login.css";
 
 const layout = {
     labelCol: { span: 8 },
@@ -26,9 +27,10 @@ function Login() {
                     message: 'Bloom',
                     description: "You're successfully logged in.",
                   });
-                history.push({
-                    pathname : '/',
-                })
+                // history.push({
+                //     pathname : '/',
+                // })
+                window.location.replace("/");
             })
             .catch(error => {
                 if(error.status === 401) {
@@ -50,34 +52,36 @@ function Login() {
     };
     
     return (
-        <Form   
-            {...layout}
-            name="basic"
-            onFinish={onFinish}
-            onFinishFailed={onFinishFailed}
-        >
-            <Form.Item
-                label="Username"
-                name="usernameOrEmail"
-                rules={[{ required: true, message: 'Please input your username!' }]}
+        <div className="login-form">
+            <Form   
+                {...layout}
+                name="basic"
+                onFinish={onFinish}
+                onFinishFailed={onFinishFailed}
             >
-                <Input />
-            </Form.Item>
+                <Form.Item
+                    label="Username"
+                    name="usernameOrEmail"
+                    rules={[{ required: true, message: 'Please input your username!' }]}
+                >
+                    <Input />
+                </Form.Item>
 
-            <Form.Item
-                label="Password"
-                name="password"
-                rules={[{ required: true, message: 'Please input your password!' }]}
-            >
-                <Input.Password />
-            </Form.Item>
-            <Form.Item {...tailLayout}>
-                <Button type="primary" htmlType="submit">
-                Submit
-                </Button>
-                Haven't you signed up yet? <Link to="/signup">Signup now!</Link>
-            </Form.Item>
-        </Form>
+                <Form.Item
+                    label="Password"
+                    name="password"
+                    rules={[{ required: true, message: 'Please input your password!' }]}
+                >
+                    <Input.Password />
+                </Form.Item>
+                <Form.Item {...tailLayout}>
+                    <Button type="primary" htmlType="submit">
+                    Submit
+                    </Button>
+                    Haven't you signed up yet? <Link to="/signup">Signup now!</Link>
+                </Form.Item>
+            </Form>
+        </div>
     );
 }
 
