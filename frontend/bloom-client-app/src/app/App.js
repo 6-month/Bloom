@@ -31,10 +31,9 @@ function App() {
     }); 
 
     useEffect(() => {
-        // console.log(currentUser);
-        // console.log(isAuthenticated);
-        loadCurrentUser();
-    }, [isAuthenticated])
+      loadCurrentUser();
+      console.log(currentUser)
+    },[])
 
     const loadCurrentUser = () => {
         setIsLoading(true);
@@ -61,18 +60,20 @@ function App() {
             description: description,
           });
     }  
+    if(isLoading) {
+      return <LoadingIndicator />
+    }
 
-
-    return (
+    return (  
       <Layout className="app-container">
         <AppHeader isAuthenticated={isAuthenticated}
             currentUser={currentUser} 
             onLogout={handleLogout} />
         <Content className="app-content">
-          <Route 
+          {/* <Route 
             exact path="/" component={PostList} isAuthenticated={isAuthenticated}
               currentUser={currentUser} handleLogout={handleLogout}
-          />
+          /> */}
           <Route 
             path="/login" component={Login}
           />

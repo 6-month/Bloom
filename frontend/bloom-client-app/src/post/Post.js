@@ -9,7 +9,6 @@ import { Comment, Tooltip } from 'antd';
 import moment from 'moment';
 import { DislikeOutlined, LikeOutlined, LikeFilled } from '@ant-design/icons';
 
-
 function Post({post}) {
     // const [content, setContent ] = useState('')
     // const [images, setImages] = useState(null);
