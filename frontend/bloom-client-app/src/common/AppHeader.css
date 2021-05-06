@@ -1,13 +1,90 @@
+.app-title {
+    float: left;
+    margin-left: 10px;
+}
+
+.app-title a {
+    text-decoration: none;
+    line-height: 64px;
+    font-size: 21px;
+    display: inline-block;
+}
+
+.app-title a:hover {
+    text-decoration: none;
+}
+
 .app-header {
     /* border: 1px solid black; */
     background-color: white;
-    display: flex;
-    flex-direction: row;
-    align-items: stretch;
+    /* margin-bottom: 20px; */
+    position: fixed;
+    width: 100%;
+    /* box-shadow: 0 2px 8px #f0f1f2; */
+    box-shadow: 0 2px 8px gray;
+    z-index: 10;
+    padding: 0;
+}
+
+.app-menu {
+    float: right;
+    /* border: 1px solid black; */
+    max-height: 100vh;
+    /* width: 40vw; */
+}
+
+.app-menu > li {
+    padding: 0 20px;
+}
+
+.app-menu > li > a {
+    padding: 0 20px;
+    margin: 0 -20px;
+}
+
+.app-menu > li > a > i {
+    margin-right: 0 !important;
+}
+
+.profile-dropdown-menu {
+    min-width: 180px;
+}
+
+.profile-menu .user-full-name-info {
+    font-size: 17px;
+    font-weight: 600;
+    color: rgba(0, 0, 0, 0.85);
+}
+
+.profile-menu .username-info {
+    font-size: 14px;
+    color: rgba(0, 0, 0, 0.65);
+}
+
+.dropdown-item {
+    padding: 10px 12px;
+}
+
+.dropdown-item a {
+    padding: 10px 12px;
+    margin: -10px -12px;
 }
 
 .nav-icon {
-    padding: 10px;
-    margin: 10px;
-    font-size: 30px;
+    font-size: 20px;
+}
+
+@media (max-width: 768px) {
+    .app-title a {
+        font-size: 20px;
+    }
+
+    .app-menu > li {
+        padding: 0 15px;
+    }
+
+    .app-menu > li > a {
+        padding: 0 15px;
+        margin: 0 -15px;
+    }
 }

@@ -27,7 +27,7 @@ function Login() {
                     description: "You're successfully logged in.",
                   });
                 history.push({
-                    pathname : '/post/new',
+                    pathname : '/',
                 })
             })
             .catch(error => {
