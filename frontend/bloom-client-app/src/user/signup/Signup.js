@@ -251,84 +251,96 @@ function SignupFuction() {
 
 
     return (
-        <div className="signup-container">
-            <h1 className="page-title">Sign UP</h1>
-            <div className="signup-content">
-                <Form 
-                 onFinish={handleSubmit} 
-                 className="signup-form"
-                 requiredMark="true" 
+        <Form 
+            onFinish={handleSubmit} 
+            className="signup-form"
+            requiredMark="true" 
+        >
+            <Form.Item 
+                style={{ 
+                    backgroundColor: "white",
+                    borderRadius: "10%",
+                    marginTop: "60px",
+                    paddingTop: "60px",
+                    paddingBottom: "80px",
+                    paddingLeft: "90px",
+                    paddingRight: "90px" 
+                }}
+            >
+                <Form.Item className="signup_title">
+                    Sign Up
+                </Form.Item>
+                <FormItem
+                    label="Full Name"
+                    validateStatus={name.validateStatus}
+                    help={name.errorMsg}
                 >
-                    <FormItem
-                     label="Full Name"
-                     validateStatus={name.validateStatus}
-                     help={name.errorMsg}
+                    <Input 
+                        size="large"
+                        name="name"
+                        authoComplete="off"
+                        placeholder="Your full name"
+                        allowClear="true"
+                        onChange={(e) => {onChangedName(e)}}
+                    />
+                </FormItem>
+                <FormItem
+                    label="Username"
+                    validateStatus={username.validateStatus}
+                    help={username.errorMsg}
+                >
+                    <Input 
+                        size="large"
+                        name="username"
+                        authoComplete="off"
+                        placeholder="A unique username"
+                        allowClear="true"
+                        onChange={(e) => {onChangedUsername(e)}}
+                    />
+                </FormItem>
+                <FormItem
+                    label="Email"
+                    validateStatus={email.validateStatus}
+                    help={email.errorMsg}
+                >
+                    <Input 
+                        size="large"
+                        name="email"
+                        authoComplete="off"
+                        placeholder="Your Email"
+                        onChange={(e) => {onChangedEmail(e)}}
+                    />
+                </FormItem>
+                <FormItem
+                    label="Password"
+                    validateStatus={password.validateStatus}
+                    help={password.errorMsg}
+                >
+                    <Input 
+                        size="large"
+                        type="password"
+                        name="password"
+                        authoComplete="off"
+                        placeholder="A password between 6 to 20 characters"
+                        onChange={(e) => {onChangedPassword(e)}}
+                    />
+                </FormItem>
+                <FormItem>
+                    <Button 
+                        type="primary" 
+                        htmlType="submit" 
+                        size="large" 
+                        block shape="round"
+                        className="ant-btn-primary"
+                        disabled={isFormInvalid()}
                     >
-                        <Input 
-                         size="large"
-                         name="name"
-                         authoComplete="off"
-                         placeholder="Your full name"
-                         allowClear="true"
-                         onChange={(e) => {onChangedName(e)}}
-                        />
-                    </FormItem>
-                    <FormItem
-                     label="Username"
-                     validateStatus={username.validateStatus}
-                     help={username.errorMsg}
-                    >
-                        <Input 
-                         size="large"
-                         name="username"
-                         authoComplete="off"
-                         placeholder="A unique username"
-                         allowClear="true"
-                         onChange={(e) => {onChangedUsername(e)}}
-                        />
-                    </FormItem>
-                    <FormItem
-                     label="Email"
-                     validateStatus={email.validateStatus}
-                     help={email.errorMsg}
-                    >
-                        <Input 
-                         size="large"
-                         name="email"
-                         authoComplete="off"
-                         placeholder="Your Email"
-                         onChange={(e) => {onChangedEmail(e)}}
-                        />
-                    </FormItem>
-                    <FormItem
-                     label="Password"
-                     validateStatus={password.validateStatus}
-                     help={password.errorMsg}
-                    >
-                        <Input 
-                         size="large"
-                         type="password"
-                         name="password"
-                         authoComplete="off"
-                         placeholder="A password between 6 to 20 characters"
-                         onChange={(e) => {onChangedPassword(e)}}
-                        />
-                    </FormItem>
-                    <FormItem>
-                        <Button type="primary" 
-                            htmlType="submit" 
-                            size="large" 
-                            className="signup-form-button"
-                            disabled={isFormInvalid()}
-                        >
-                            Sign up
-                        </Button>
-                        Already registed? <Link to="/login">Login now!</Link>
-                    </FormItem>
-                </Form>
-            </div>
-            
-        </div>
+                        Sign up
+                    </Button>
+                    Already registed? 
+                    <Link to="/login" style={{ color: "#D5C6E3" }}>Login now!</Link>
+                </FormItem>
+            </Form.Item>
+        </Form>
     );
 
 }

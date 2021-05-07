@@ -7,6 +7,7 @@ import NewPost from '../post/NewPost';
 import Signup from '../user/signup/Signup';
 import PostList from '../post/PostList';
 import Profile from '../user/profile/Profile';
+import Intro from '../common/Intro';
 
 import 'antd/dist/antd.css';
 import AppHeader from '../common/AppHeader';
@@ -73,19 +74,18 @@ function App() {
             onLogout={handleLogout} />
         <Content className="app-content">
           <Route 
+            exact path="/" component={Intro}
+          />
+          {/* <Route 
             exact path="/" component={PostList} isAuthenticated={isAuthenticated}
               currentUser={currentUser} handleLogout={handleLogout}
-          />
+          /> */}
           <Route 
             path="/login" component={Login}
           />
           <Route 
             path="/signup" component={Signup} 
           />
-          {/* <Route path="/users/:username" 
-            >
-            <Profile isAuthenticated={isAuthenticated} currentUser={currentUser} />
-          </Route> */}
           <Route 
             path="/users/:username" component={Profile}
             isAuthenticated={isAuthenticated} currentUser={currentUser} 

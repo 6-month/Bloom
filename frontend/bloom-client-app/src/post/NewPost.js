@@ -105,7 +105,11 @@ function NewPost() {
   }
 
   return (
-    <Form onFinish={handleSubmit} requiredMark="true" encType="multi" className="new-post-form">
+    <Form 
+      onFinish={handleSubmit} 
+      requiredMark="true" 
+      encType="multi" 
+      className="new-post-form">
       <Form.Item>
         {/* <ImageUploader
             withIcon={true}
