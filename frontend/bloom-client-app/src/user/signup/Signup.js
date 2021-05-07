@@ -9,6 +9,7 @@ import {
 import { Link, NavLink ,useHistory} from 'react-router-dom';
 
 import { Form, Input, Button, notification } from 'antd';
+import "./Signup.css"
 
 const FormItem = Form.Item;
 

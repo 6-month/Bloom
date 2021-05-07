@@ -5,6 +5,7 @@ import {getAllPosts, getUserCreatedPosts, getUserlikedPosts} from '../util/APIUt
 import {Button } from 'antd';
 import Post from './Post';
 import Icon from '@ant-design/icons';
+import "./PostList.css";
 
 function PostList({username, type}) {
     const [posts, setPosts] =useState([]);
@@ -22,14 +23,24 @@ function PostList({username, type}) {
 
 
     const loadPostList = (page = 0, size = POST_LIST_SIZE) => {
-        let promise = getAllPosts(page, size);
+        let promise;
+        if(username) {
+            if(type === "USER_CREATED_POSTS") {
+                promise = getUserCreatedPosts(username, page, size)
+            }
+        } 
+        else {
+            promise =  getAllPosts(page, size);
+        }
+        if(!promise) {
+            return;
+        }
         
         setIsLoading(true);
 
         promise 
             .then(response => {
-                console.log(response);
-
+                // console.log(response)
                 setPosts(response.content);
                 setPage(response.page);
                 setSize(response.size);
@@ -48,17 +59,15 @@ function PostList({username, type}) {
 
     // comment 의 p_comment_id 별로 list를 만들고 add 작업이 필요함
     const postViews = [];
-    posts.forEach((post, postIdx) => {
+    posts.forEach((post) => {
         postViews.push(
             <Post 
-                key = {post.id}
                 post = {post}
             />
         )
     })
     return (
         <div className="posts-container">
-            <h1>Post List</h1>
             {postViews}
             {
                 isLoading && posts.length === 0 ? (
@@ -70,10 +79,10 @@ function PostList({username, type}) {
             {
                 !isLoading && isLast ? (
                     <div className="load-more-polls"> 
-                            <Button type="dashed" onClick={handleLoadMore} disabled={isLoading}>
-                                <Icon type="plus" /> Load more
-                            </Button>
-                        </div>): null
+                        <Button type="dashed" onClick={handleLoadMore} disabled={isLoading}>
+                            <Icon type="plus" /> Load more
+                        </Button>
+                    </div>): null
             }
             {
                 isLoading ? 

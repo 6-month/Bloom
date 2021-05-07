@@ -24,11 +24,13 @@ import com.month.bloom.model.Comment;
 import com.month.bloom.model.Post;
 import com.month.bloom.payload.ApiResponse;
 import com.month.bloom.payload.CommentRequest;
+import com.month.bloom.payload.CommentResponse;
 import com.month.bloom.payload.LikeRequest;
 import com.month.bloom.payload.LikeResponse;
 import com.month.bloom.payload.PagedResponse;
 import com.month.bloom.payload.PostRequest;
 import com.month.bloom.payload.PostResponse;
+import com.month.bloom.payload.UserSummary;
 import com.month.bloom.repository.LikeRepository;
 import com.month.bloom.repository.PostRepository;
 import com.month.bloom.repository.UserRepository;
@@ -116,15 +118,32 @@ public class PostController {
 	}
 
 	// comment
-	@PostMapping("/{postId}/comments")
+//	@PostMapping("/comments")
+//	@PreAuthorize("hasRole('USER')")
+//	public ResponseEntity<?> saveComment(@CurrentUser UserPrincipal currentUser, 
+//									    @Valid @RequestBody CommentRequest commentRequest) {
+//		Comment comment = postService.createComment(currentUser, commentRequest);
+//		
+//		return ResponseEntity.created(null)
+//				.body(new ApiResponse(true, "Comment Successfully registered"));
+//	}
+	
+	@PostMapping("/comments")
 	@PreAuthorize("hasRole('USER')")
-	public ResponseEntity<?> saveComment(@CurrentUser UserPrincipal currentUser, 
-										@PathVariable Long postId,
+	public CommentResponse saveComment(@CurrentUser UserPrincipal currentUser, 
 									    @Valid @RequestBody CommentRequest commentRequest) {
-		Comment comment = postService.createComment(currentUser, postId, commentRequest);
+		Comment comment = postService.createComment(currentUser, commentRequest);
 		
-		return ResponseEntity.created(null)
-				.body(new ApiResponse(true, "Comment Successfully registered"));
+		UserSummary userSummary = new UserSummary(comment.getUser().getId(), comment.getUser().getName(), comment.getUser().getUsername());
+		
+		if(comment.getComment() == null ) {
+			CommentResponse commentResponse = new CommentResponse(comment.getId(),
+					comment.getText(), userSummary, comment.getCreatedAt(), null);
+			return commentResponse;
+		}
+		CommentResponse commentResponse = new CommentResponse(comment.getId(),
+				comment.getText(), userSummary, comment.getCreatedAt(), comment.getComment().getId());
+		
+		return commentResponse;
 	}
-
 }

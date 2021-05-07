@@ -1,5 +1,5 @@
 import React, {useState, useEffect, createElement } from 'react';
-import { Avatar, Icon, Radio, Button } from 'antd';
+import { Avatar, Input, Button, notification, Form } from 'antd';
 import { Link } from 'react-router-dom';
 import { getAvatarColor } from '../util/Colors';
 import { formatDateTime } from '../util/Helpers';
@@ -8,46 +8,56 @@ import './Post.css'
 import { Comment, Tooltip } from 'antd';
 import moment from 'moment';
 import { DislikeOutlined, LikeOutlined, LikeFilled } from '@ant-design/icons';
+import {saveComment} from '../util/APIUtils';
+
+const FormItem = Form.Item;
 
 function Post({post}) {
-    // const [content, setContent ] = useState('')
-    // const [images, setImages] = useState(null);
-    // const [createdBy, setCreatedBy]= useState({
-    //     id : null,
-    //     name : '',
-    //     username : ''
-    // })
-    // const [creationDateTime, setCreationDateTime] = useState("");
-    // const [pushedLike, setPushedLike] = useState(null);
-    // const [totalLikes, setTotalLikes] = useState(null);
-    const [likes, setLikes] = useState(0);
-    const [dislikes, setDislikes] = useState(0);
-    const [action, setAction] = useState(null);
+    const [text, setText] = useState("");
+    const [comments, setComments] = useState(null);
 
-    // 현재 like수 와 like를 누르는 기능 구현
-    const like = () => {
-        setLikes(1);
-        setAction('liked');
-    };
+    useEffect(() => {
+        setComments(post.comments);
+    }, [])
+    
+    
+    useEffect(() => {
+        console.log(comments)
+        console.log(typeof comments)
+    }, [comments])
 
-    // comment를 다는 기능과 comment에 comment를 다는 기능 구현 필요 
+    const handleChangeComment = () => {
 
-    const actions = [
-        <Tooltip key="comment-basic-like" title="Like">
-          <span onClick={like}>
-            {createElement(action === 'liked' ? LikeFilled : LikeOutlined)}
-            <span className="comment-action">{likes}</span>
-          </span>
-        </Tooltip>,
-        <span key="comment-basic-reply-to">Reply to</span>,
-      ];
+        const commentRequest = {
+            postId : post.id,
+            p_comment_id : null,
+            text : text,
+        };
+
+        console.log(commentRequest);
+
+        saveComment(commentRequest) 
+            .then(response => {
+                notification.success({
+                    message: 'Bloom',
+                    description: "Successfully saved",
+                })
+                // window.location.replace("/");
+                setComments(response);
+            })
+            .catch(error => {
+                notification.error({
+                    message: 'Bloom',
+                    description: error.message || "Something was Wrong"
+                })
+            })
+    }
 
     const commentView = [];
     post.comments.forEach((comment) => {
         if(comment.p_comment_id === null) {
             commentView.push(
                 <Comment
-                    actions={actions}
                     author={comment.createdBy.username}
                     avatar={
                         <Avatar className="post-creator-avatar"
@@ -104,8 +114,36 @@ function Post({post}) {
                         )
                    }
                 </div>
+                
                 <div className="post-comment-container">
                     {commentView}
+                    <Form
+                        onFinish={handleChangeComment}
+                        className="comment-form"
+                        requiredMark="true"
+                    >
+                        <FormItem
+                            label="Comment.."
+                        >
+                            <Input 
+                                size="large"
+                                name="text"
+                                autoComplete="off"
+                                placeholder="please enter Comments.."
+                                allowClear="true"
+                                onChange={(e) => {setText(e.target.value)}}
+                            />
+                        </FormItem>
+                        <FormItem>
+                            <Button type="primary" 
+                                htmlType="submit" 
+                                size="large" 
+                                className="signup-form-button"
+                            >
+                                Add Comment
+                            </Button>
+                        </FormItem>
+                    </Form>
                 </div>
             </div>
         </div>

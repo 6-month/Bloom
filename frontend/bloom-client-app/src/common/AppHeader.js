@@ -58,7 +58,7 @@ function AppHeaderClone(props) {
         menuItems = [
             <Menu.Item key ="/">
                 <Link to="/">
-                    <HomeOutlined type="home" className="nav-icon" />
+                    <HomeOutlined className="nav-icon" />
                 </Link>
             </Menu.Item>,
             <Menu.Item key ="/post/new">

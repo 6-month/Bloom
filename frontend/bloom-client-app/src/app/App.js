@@ -57,9 +57,10 @@ function App() {
         setIsAuthenticated(false);
 
         notification[notificationType]({
-            message: 'Bloom',
-            description: description,
-          });
+          message: 'Bloom',
+          description: description,
+        });
+        window.location.replace("/")
     }  
     if(isLoading) {
       return <LoadingIndicator />
@@ -71,20 +72,24 @@ function App() {
             currentUser={currentUser} 
             onLogout={handleLogout} />
         <Content className="app-content">
-          {/* <Route 
+          <Route 
             exact path="/" component={PostList} isAuthenticated={isAuthenticated}
               currentUser={currentUser} handleLogout={handleLogout}
-          /> */}
+          />
           <Route 
             path="/login" component={Login}
           />
           <Route 
             path="/signup" component={Signup} 
           />
-          <Route path="/users/:username" 
+          {/* <Route path="/users/:username" 
             >
             <Profile isAuthenticated={isAuthenticated} currentUser={currentUser} />
-          </Route>
+          </Route> */}
+          <Route 
+            path="/users/:username" component={Profile}
+            isAuthenticated={isAuthenticated} currentUser={currentUser} 
+          />
           <PrivateRoute authenticated={isAuthenticated} path="/post/new" component={NewPost} ></PrivateRoute>
           <Route compoent={NotFound} />
         </Content> 

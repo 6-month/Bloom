@@ -44,5 +44,6 @@ public class UserEditInfo {
 	public void setPhoneNumber(String phoneNumber) {
 		this.phoneNumber = phoneNumber;
 	}
+
 	
 }
