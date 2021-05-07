@@ -55,9 +55,7 @@ public class ModelMapper {
 			postResponse.setPushedLike(true);
 		} else
 			postResponse.setPushedLike(false);
-		
-		System.out.println(postResponse);
-		
+
 		return postResponse;
 		
 	}
