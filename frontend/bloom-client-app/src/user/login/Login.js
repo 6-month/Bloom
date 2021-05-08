@@ -21,7 +21,7 @@ function Login() {
                 // history.push({
                 //     pathname : '/',
                 // })
-                window.location.replace("/");
+                window.location.replace("/bloom");
             })
             .catch(error => {
                 if(error.status === 401) {

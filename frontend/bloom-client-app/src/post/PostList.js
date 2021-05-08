@@ -7,7 +7,7 @@ import Post from './Post';
 import Icon from '@ant-design/icons';
 import "./PostList.css";
 
-function PostList(props) {
+function PostList({currentUser, isAuthenticated, onLogout, username, type}) {
     const [posts, setPosts] =useState([]);
 
     const [page, setPage] = useState(0);
@@ -19,25 +19,29 @@ function PostList(props) {
 
     useEffect(() => {
         loadPostList();
+        console.log(currentUser)
     },[])
 
 
     const loadPostList = (page = 0, size = POST_LIST_SIZE) => {
         let promise;
-        if(props.type === "USER_CREATED_POSTS") {
-            promise = getUserCreatedPosts(props.username, page, size)
-        }
+        if(username) {
+            if(type === "USER_CREATED_POSTS") {
+                promise = getUserCreatedPosts(username, page, size)
+            }
+        } 
         else {
-            promise = getAllPosts(page, size);
+            promise =  getAllPosts(page, size);
         }
-        if(!promise){
-            return ;
+        if(!promise) {
+            return;
         }
+        
         setIsLoading(true);
 
         promise 
             .then(response => {
-                console.log(response)
+                // console.log(response)
                 setPosts(response.content);
                 setPage(response.page);
                 setSize(response.size);
@@ -50,10 +54,6 @@ function PostList(props) {
                 setIsLoading(false);
             })
     }
-    // useEffect(() => {
-    //     if()
-    // },[])
-
     const handleLoadMore = () => {
         loadPostList(page +1);
     }
