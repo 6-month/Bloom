@@ -21,9 +21,9 @@ function Comments({post}) {
     const [commentContents, setCommentContents] = useState("");
     const [comments, setComments] = useState(post.comments);
 
-    useEffect(() => {
-        console.log(comments);
-    }, [comments])
+    // useEffect(() => {
+    //     console.log(comments);
+    // }, [comments])
 
     const commentSubmit = () => {
 

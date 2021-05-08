@@ -7,7 +7,7 @@ import Post from './Post';
 import Icon from '@ant-design/icons';
 import "./PostList.css";
 
-function PostList({username, type}) {
+function PostList({currentUser, isAuthenticated, onLogout, username, type}) {
     const [posts, setPosts] =useState([]);
 
     const [page, setPage] = useState(0);
@@ -19,6 +19,7 @@ function PostList({username, type}) {
 
     useEffect(() => {
         loadPostList();
+        console.log(currentUser)
     },[])
 
 

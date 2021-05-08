@@ -7,9 +7,10 @@ import NewPost from '../post/NewPost';
 import Signup from '../user/signup/Signup';
 import PostList from '../post/PostList';
 import Profile from '../user/profile/Profile';
+import AppHeader from '../common/AppHeader';
+import Intro from '../common/Intro';
 
 import 'antd/dist/antd.css';
-import AppHeader from '../common/AppHeader';
 import LoadingIndicator from '../common/LoadingIndicator';
 import NotFound from '../common/NotFound';
 import {Layout ,Button, notification } from 'antd';
@@ -32,9 +33,17 @@ function App() {
 
     // 문제 => 로그인 이후에 바로 Header가 전환되지 않고 새로 고침이후에 전환된다.
     useEffect(() => {
-      loadCurrentUser();
-      console.log(currentUser)
+      if(localStorage.getItem(ACCESS_TOKEN) !== null) {
+        loadCurrentUser();
+      }
+      else {
+        history.push("/login");
+      }
     },[])
+
+    // useEffect(() => {
+    //   console.log(currentUser);
+    // },[currentUser])
 
     const loadCurrentUser = () => {
         setIsLoading(true);
@@ -68,13 +77,34 @@ function App() {
 
     return (  
       <Layout className="app-container">
-        <AppHeader isAuthenticated={isAuthenticated}
+          <AppHeader 
+            isAuthenticated={isAuthenticated}
             currentUser={currentUser} 
-            onLogout={handleLogout} />
+            onLogout={handleLogout} 
+          />
         <Content className="app-content">
           <Route 
-            exact path="/" component={PostList} isAuthenticated={isAuthenticated}
-              currentUser={currentUser} handleLogout={handleLogout}
+            exact path="/"
+            component={Intro}
+          />
+          {/* <PrivateRoute 
+            path="/bloom"
+            render={(props) => 
+              <AppHeader 
+                isAuthenticated={isAuthenticated}
+                currentUser={currentUser} 
+                onLogout={handleLogout} 
+              />}
+          /> */}
+          <Route 
+            path="/bloom" 
+            render = {(props) => 
+              <PostList 
+                {...props}
+                isAuthenticated={isAuthenticated} 
+                currentUser={currentUser} 
+                handleLogout={handleLogout}
+              />}
           />
           <Route 
             path="/login" component={Login}
@@ -87,8 +117,14 @@ function App() {
             <Profile isAuthenticated={isAuthenticated} currentUser={currentUser} />
           </Route> */}
           <Route 
-            path="/users/:username" component={Profile}
-            isAuthenticated={isAuthenticated} currentUser={currentUser} 
+            path="/users/:username" 
+            render ={(props) => 
+              <Profile 
+                {...props}
+                isAuthenticated={isAuthenticated} 
+                currentUser={currentUser} 
+              />
+            }
           />
           <PrivateRoute authenticated={isAuthenticated} path="/post/new" component={NewPost} ></PrivateRoute>
           <Route compoent={NotFound} />

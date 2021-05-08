@@ -6,6 +6,10 @@ import postIcon from '../post.svg';
 import './AppHeader.css';
 
 function ProfileDropdownMenu(props) {
+  useEffect(() => {
+    // console.log(props.currentUser);
+  },[])
+
     const dropdownMenu = (
       <Menu onClick={props.handleMenuClick} className="profile-dropdown-menu">
         <Menu.Item key="user-info" className="dropdown-item" disabled>
@@ -37,7 +41,7 @@ function ProfileDropdownMenu(props) {
     );
   }
 
-function AppHeaderClone(props) {
+function AppHeader(props) {
     const location = useLocation();
 
     // const [currentUser, setCurrentUser] = useState(null);
@@ -93,7 +97,7 @@ function AppHeaderClone(props) {
                   className="app-menu"
                   mode="horizontal"
                   selectedKeys={[location.pathname]}
-                  style={{ lineHeight: '64px' }} >
+                   >
                     {menuItems}
                 </Menu>
             </div>
@@ -102,4 +106,4 @@ function AppHeaderClone(props) {
 }
 
 
-export default AppHeaderClone;
+export default AppHeader;

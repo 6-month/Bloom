@@ -9,17 +9,21 @@ import {getAvatarColor} from '../../util/Colors';
 import { formatDateTime } from '../../util/Helpers';
 import "./Profile.css";
 
-function Profile({match}) {
-    let params = match.params;
+function Profile(props) {
+    let params = props.match.params;
 
     const [user, setUser] = useState(null);
     const [isLoading, setIsLoading] = useState(false);
 
     useEffect(() => {
         // loadUserProfile (username) => username 자리에 db에 등록된 username을 입력하면 해당 유저의 profile정보를 표시해줌
-        console.log(params)
+        console.log(params.username)
         loadUserProfile(params.username);
     }, [])
+    
+    useEffect(() => {
+        console.log(user)
+    },[user])
 
     const loadUserProfile = (username) => {
         setIsLoading(true);
@@ -28,11 +32,12 @@ function Profile({match}) {
             .then(response => {
                 setUser(response);
                 setIsLoading(false);
-                console.log(response)
+                // console.log(response)
             })
     } 
     return (
         <div className="profile">
+
             {
                 user ? (
                     <div className="user-profile">
