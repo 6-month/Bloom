@@ -24,11 +24,13 @@ import com.month.bloom.model.Comment;
 import com.month.bloom.model.Post;
 import com.month.bloom.payload.ApiResponse;
 import com.month.bloom.payload.CommentRequest;
+import com.month.bloom.payload.CommentResponse;
 import com.month.bloom.payload.LikeRequest;
 import com.month.bloom.payload.LikeResponse;
 import com.month.bloom.payload.PagedResponse;
 import com.month.bloom.payload.PostRequest;
 import com.month.bloom.payload.PostResponse;
+import com.month.bloom.payload.UserSummary;
 import com.month.bloom.repository.LikeRepository;
 import com.month.bloom.repository.PostRepository;
 import com.month.bloom.repository.UserRepository;
@@ -116,15 +118,42 @@ public class PostController {
 	}
 
 	// comment
-	@PostMapping("/{postId}/comments")
+//	@PostMapping("/comments")
+//	@PreAuthorize("hasRole('USER')")
+//	public ResponseEntity<?> saveComment(@CurrentUser UserPrincipal currentUser, 
+//									    @Valid @RequestBody CommentRequest commentRequest) {
+//		Comment comment = postService.createComment(currentUser, commentRequest);
+//		
+//		return ResponseEntity.created(null)
+//				.body(new ApiResponse(true, "Comment Successfully registered"));
+//	}
+	
+	@PostMapping("/comments")
 	@PreAuthorize("hasRole('USER')")
-	public ResponseEntity<?> saveComment(@CurrentUser UserPrincipal currentUser, 
-										@PathVariable Long postId,
+	public CommentResponse saveComment(@CurrentUser UserPrincipal currentUser, 
 									    @Valid @RequestBody CommentRequest commentRequest) {
-		Comment comment = postService.createComment(currentUser, postId, commentRequest);
+		Comment comment = postService.createComment(currentUser, commentRequest);
+				
+//		if(comment.getComment() == null ) {
+//			CommentResponse commentResponse = new CommentResponse(comment.getId(),
+//					comment.getText(), userSummary, comment.getCreatedAt(), null);
+//			return commentResponse;
+//		}
 		
-		return ResponseEntity.created(null)
-				.body(new ApiResponse(true, "Comment Successfully registered"));
+		if(commentRequest.getP_comment_id() == null) {
+			UserSummary userSummary = new UserSummary(comment.getUser().getId(), comment.getUser().getName(), comment.getUser().getUsername(), comment.getUser().getUserProfileImage().getData());
+			CommentResponse commentResponse = new CommentResponse(comment.getId(),
+					comment.getText(), userSummary, comment.getCreatedAt(), null);
+			
+			return commentResponse;
+		}
+		else {
+			Comment recomment = comment.getComments().get(comment.getComments().size()-1);
+			UserSummary userSummary = new UserSummary(recomment.getUser().getId(), recomment.getUser().getName(), recomment.getUser().getUsername(), recomment.getUser().getUserProfileImage().getData());
+			
+			CommentResponse commentResponse = new CommentResponse(recomment.getId(), recomment.getText(), 
+					userSummary, recomment.getCreatedAt(), commentRequest.getP_comment_id());
+			return commentResponse;
+		}
 	}
-
 }

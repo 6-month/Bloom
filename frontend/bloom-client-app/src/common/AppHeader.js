@@ -6,6 +6,10 @@ import postIcon from '../post.svg';
 import './AppHeader.css';
 
 function ProfileDropdownMenu(props) {
+  useEffect(() => {
+    // console.log(props.currentUser);
+  },[])
+
     const dropdownMenu = (
       <Menu onClick={props.handleMenuClick} className="profile-dropdown-menu">
         <Menu.Item key="user-info" className="dropdown-item" disabled>
@@ -37,15 +41,8 @@ function ProfileDropdownMenu(props) {
     );
   }
 
-function AppHeaderClone(props) {
+function AppHeader(props) {
     const location = useLocation();
-
-    // const [currentUser, setCurrentUser] = useState(null);
-
-    // useEffect(() => {
-    //     setCurrentUser(props.currentUser);
-    //     console.log(currentUser);
-    // },[])
 
     const handleMenuClick = ({key}) => {
         if(key === "logout") {
@@ -58,7 +55,7 @@ function AppHeaderClone(props) {
         menuItems = [
             <Menu.Item key ="/">
                 <Link to="/">
-                    <HomeOutlined type="home" className="nav-icon" />
+                    <HomeOutlined className="nav-icon" />
                 </Link>
             </Menu.Item>,
             <Menu.Item key ="/post/new">
@@ -85,21 +82,23 @@ function AppHeaderClone(props) {
     }
     return (
         <PageHeader className="app-header">
-            <div className="container">
-                <div className="app-title">
-                    <Link to="/">Bloom</Link>
-                </div>
-                <Menu
-                  className="app-menu"
-                  mode="horizontal"
-                  selectedKeys={[location.pathname]}
-                  style={{ lineHeight: '64px' }} >
-                    {menuItems}
-                </Menu>
+          <div className="container">
+            <div className="app-title">
+                <Link to="/">Bloom</Link>
             </div>
+            <div className="app-body">
+              <Menu
+                className="app-menu"
+                mode="horizontal"
+                selectedKeys={[location.pathname]}
+                  >
+                  {menuItems}
+              </Menu>
+            </div>
+          </div>
         </PageHeader>
     );
 }
 
 
-export default AppHeaderClone;
+export default AppHeader;

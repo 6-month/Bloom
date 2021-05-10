@@ -12,3 +12,31 @@
     padding-right: 8px;
     padding-left: 0;
 }
+.post-content {
+    background-color: white;
+    margin-top: 20px;
+    margin-left: 30px;
+    width: 50vw;
+}
+.post-header {
+    margin-left: 20px;
+    display: flex;
+    justify-content: left;
+}
+.post-body {
+    margin-left: 20px;
+    /* border: 1px solid black; */
+}
+.post-creator-info {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+}
+.post-creator-detail {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 10px;
+}

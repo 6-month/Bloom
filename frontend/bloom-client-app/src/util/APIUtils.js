@@ -24,35 +24,21 @@ const request = (options) => {
     );
 };
 
-const requestCreatePost = (options) => {
-    const headers = new Headers({
-        'Content-Type' : 'multipart/form-data'
-    })
-    if(localStorage.getItem(ACCESS_TOKEN)) {
-        headers.append("Autorization", "Bearer" + localStorage.getItem(ACCESS_TOKEN))
-    }
-    const defalut = {headers: headers};
-    options = Object.assign({}, defalut, options);
+// export function createPost(postData) {
+//     return request({
+//         url: API_BASE_URL + "/posts",
+//         method: 'POST',
+//         body: JSON.stringify(postData)         
+//     });
+// }
 
-    return fetch(options.url, options)
-        .then(response => {
-            response.json().then(json => {
-                if(!response.ok) {
-                    return Promise.reject(json);
-                }
-                return json;
-            })
-        })
+export function saveComment(commentRequest) {
+    return request({
+        url : API_BASE_URL + "/posts/comments",
+        method : "POST",
+        body : JSON.stringify(commentRequest)
+    })   
 }
-
-export function createPost(formData) {
-    return requestCreatePost({
-        url : API_BASE_URL + "/posts",
-        method : 'POST',
-        body : formData
-    });
-}
-
 
 export function login(loginRequest) {
     return request({
@@ -132,3 +118,4 @@ export function getUserlikedPosts(username, page, size) {
         method: 'GET'
     });
 }
+

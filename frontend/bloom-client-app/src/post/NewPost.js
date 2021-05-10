@@ -8,7 +8,7 @@ import { useHistory } from 'react-router-dom';
 
 import { Upload } from 'antd';
 import { UploadOutlined } from '@ant-design/icons';
-
+import "./NewPost.css";
 
 const {TextArea} = Input;
 
@@ -105,7 +105,11 @@ function NewPost() {
   }
 
   return (
-    <Form onFinish={handleSubmit} requiredMark="true" encType="multi">
+    <Form 
+      onFinish={handleSubmit} 
+      requiredMark="true" 
+      encType="multi" 
+      className="new-post-form">
       <Form.Item>
         {/* <ImageUploader
             withIcon={true}

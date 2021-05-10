@@ -5,7 +5,7 @@
 
 .app-title a {
     text-decoration: none;
-    line-height: 64px;
+    line-height: 30px;
     font-size: 21px;
     display: inline-block;
 }
@@ -16,10 +16,10 @@
 
 .app-header {
     /* border: 1px solid black; */
-    background-color: white;
-    /* margin-bottom: 20px; */
     position: fixed;
+    background-color: white;
     width: 100%;
+    height: 20vh;
     /* box-shadow: 0 2px 8px #f0f1f2; */
     box-shadow: 0 2px 8px gray;
     z-index: 10;
@@ -27,10 +27,9 @@
 }
 
 .app-menu {
-    float: right;
     /* border: 1px solid black; */
-    max-height: 100vh;
-    /* width: 40vw; */
+    line-height: 10px;
+    float: right;
 }
 
 .app-menu > li {
@@ -71,7 +70,7 @@
 }
 
 .nav-icon {
-    font-size: 20px;
+    font-size: 30px;
 }
 
 @media (max-width: 768px) {

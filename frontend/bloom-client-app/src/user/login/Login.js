@@ -4,15 +4,7 @@ import { ACCESS_TOKEN } from '../../constants';
 import { useHistory } from 'react-router-dom';
 import { Form, Input, Button, notification} from 'antd';
 import { Link, NavLink } from 'react-router-dom';
-
-const layout = {
-    labelCol: { span: 8 },
-    wrapperCol: { span: 16 },
-  };
-  const tailLayout = {
-    wrapperCol: { offset: 8, span: 16 },
-  };
-
+import "./Login.css";
   
 function Login() {
     let history = useHistory();
@@ -26,9 +18,10 @@ function Login() {
                     message: 'Bloom',
                     description: "You're successfully logged in.",
                   });
-                history.push({
-                    pathname : '/',
-                })
+                // history.push({
+                //     pathname : '/',
+                // })
+                window.location.replace("/bloom");
             })
             .catch(error => {
                 if(error.status === 401) {
@@ -50,34 +43,55 @@ function Login() {
     };
     
     return (
-        <Form   
-            {...layout}
-            name="basic"
-            onFinish={onFinish}
-            onFinishFailed={onFinishFailed}
-        >
-            <Form.Item
-                label="Username"
-                name="usernameOrEmail"
-                rules={[{ required: true, message: 'Please input your username!' }]}
+        <div className="login-form">
+            <Form   
+                name="basic"
+                onFinish={onFinish}
+                onFinishFailed={onFinishFailed}
             >
-                <Input />
-            </Form.Item>
+                <Form.Item 
+                    style={{ 
+                        backgroundColor: "white",
+                        borderRadius: "10%",
+                        marginTop: "60px",
+                        paddingTop: "60px",
+                        paddingBottom: "80px",
+                        paddingLeft: "90px",
+                        paddingRight: "90px" 
+                    }}
+                >
+                    <Form.Item className="login-title">
+                        Login
+                    </Form.Item>
+                    <Form.Item
+                        label="Username"
+                        name="usernameOrEmail"
+                        rules={[{ required: true, message: 'Please input your username!' }]}
+                    >
+                        <Input />
+                    </Form.Item>
 
-            <Form.Item
-                label="Password"
-                name="password"
-                rules={[{ required: true, message: 'Please input your password!' }]}
-            >
-                <Input.Password />
-            </Form.Item>
-            <Form.Item {...tailLayout}>
-                <Button type="primary" htmlType="submit">
-                Submit
-                </Button>
-                Haven't you signed up yet? <Link to="/signup">Signup now!</Link>
-            </Form.Item>
-        </Form>
+                    <Form.Item
+                        label="Password"
+                        name="password"
+                        rules={[{ required: true, message: 'Please input your password!' }]}
+                    >
+                        <Input.Password />
+                    </Form.Item>
+                    <Form.Item>
+                    <Button 
+                        className="ant-btn-primary" 
+                        type="primary" 
+                        block shape ="round" 
+                        htmlType="submit"
+                    >Login
+                    </Button>
+                        Haven't you signed up yet? 
+                        <Link style={{ color: "#D5C6E3" }} to="/signup">Signup Now!</Link>
+                    </Form.Item>
+                </Form.Item>
+            </Form>
+        </div>
     );
 }
 
