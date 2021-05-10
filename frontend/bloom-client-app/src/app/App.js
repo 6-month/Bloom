@@ -8,6 +8,8 @@ import Signup from '../user/signup/Signup';
 import PostList from '../post/PostList';
 import Profile from '../user/profile/Profile';
 import AppHeader from '../common/AppHeader';
+// import AppHeader from '../common/Header';
+
 import Intro from '../common/Intro';
 
 import 'antd/dist/antd.css';
