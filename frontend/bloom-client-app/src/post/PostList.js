@@ -1,13 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import LoadingIndicator from '../common/LoadingIndicator';
 import { POST_LIST_SIZE } from '../constants';
-import {getAllPosts, getUserCreatedPosts, getUserlikedPosts} from '../util/APIUtils'
+import {getAllPosts, getUserCreatedPosts } from '../util/APIUtils'
 import {Button } from 'antd';
 import Post from './Post';
 import Icon from '@ant-design/icons';
 import "./PostList.css";
 
-function PostList({currentUser, isAuthenticated, onLogout, username, type}) {
+function PostList({currentUser, username, type}) {
     const [posts, setPosts] =useState([]);
 
     const [page, setPage] = useState(0);

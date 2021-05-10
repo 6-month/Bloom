@@ -1,4 +1,12 @@
-.signup-container {
+.signup_body {
+    background-color: #fafafa;
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* .signup-container {
     margin-top: 100px;
 }
 .signup_title {
@@ -11,4 +19,4 @@
 .ant-btn-primary {
     border-style: none;
     background-image: linear-gradient(135deg, #fffabf, #d8dfec, #d5c6e3);
-}
+} */

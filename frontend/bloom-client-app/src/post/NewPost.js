@@ -1,13 +1,8 @@
 import React, {  useEffect, useState } from 'react';
-import { createPost, uploadFile } from '../util/APIUtils';
-import ImageUploader from 'react-images-upload';
 import {Form, Input, notification, Button} from 'antd';
 import { ACCESS_TOKEN, API_BASE_URL } from '../constants';
 import {post} from 'axios';
 import { useHistory } from 'react-router-dom';
-
-import { Upload } from 'antd';
-import { UploadOutlined } from '@ant-design/icons';
 import "./NewPost.css";
 
 const {TextArea} = Input;

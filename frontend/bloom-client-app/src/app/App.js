@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Route,  useHistory, useParams } from 'react-router-dom';
+import { Route,  useHistory } from 'react-router-dom';
 import { getCurrentUser } from '../util/APIUtils';
 import { ACCESS_TOKEN } from '../constants';
 import Login from '../user/login/Login';
@@ -15,10 +15,10 @@ import Intro from '../common/Intro';
 import 'antd/dist/antd.css';
 import LoadingIndicator from '../common/LoadingIndicator';
 import NotFound from '../common/NotFound';
-import {Layout ,Button, notification } from 'antd';
+import { notification } from 'antd';
 import { Content } from 'antd/lib/layout/layout';
 import PrivateRoute from '../common/PrevateRoute';
-import { Switch } from '@material-ui/core';
+// import { Switch } from '@material-ui/core';
 
 function App() {    
     let history = useHistory();
@@ -78,7 +78,7 @@ function App() {
     }
 
     return (  
-      <Layout className="app-container">
+      <div className="app">
           <AppHeader 
             isAuthenticated={isAuthenticated}
             currentUser={currentUser} 
@@ -131,7 +131,7 @@ function App() {
           <PrivateRoute authenticated={isAuthenticated} path="/post/new" component={NewPost} ></PrivateRoute>
           <Route compoent={NotFound} />
         </Content> 
-      </Layout>
+      </div>
     );
 }
 
