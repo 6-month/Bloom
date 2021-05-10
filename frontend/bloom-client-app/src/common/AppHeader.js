@@ -44,13 +44,6 @@ function ProfileDropdownMenu(props) {
 function AppHeader(props) {
     const location = useLocation();
 
-    // const [currentUser, setCurrentUser] = useState(null);
-
-    // useEffect(() => {
-    //     setCurrentUser(props.currentUser);
-    //     console.log(currentUser);
-    // },[])
-
     const handleMenuClick = ({key}) => {
         if(key === "logout") {
             props.onLogout();
@@ -89,18 +82,20 @@ function AppHeader(props) {
     }
     return (
         <PageHeader className="app-header">
-            <div className="container">
-                <div className="app-title">
-                    <Link to="/">Bloom</Link>
-                </div>
-                <Menu
-                  className="app-menu"
-                  mode="horizontal"
-                  selectedKeys={[location.pathname]}
-                   >
-                    {menuItems}
-                </Menu>
+          <div className="container">
+            <div className="app-title">
+                <Link to="/">Bloom</Link>
             </div>
+            <div className="app-body">
+              <Menu
+                className="app-menu"
+                mode="horizontal"
+                selectedKeys={[location.pathname]}
+                  >
+                  {menuItems}
+              </Menu>
+            </div>
+          </div>
         </PageHeader>
     );
 }

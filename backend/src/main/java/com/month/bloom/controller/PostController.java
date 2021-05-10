@@ -133,17 +133,27 @@ public class PostController {
 	public CommentResponse saveComment(@CurrentUser UserPrincipal currentUser, 
 									    @Valid @RequestBody CommentRequest commentRequest) {
 		Comment comment = postService.createComment(currentUser, commentRequest);
+				
+//		if(comment.getComment() == null ) {
+//			CommentResponse commentResponse = new CommentResponse(comment.getId(),
+//					comment.getText(), userSummary, comment.getCreatedAt(), null);
+//			return commentResponse;
+//		}
 		
-		UserSummary userSummary = new UserSummary(comment.getUser().getId(), comment.getUser().getName(), comment.getUser().getUsername());
-		
-		if(comment.getComment() == null ) {
+		if(commentRequest.getP_comment_id() == null) {
+			UserSummary userSummary = new UserSummary(comment.getUser().getId(), comment.getUser().getName(), comment.getUser().getUsername(), comment.getUser().getUserProfileImage().getData());
 			CommentResponse commentResponse = new CommentResponse(comment.getId(),
 					comment.getText(), userSummary, comment.getCreatedAt(), null);
+			
 			return commentResponse;
 		}
-		CommentResponse commentResponse = new CommentResponse(comment.getId(),
-				comment.getText(), userSummary, comment.getCreatedAt(), comment.getComment().getId());
-		
-		return commentResponse;
+		else {
+			Comment recomment = comment.getComments().get(comment.getComments().size()-1);
+			UserSummary userSummary = new UserSummary(recomment.getUser().getId(), recomment.getUser().getName(), recomment.getUser().getUsername(), recomment.getUser().getUserProfileImage().getData());
+			
+			CommentResponse commentResponse = new CommentResponse(recomment.getId(), recomment.getText(), 
+					userSummary, recomment.getCreatedAt(), commentRequest.getP_comment_id());
+			return commentResponse;
+		}
 	}
 }
