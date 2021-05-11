@@ -10,7 +10,7 @@ import ArrayList from "arraylist";
 
 const FormItem = Form.Item;
 
-function ReplyComments({postId,p_comment_id, pComment, type}) {
+function ReplyComments({postId,p_comment_id, pComment}) {
     const [commentContents, setCommentContents] = useState("");
     const [comments, setComments] = useState(pComment);
 
@@ -50,8 +50,6 @@ function ReplyComments({postId,p_comment_id, pComment, type}) {
 
     const commentView = [];
 
-    console.log(comments)
-
     if(pComment !== null) {
         comments.forEach((comment) => {
             commentView.push(
@@ -89,7 +87,7 @@ function ReplyComments({postId,p_comment_id, pComment, type}) {
                 <button
                     onClick={recommentSubmit}
                 >
-                    Add Comment
+                    Add
                 </button>
             </form>
         </div>
@@ -140,9 +138,7 @@ function Comments({post}) {
                             </Tooltip>
                         }
                     >
-                        {
-                            <ReplyComments postId={post.id} p_comment_id={comment.id} pComment={map.get(comment.id)} type="have" />
-                        }
+                        <ReplyComments postId={post.id} p_comment_id={comment.id} pComment={map.get(comment.id)} />
                     </Comment>
                 )
 
@@ -167,7 +163,7 @@ function Comments({post}) {
                             </Tooltip>
                         }
                     >
-                        <ReplyComments postId={post.id} p_comment_id={comment.id} pComment={null} type="not" />
+                        <ReplyComments postId={post.id} p_comment_id={comment.id} pComment={null}/>
                     </Comment>
                 )
             }
