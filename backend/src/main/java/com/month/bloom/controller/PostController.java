@@ -106,13 +106,10 @@ public class PostController {
 	
 	@DeleteMapping("/likes")
 	@PreAuthorize("hasRole('USER')")
-	public ResponseEntity<?> cancelLike(@CurrentUser UserPrincipal currentUser,
+	public LikeResponse cancelLike(@CurrentUser UserPrincipal currentUser,
 										@Valid @RequestBody LikeRequest likeRequest) {
-		if(currentUser != null) {
-			likeService.cancelLike(currentUser, likeRequest);
-		}
-		return ResponseEntity.created(null)
-				.body(new ApiResponse(true, "Successfully canceled"));
+		
+		return likeService.cancelLike(currentUser, likeRequest);
 	}
 
 	// comment
