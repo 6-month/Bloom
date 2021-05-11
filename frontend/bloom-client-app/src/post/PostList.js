@@ -19,9 +19,7 @@ function PostList({currentUser, username, type}) {
 
     useEffect(() => {
         loadPostList();
-        console.log(currentUser)
     },[])
-
 
     const loadPostList = (page = 0, size = POST_LIST_SIZE) => {
         let promise;
@@ -41,7 +39,6 @@ function PostList({currentUser, username, type}) {
 
         promise 
             .then(response => {
-                // console.log(response)
                 setPosts(response.content);
                 setPage(response.page);
                 setSize(response.size);
@@ -54,11 +51,11 @@ function PostList({currentUser, username, type}) {
                 setIsLoading(false);
             })
     }
+
     const handleLoadMore = () => {
         loadPostList(page +1);
     }
 
-    // comment 의 p_comment_id 별로 list를 만들고 add 작업이 필요함
     const postViews = [];
     posts.forEach((post) => {
         postViews.push(

@@ -3,16 +3,14 @@ import { Avatar, Form } from 'antd';
 import { Link } from 'react-router-dom';
 import './Post.css'
 import Comments from './Comments';
+import Likes from "./Likes";
 
 const FormItem = Form.Item;
 
 function Post({post}) {
-
-    // comment 제약조건
-    /*
-        1. post에 comment를 달수 있다.
-        2. comment에 대댓글을 달수 있다. 단, 대댓글에 대한 대댓글은 달수 없다.
-    */
+    // useEffect(() => {
+    //     console.log(post)
+    // },[])
 
     return (
         <div className="post-content">
@@ -45,6 +43,9 @@ function Post({post}) {
                 </div>
                 <div className="post-text">
                     {post.content}
+                </div>
+                <div className="post-like-container">
+                    <Likes postId={post.id} pushedLike={post.pushedLike} totalLikes={post.totalLikes} />
                 </div>
                 <div className="post-comment-container">
                     <Comments post={post} />

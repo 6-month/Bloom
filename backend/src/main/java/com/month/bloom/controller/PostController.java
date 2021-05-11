@@ -95,50 +95,32 @@ public class PostController {
 				.body(new ApiResponse(true, "Post Successfully deleted"));
 	}
 	
-	@PostMapping("/{postId}/likes")
+	@PostMapping("/likes")
 	@PreAuthorize("hasRole('USER')")
 	public LikeResponse addLike(@CurrentUser UserPrincipal currentUser, 
-								@PathVariable Long postId,		
 								@Valid @RequestBody LikeRequest likeRequest) {
 		
-		
-		return likeService.storeLike(postId, currentUser, likeRequest);
+		return likeService.storeLike(currentUser, likeRequest);
 		
 	}
 	
-	@DeleteMapping("{postId}/likes")
+	@DeleteMapping("/likes")
 	@PreAuthorize("hasRole('USER')")
 	public ResponseEntity<?> cancelLike(@CurrentUser UserPrincipal currentUser,
-										@PathVariable Long postId) {
+										@Valid @RequestBody LikeRequest likeRequest) {
 		if(currentUser != null) {
-			likeService.cancelLike(currentUser, postId);
+			likeService.cancelLike(currentUser, likeRequest);
 		}
 		return ResponseEntity.created(null)
 				.body(new ApiResponse(true, "Successfully canceled"));
 	}
 
 	// comment
-//	@PostMapping("/comments")
-//	@PreAuthorize("hasRole('USER')")
-//	public ResponseEntity<?> saveComment(@CurrentUser UserPrincipal currentUser, 
-//									    @Valid @RequestBody CommentRequest commentRequest) {
-//		Comment comment = postService.createComment(currentUser, commentRequest);
-//		
-//		return ResponseEntity.created(null)
-//				.body(new ApiResponse(true, "Comment Successfully registered"));
-//	}
-	
 	@PostMapping("/comments")
 	@PreAuthorize("hasRole('USER')")
 	public CommentResponse saveComment(@CurrentUser UserPrincipal currentUser, 
 									    @Valid @RequestBody CommentRequest commentRequest) {
 		Comment comment = postService.createComment(currentUser, commentRequest);
-				
-//		if(comment.getComment() == null ) {
-//			CommentResponse commentResponse = new CommentResponse(comment.getId(),
-//					comment.getText(), userSummary, comment.getCreatedAt(), null);
-//			return commentResponse;
-//		}
 		
 		if(commentRequest.getP_comment_id() == null) {
 			UserSummary userSummary = new UserSummary(comment.getUser().getId(), comment.getUser().getName(), comment.getUser().getUsername(), comment.getUser().getUserProfileImage().getData());

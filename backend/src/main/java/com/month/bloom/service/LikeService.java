@@ -1,11 +1,5 @@
 package com.month.bloom.service;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,15 +32,15 @@ public class LikeService {
 	
 	private static final  Logger logger = LoggerFactory.getLogger(LikeService.class);
 
-	public LikeResponse storeLike(Long postId, UserPrincipal currentUser, LikeRequest likeRequest) {
-		Post post = postRepository.findById(postId)
-				.orElseThrow(() -> new ResourceNotFoundException("Post", "id", postId));
+	public LikeResponse storeLike(UserPrincipal currentUser, LikeRequest likeRequest) {
+		Post post = postRepository.findById(likeRequest.getPostId())
+				.orElseThrow(() -> new ResourceNotFoundException("Post", "id", likeRequest.getPostId()));
 		User user = userRepository.getOne(currentUser.getId());
 	
 		Like like = new Like(post, user);
 		
 		boolean pushedLike = false;
-		Long totalLikes = null;
+		Long totalLikes = likeRepository.countByPost(post);
 
 		if(isNotAlreadyLike(user, post)) {
 			try {
@@ -67,13 +61,14 @@ public class LikeService {
 		
 	}
 	
-	public void cancelLike(UserPrincipal currentUser, Long postId) {
-		Post post = postRepository.findById(postId).orElseThrow();
-		User user = userRepository.getOne(currentUser.getId());
-		Like like = likeRepository.findByUserAndPost(user, post).orElseThrow();
-		
-		likeRepository.delete(like);
-	
+	public void cancelLike(UserPrincipal currentUser, LikeRequest likeRequest) {
+		if(likeRequest.isCheckedLike()) {
+			Post post = postRepository.findById(likeRequest.getPostId()).orElseThrow();
+			User user = userRepository.getOne(currentUser.getId());
+			Like like = likeRepository.findByUserAndPost(user, post).orElseThrow();
+			
+			likeRepository.delete(like);
+		}
 	}
 	
 	private boolean isNotAlreadyLike(User user,  Post post) {
