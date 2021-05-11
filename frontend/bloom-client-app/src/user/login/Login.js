@@ -1,10 +1,10 @@
-import React, { useState } from 'react';
+import React from 'react';
+import "./Login.css";
 import { login } from '../../util/APIUtils';
 import { ACCESS_TOKEN } from '../../constants';
 import { useHistory } from 'react-router-dom';
 import { Form, Input, Button, notification} from 'antd';
-import { Link, NavLink } from 'react-router-dom';
-import "./Login.css";
+import { Link } from 'react-router-dom';
   
 function Login() {
     let history = useHistory();
@@ -43,8 +43,9 @@ function Login() {
     };
     
     return (
-        <div className="login-form">
-            <Form   
+        // <div className="login_form">
+            <Form
+                className="login_body"
                 name="basic"
                 onFinish={onFinish}
                 onFinishFailed={onFinishFailed}
@@ -53,16 +54,25 @@ function Login() {
                     style={{ 
                         backgroundColor: "white",
                         borderRadius: "10%",
-                        marginTop: "60px",
-                        paddingTop: "60px",
-                        paddingBottom: "80px",
-                        paddingLeft: "90px",
-                        paddingRight: "90px" 
+                        marginTop: "20px",
+                        paddingTop: "50px",
+                        paddingBottom: "50px",
+                        paddingLeft: "100px",
+                        paddingRight: "100px" 
                     }}
                 >
-                    <Form.Item className="login-title">
+                    <Form.Item
+                        style={{
+                            textAlign: "center",
+                            fontWeight: "bold",
+                            fontSize: "40px",
+                            paddingTop: "0px",
+                            paddingBottom: "20px"
+                        }}
+                    > 
                         Login
                     </Form.Item>
+
                     <Form.Item
                         label="Username"
                         name="usernameOrEmail"
@@ -78,20 +88,27 @@ function Login() {
                     >
                         <Input.Password />
                     </Form.Item>
+
                     <Form.Item>
-                    <Button 
-                        className="ant-btn-primary" 
-                        type="primary" 
-                        block shape ="round" 
-                        htmlType="submit"
-                    >Login
-                    </Button>
-                        Haven't you signed up yet? 
-                        <Link style={{ color: "#D5C6E3" }} to="/signup">Signup Now!</Link>
+                        <Button
+                            style={{
+                                borderStyle: "none",
+                                backgroundImage: "linear-gradient(135deg, #FFFABF, #D8DFEC, #D5C6E3)" 
+                            }} 
+                            type="primary" 
+                            block shape ="round" 
+                            htmlType="submit"
+                        >
+                            Login
+                        </Button>
+                    </Form.Item>
+
+                    <Form.Item style={{ textAlign: "center" }}>
+                        계정이 없으신가요? <Link style={{ color: "#D5C6E3" }} to="/signup">Sign up</Link>
                     </Form.Item>
                 </Form.Item>
             </Form>
-        </div>
+        // </div>
     );
 }
 
