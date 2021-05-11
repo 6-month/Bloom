@@ -1,4 +1,5 @@
-import React, {useEffect, useState, useCallback, cloneElement} from 'react';
+import React, {useEffect, useState } from 'react';
+import "./Signup.css"
 import { signup, checkUsernameAvailability, checkEmailAvailability } from '../../util/APIUtils';
 import { 
     NAME_MIN_LENGTH, NAME_MAX_LENGTH, 
@@ -9,7 +10,6 @@ import {
 import { Link, NavLink ,useHistory} from 'react-router-dom';
 
 import { Form, Input, Button, notification } from 'antd';
-import "./Signup.css"
 
 const FormItem = Form.Item;
 
@@ -251,25 +251,35 @@ function SignupFuction() {
 
 
     return (
-        <Form 
+        <Form
+            className="signup_body" 
             onFinish={handleSubmit} 
-            className="signup-form"
+            // className="signup-form"
             requiredMark="true" 
         >
             <Form.Item 
                 style={{ 
                     backgroundColor: "white",
                     borderRadius: "10%",
-                    marginTop: "60px",
-                    paddingTop: "60px",
-                    paddingBottom: "80px",
-                    paddingLeft: "90px",
-                    paddingRight: "90px" 
+                    marginTop: "20px",
+                    paddingTop: "50px",
+                    paddingBottom: "50px",
+                    paddingLeft: "100px",
+                    paddingRight: "100px" 
                 }}
             >
-                <Form.Item className="signup_title">
-                    Sign Up
+                <Form.Item
+                    style={{
+                        textAlign: "center",
+                        fontWeight: "bold",
+                        fontSize: "40px",
+                        paddingTop: "0px",
+                        paddingBottom: "20px"
+                    }}
+                >
+                    회원가입
                 </Form.Item>
+
                 <FormItem
                     label="Full Name"
                     validateStatus={name.validateStatus}
@@ -279,11 +289,12 @@ function SignupFuction() {
                         size="large"
                         name="name"
                         authoComplete="off"
-                        placeholder="Your full name"
+                        placeholder="Please input your full name!"
                         allowClear="true"
                         onChange={(e) => {onChangedName(e)}}
                     />
                 </FormItem>
+
                 <FormItem
                     label="Username"
                     validateStatus={username.validateStatus}
@@ -293,11 +304,12 @@ function SignupFuction() {
                         size="large"
                         name="username"
                         authoComplete="off"
-                        placeholder="A unique username"
+                        placeholder="Please input your username!"
                         allowClear="true"
                         onChange={(e) => {onChangedUsername(e)}}
                     />
                 </FormItem>
+
                 <FormItem
                     label="Email"
                     validateStatus={email.validateStatus}
@@ -307,10 +319,11 @@ function SignupFuction() {
                         size="large"
                         name="email"
                         authoComplete="off"
-                        placeholder="Your Email"
+                        placeholder="Please input your email!"
                         onChange={(e) => {onChangedEmail(e)}}
                     />
                 </FormItem>
+                
                 <FormItem
                     label="Password"
                     validateStatus={password.validateStatus}
@@ -321,24 +334,29 @@ function SignupFuction() {
                         type="password"
                         name="password"
                         authoComplete="off"
-                        placeholder="A password between 6 to 20 characters"
+                        placeholder="Must be between 6 and 20 characters"
                         onChange={(e) => {onChangedPassword(e)}}
                     />
                 </FormItem>
+
                 <FormItem>
                     <Button 
+                        style={{
+                            borderStyle: "none",
+                            backgroundImage: "linear-gradient(135deg, #FFFABF, #D8DFEC, #D5C6E3)" 
+                        }} 
                         type="primary" 
-                        htmlType="submit" 
-                        size="large" 
-                        block shape="round"
-                        className="ant-btn-primary"
+                        block shape ="round" 
+                        htmlType="submit"
                         disabled={isFormInvalid()}
                     >
                         Sign up
                     </Button>
-                    Already registed? 
-                    <Link to="/login" style={{ color: "#D5C6E3" }}>Login now!</Link>
                 </FormItem>
+
+                    <Form.Item style={{ textAlign: "center" }}>
+                        계정이 있으신가요? <Link style={{ color: "#D5C6E3" }} to="/login">Login</Link>
+                    </Form.Item>
             </Form.Item>
         </Form>
     );
