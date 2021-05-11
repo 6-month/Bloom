@@ -61,15 +61,36 @@ public class LikeService {
 		
 	}
 	
-	public void cancelLike(UserPrincipal currentUser, LikeRequest likeRequest) {
-		if(likeRequest.isCheckedLike()) {
-			Post post = postRepository.findById(likeRequest.getPostId()).orElseThrow();
-			User user = userRepository.getOne(currentUser.getId());
-			Like like = likeRepository.findByUserAndPost(user, post).orElseThrow();
-			
-			likeRepository.delete(like);
-		}
+	public LikeResponse cancelLike(UserPrincipal currentUser, LikeRequest likeRequest) {
+		// likeRequest checkedLike : false
+		
+		Post post = postRepository.findById(likeRequest.getPostId())
+				.orElseThrow(() -> new ResourceNotFoundException("Post", "id", likeRequest.getPostId()));
+		User user = userRepository.getOne(currentUser.getId());
+		Like like = likeRepository.findByUserAndPost(user, post)
+				.orElseThrow();
+		
+		likeRepository.delete(like);
+		
+		LikeResponse likeResponse = new LikeResponse();
+		likeResponse.setPushedLike(false);
+		
+		Long totalLikes = likeRepository.countByPost(post);
+		likeResponse.setTotalLikes(totalLikes);
+		
+		return likeResponse;
+	
 	}
+	
+//	public void cancelLike(UserPrincipal currentUser, LikeRequest likeRequest) {
+//		if(likeRequest.isCheckedLike()) {
+//			Post post = postRepository.findById(likeRequest.getPostId()).orElseThrow();
+//			User user = userRepository.getOne(currentUser.getId());
+//			Like like = likeRepository.findByUserAndPost(user, post).orElseThrow();
+//			
+//			likeRepository.delete(like);
+//		}
+//	}
 	
 	private boolean isNotAlreadyLike(User user,  Post post) {
 		return likeRepository.findByUserAndPost(user, post).isEmpty();

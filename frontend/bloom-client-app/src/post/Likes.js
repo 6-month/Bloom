@@ -6,6 +6,11 @@ function Likes({postId, pushedLike, totalLikes}) {
     const [tLike, setTotalLikes] = useState(totalLikes);
     const [pLike, setPushedLike] = useState(pushedLike);
 
+    useEffect(() => {
+        console.log(tLike);
+        console.log(pLike);
+    } ,[])
+
     const handleSaveLike = (e) => {
         e.preventDefault();
 
@@ -40,10 +45,10 @@ function Likes({postId, pushedLike, totalLikes}) {
             pushedLike : false
         }
 
-        addLike(likeRequest)
+        cancelLike(likeRequest)
             .then(response => {
-                // setTotalLikes(response.totalLikes)
-                // setPushedLike(response.pushedLike)
+                setTotalLikes(response.totalLikes)
+                setPushedLike(response.pushedLike)
                 notification.success({
                     message : "Bloom",
                     description : "Successfully canceled likes"
@@ -64,6 +69,7 @@ function Likes({postId, pushedLike, totalLikes}) {
                     // like cancel
                     <div>
                         <span>Liked by : {tLike}</span>
+
                         <form >
                             <button type="submit" onClick={handleCancelLike}>like</button>
                         </form>

@@ -14,7 +14,8 @@ function ReplyComments({postId,p_comment_id, pComment}) {
     const [commentContents, setCommentContents] = useState("");
     const [comments, setComments] = useState(pComment);
 
-    const recommentSubmit = () => {
+    const recommentSubmit = (e) => {
+        e.preventDefault()
 
         if(commentContents === "") {
             notification.warn({
@@ -170,16 +171,17 @@ function Comments({post}) {
         }
     })
 
-    const commentSubmit = () => {
+    const commentSubmit = (e) => {
+        e.preventDefault()
 
         if(commentContents === "") {
             notification.warn({
                 message : "Bloom",
                 description : "Please enter comments.."
             })
+            setCommentContents("");
         }
-
-        setCommentContents("");
+        // 공백일 때 comment가 저장되는 문제가 남아있음
 
         const commentRequest = {
             postId : post.id,
