@@ -1,4 +1,3 @@
-
 import { API_BASE_URL, POST_LIST_SIZE, ACCESS_TOKEN } from '../constants';
 
 const request = (options) => {
@@ -109,13 +108,18 @@ export function getUserCreatedPosts(username, page, size) {
     });
 }
 
-export function getUserlikedPosts(username, page, size) {
-    page = page || 0;
-    size = size || POST_LIST_SIZE;
-
+export function addLike(likeRequest) {
     return request({
-        url: API_BASE_URL + "/users/" + username + "/likes?page=" + page + "&size=" + size,
-        method: 'GET'
-    });
+        url: API_BASE_URL + "/posts/likes",
+        method: 'POST',
+        body: JSON.stringify(likeRequest)
+    })
 }
 
+export function cancelLike(likeRequest) {
+    return request({
+        url: API_BASE_URL + "/posts/likes",
+        method: 'delete',
+        body: JSON.stringify(likeRequest)
+    })
+}
