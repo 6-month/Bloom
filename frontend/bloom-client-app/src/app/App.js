@@ -16,7 +16,7 @@ import 'antd/dist/antd.css';
 import LoadingIndicator from '../common/LoadingIndicator';
 import NotFound from '../common/NotFound';
 import { notification } from 'antd';
-import { Content } from 'antd/lib/layout/layout';
+// import { Content } from 'antd/lib/layout/layout';
 import PrivateRoute from '../common/PrevateRoute';
 // import { Switch } from '@material-ui/core';
 
@@ -39,7 +39,7 @@ function App() {
         loadCurrentUser();
       }
       else {
-        history.push("/login");
+        history.push("/");
       }
     },[])
 
@@ -79,16 +79,18 @@ function App() {
 
     return (  
       <div className="app">
+        {/* <Route>
           <AppHeader 
             isAuthenticated={isAuthenticated}
             currentUser={currentUser} 
             onLogout={handleLogout} 
           />
-        <Content className="app-content">
-          <Route 
-            exact path="/"
-            component={Intro}
-          />
+        </Route> */}
+
+        <Route 
+          exact path="/"
+          component={Intro}
+        />
           {/* <PrivateRoute 
             path="/bloom"
             render={(props) => 
@@ -98,39 +100,39 @@ function App() {
                 onLogout={handleLogout} 
               />}
           /> */}
-          <Route 
-            path="/bloom" 
-            render = {(props) => 
-              <PostList 
-                {...props}
-                isAuthenticated={isAuthenticated} 
-                currentUser={currentUser} 
-                handleLogout={handleLogout}
-              />}
-          />
-          <Route 
-            path="/login" component={Login}
-          />
-          <Route 
-            path="/signup" component={Signup} 
-          />
+        <Route 
+          path="/bloom" 
+          render = {(props) => 
+            <PostList 
+              {...props}
+              isAuthenticated={isAuthenticated} 
+              currentUser={currentUser} 
+              handleLogout={handleLogout}
+            />}
+        />
+        <Route 
+          path="/login" component={Login}
+        />
+        <Route 
+          path="/signup" component={Signup} 
+        />
           {/* <Route path="/users/:username" 
             >
             <Profile isAuthenticated={isAuthenticated} currentUser={currentUser} />
           </Route> */}
-          <Route 
-            path="/users/:username" 
-            render ={(props) => 
-              <Profile 
-                {...props}
-                isAuthenticated={isAuthenticated} 
-                currentUser={currentUser} 
-              />
-            }
-          />
-          <PrivateRoute authenticated={isAuthenticated} path="/post/new" component={NewPost} ></PrivateRoute>
-          <Route compoent={NotFound} />
-        </Content> 
+        <Route 
+          path="/users/:username" 
+          render ={(props) => 
+            <Profile 
+              {...props}
+              isAuthenticated={isAuthenticated} 
+              currentUser={currentUser} 
+            />
+          }
+        />
+        <PrivateRoute authenticated={isAuthenticated} path="/post/new" component={NewPost} ></PrivateRoute>
+        <Route compoent={NotFound} />
+
       </div>
     );
 }
