@@ -7,8 +7,8 @@ function Likes({postId, pushedLike, totalLikes}) {
     const [pLike, setPushedLike] = useState(pushedLike);
 
     useEffect(() => {
-        console.log(tLike);
-        console.log(pLike);
+        // console.log(tLike);
+        // console.log(pLike);
     } ,[])
 
     const handleSaveLike = (e) => {
@@ -69,7 +69,6 @@ function Likes({postId, pushedLike, totalLikes}) {
                     // like cancel
                     <div>
                         <span>Liked by : {tLike}</span>
-
                         <form >
                             <button type="submit" onClick={handleCancelLike}>like</button>
                         </form>
