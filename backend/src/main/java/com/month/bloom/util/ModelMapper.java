@@ -17,13 +17,19 @@ public class ModelMapper {
 		postResponse.setContent(post.getContent());
 		postResponse.setCreationDateTime(post.getCreatedAt());
 		
-		UserSummary creatorSummary = new UserSummary(creator.getId(), creator.getName(), creator.getUsername(), creator.getUserProfileImage().getData());
-		postResponse.setCreatedBy(creatorSummary);
+		UserSummary creatorSummary;
+		if(creator.getUserProfileImage() != null) {
+			creatorSummary = new UserSummary(creator.getId(), creator.getName(), creator.getUsername(), creator.getUserProfileImage().getData());
+			postResponse.setCreatedBy(creatorSummary);
+		}
+		else {
+			creatorSummary = new UserSummary(creator.getId(), creator.getName(), creator.getUsername(), null);
+			postResponse.setCreatedBy(creatorSummary);
+		}
 		
 		List<ImageResponse> imageResponses = post.getImages().stream().map(image -> {
 			ImageResponse imageResponse = new ImageResponse();
 			imageResponse.setImageId(image.getId());
-//			imageResponse.setImageName(image.getFileName());
 			imageResponse.setData(image.getData());
 			return imageResponse;
 		}).collect(Collectors.toList());
@@ -34,8 +40,15 @@ public class ModelMapper {
 			commentResponse.setId(comment.getId());
 			commentResponse.setText(comment.getText());
 			User createUser = comment.getUser();
-			UserSummary userSummary = new UserSummary(createUser.getId(), createUser.getUsername(), createUser.getName(), createUser.getUserProfileImage().getData());
-			commentResponse.setCreatedBy(creatorSummary);
+			if(createUser.getUserProfileImage() != null) {
+				UserSummary userSummary = new UserSummary(createUser.getId(), createUser.getUsername(), createUser.getName(), createUser.getUserProfileImage().getData());
+				commentResponse.setCreatedBy(creatorSummary);
+			}
+			else {
+				UserSummary userSummary = new UserSummary(createUser.getId(), createUser.getUsername(), createUser.getName(), null);
+				commentResponse.setCreatedBy(creatorSummary);
+			}
+			
 			commentResponse.setCreationDateTime(comment.getCreatedAt());
 			if(comment.getComment() != null) {
 				commentResponse.setP_comment_id(comment.getComment().getId());

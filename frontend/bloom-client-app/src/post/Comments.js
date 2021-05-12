@@ -8,28 +8,46 @@ import {saveComment} from '../util/APIUtils';
 import HashMap from 'hashmap';
 import ArrayList from "arraylist";
 
+// 문제점
+// 기존 댓글에 대댓글을 다는건 문제 없이 되지만 새로운 댓글을 생성하고 대댓글을 달때 에러메시지가 뜸, 근데 db에 저장은 됌...
+
 const FormItem = Form.Item;
 
 function ReplyComments({postId,p_comment_id, pComment}) {
-    const [commentContents, setCommentContents] = useState("");
+    const [commentContents, setCommentContents] = useState({
+        value : "",
+        validateStatus : "false"
+    });
     const [comments, setComments] = useState(pComment);
+
+    const handleCommentChange = (e) => {
+        setCommentContents({
+            ...commentContents,
+            value : e.target.value,
+            ...isFormValid()
+        });
+    }
+
+    const isFormValid = () => {
+        if(commentContents.value.length<3) {
+            return {
+                validateStatus : "false"
+            }
+        }
+        else {
+            return {
+                validateStatus : ""
+            }
+        }
+    }
 
     const recommentSubmit = (e) => {
         e.preventDefault()
 
-        if(commentContents === "") {
-            notification.warn({
-                message : "Bloom",
-                description : "Please enter comments.."
-            })
-        }
-
-        setCommentContents("");
-
         const commentRequest = {
             postId : postId,
             p_comment_id : p_comment_id,
-            text : commentContents,
+            text : commentContents.value,
         }
         console.log(commentRequest);
 
@@ -41,12 +59,17 @@ function ReplyComments({postId,p_comment_id, pComment}) {
                     description : "Successfully registered comments"
                 })
             })
-            .catch(error => {
+            .catch(err => {
                 notification.error({
                     message : "Bloom",
-                    description : "Failed registered commnet..."
+                    description : err.message || "Failed registered commnet..."
                 })
             })
+        setCommentContents({
+            ...commentContents,
+            value : "",
+            validateStatus : "false"
+        })
     }
 
     const commentView = [];
@@ -82,10 +105,12 @@ function ReplyComments({postId,p_comment_id, pComment}) {
             <form className="comment-form">
                 <input 
                     type="text"
-                    onChange={(e) => setCommentContents(e.target.value)}
+                    onChange={(e) => handleCommentChange(e)}
                     placeholder="Please enter comments.."
+                    // placeholder={commentContents.value}
                 />
                 <button
+                    disabled={commentContents.validateStatus}
                     onClick={recommentSubmit}
                 >
                     Add
@@ -96,8 +121,32 @@ function ReplyComments({postId,p_comment_id, pComment}) {
 }
 
 function Comments({post}) {
-    const [commentContents, setCommentContents] = useState("");
+    const [commentContents, setCommentContents] = useState({
+        value : "",
+        validateStatus : "false"
+    });
     const [comments, setComments] = useState(post.comments);
+
+    const handleCommentChange = (e) => {
+        setCommentContents({
+            ...commentContents,
+            value : e.target.value,
+            ...isFormValid()
+        });
+    }
+
+    const isFormValid = () => {
+        if(commentContents.value.length<3) {
+            return {
+                validateStatus : "false"
+            }
+        }
+        else {
+            return {
+                validateStatus : ""
+            }
+        }
+    }
 
     var map = new HashMap();
         
@@ -174,19 +223,10 @@ function Comments({post}) {
     const commentSubmit = (e) => {
         e.preventDefault()
 
-        if(commentContents === "") {
-            notification.warn({
-                message : "Bloom",
-                description : "Please enter comments.."
-            })
-            setCommentContents("");
-        }
-        // 공백일 때 comment가 저장되는 문제가 남아있음
-
         const commentRequest = {
             postId : post.id,
             p_comment_id : null,
-            text : commentContents,
+            text : commentContents.value,
         }
         console.log(commentRequest);
 
@@ -204,10 +244,13 @@ function Comments({post}) {
                     description : "Failed registered commnet..."
                 })
             })
+        
+        setCommentContents({
+            ...commentContents,
+            value : commentContents.value,
+            validateStatus : "false"
+        })
     }
-
-
-    
 
     return (
         <div className="comment-container">
@@ -215,10 +258,11 @@ function Comments({post}) {
             <form className="comment-form">
                 <input 
                     type="text"
-                    onChange={(e) => setCommentContents(e.target.value)}
-                    placeholder="Please enter comments.."
+                    onChange={(e) => handleCommentChange(e)}
+                    placeholder="Please enter coments.."
                 />
                 <button
+                    disabled={commentContents.validateStatus}
                     onClick={commentSubmit}
                 >
                     Add Comment

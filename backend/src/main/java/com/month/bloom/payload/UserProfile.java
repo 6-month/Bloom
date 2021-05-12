@@ -14,9 +14,6 @@ public class UserProfile {
 	private Long totalFollowers;
 	private Long totalFollowings;
 
-
-
-
 	public UserProfile(Long id, String username, String name, Instant joinedAt, Long postCount, byte[] profileImage,
 			Long totalFollowers, Long totalFollowings) {
 		this.id = id;

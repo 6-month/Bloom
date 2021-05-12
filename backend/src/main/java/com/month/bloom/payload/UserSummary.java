@@ -19,6 +19,7 @@ public class UserSummary {
 		this.profileImage = profileImage;
 	}
 
+
 	public Long getId() {
         return id;
     }
@@ -50,5 +51,7 @@ public class UserSummary {
 	public void setProfileImage(byte[] profileImage) {
 		this.profileImage = profileImage;
 	}
+	
+	
     
 }

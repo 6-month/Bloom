@@ -43,9 +43,9 @@ function App() {
       }
     },[])
 
-    // useEffect(() => {
-    //   console.log(currentUser);
-    // },[currentUser])
+    useEffect(() => {
+      console.log(currentUser);
+    },[currentUser])
 
     const loadCurrentUser = () => {
         setIsLoading(true);

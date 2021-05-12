@@ -119,7 +119,7 @@ export function addLike(likeRequest) {
 export function cancelLike(likeRequest) {
     return request({
         url: API_BASE_URL + "/posts/likes",
-        method: 'delete',
+        method: 'DELETE',
         body: JSON.stringify(likeRequest)
     })
 }

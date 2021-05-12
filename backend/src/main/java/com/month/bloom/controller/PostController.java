@@ -120,19 +120,36 @@ public class PostController {
 		Comment comment = postService.createComment(currentUser, commentRequest);
 		
 		if(commentRequest.getP_comment_id() == null) {
-			UserSummary userSummary = new UserSummary(comment.getUser().getId(), comment.getUser().getName(), comment.getUser().getUsername(), comment.getUser().getUserProfileImage().getData());
-			CommentResponse commentResponse = new CommentResponse(comment.getId(),
-					comment.getText(), userSummary, comment.getCreatedAt(), null);
+			if(comment.getUser().getUserProfileImage() != null) {
+				UserSummary userSummary = new UserSummary(comment.getUser().getId(), comment.getUser().getName(), comment.getUser().getUsername(), comment.getUser().getUserProfileImage().getData());
+				CommentResponse commentResponse = new CommentResponse(comment.getId(),
+						comment.getText(), userSummary, comment.getCreatedAt(), null);
+				
+				return commentResponse;
+			}
+			else {
+				UserSummary userSummary = new UserSummary(comment.getUser().getId(), comment.getUser().getName(), comment.getUser().getUsername(), null);
+				CommentResponse commentResponse = new CommentResponse(comment.getId(),
+						comment.getText(), userSummary, comment.getCreatedAt(), null);
+				
+				return commentResponse;
+			}
 			
-			return commentResponse;
 		}
 		else {
 			Comment recomment = comment.getComments().get(comment.getComments().size()-1);
-			UserSummary userSummary = new UserSummary(recomment.getUser().getId(), recomment.getUser().getName(), recomment.getUser().getUsername(), recomment.getUser().getUserProfileImage().getData());
-			
-			CommentResponse commentResponse = new CommentResponse(recomment.getId(), recomment.getText(), 
-					userSummary, recomment.getCreatedAt(), commentRequest.getP_comment_id());
-			return commentResponse;
+			if(recomment.getUser().getUserProfileImage() != null) {
+				UserSummary userSummary = new UserSummary(recomment.getUser().getId(), recomment.getUser().getName(), recomment.getUser().getUsername(), recomment.getUser().getUserProfileImage().getData());
+				CommentResponse commentResponse = new CommentResponse(recomment.getId(), recomment.getText(), 
+						userSummary, recomment.getCreatedAt(), commentRequest.getP_comment_id());
+				return commentResponse;
+			}
+			else {
+				UserSummary userSummary = new UserSummary(recomment.getUser().getId(), recomment.getUser().getName(), recomment.getUser().getUsername(), null);
+				CommentResponse commentResponse = new CommentResponse(recomment.getId(), recomment.getText(), 
+						userSummary, recomment.getCreatedAt(), commentRequest.getP_comment_id());
+				return commentResponse;
+			}
 		}
 	}
 }

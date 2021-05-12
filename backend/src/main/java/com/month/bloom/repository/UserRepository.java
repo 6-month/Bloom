@@ -34,5 +34,5 @@ public interface UserRepository extends JpaRepository<User, Long> {
     void updateUser(@Param("userId") Long userId, @Param("username") String username, @Param("name") String name, 
     				@Param("bio") String bio, @Param("email") String email, @Param("phoneNumber") String phoneNumber);
 
-
+    
 }

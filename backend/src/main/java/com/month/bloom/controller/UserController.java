@@ -59,9 +59,16 @@ public class UserController {
     public UserSummary getCurrentUser(@CurrentUser UserPrincipal currentUser) {
         User user = userRepository.getOne(currentUser.getId());
 		
-        UserSummary userSummary = 
-        		new UserSummary(currentUser.getId(), currentUser.getUsername(), currentUser.getName(), user.getUserProfileImage().getData());
-        return userSummary;
+        if(user.getUserProfileImage() != null) {
+	        UserSummary userSummary = 
+	        		new UserSummary(currentUser.getId(), currentUser.getUsername(), currentUser.getName(), user.getUserProfileImage().getData());
+	        return userSummary;
+        }
+        else {
+        	UserSummary userSummary = 
+	        		new UserSummary(currentUser.getId(), currentUser.getUsername(), currentUser.getName(), null);
+	        return userSummary;
+        }
     }
 	
     @GetMapping("/user/checkUsernameAvailability")
@@ -76,6 +83,7 @@ public class UserController {
         return new UserIdentityAvailability(isAvailable);
     }
     
+    // profile
     @GetMapping("users/{username}")
     public UserProfile getUserProfile(@PathVariable(value= "username") String username) {
     	User user = userRepository.findByUsername(username)
@@ -90,7 +98,7 @@ public class UserController {
     	Long totalFollowings = followRepository.countByFollowingId(user.getId());
     	
     	UserProfileImage userProfileImage = user.getUserProfileImage();
-    	
+    			
     	if(userProfileImage != null ) {
     		UserProfile userProfile = new UserProfile(user.getId(), user.getUsername(),
         			user.getName(), user.getCreatedAt(), postCount, userProfileImage.getData(), totalFollowers, totalFollowings);

@@ -1,16 +1,10 @@
 package com.month.bloom.controller;
 
-import com.month.bloom.exception.AppException;
-import com.month.bloom.model.Role;
-import com.month.bloom.model.RoleName;
-import com.month.bloom.model.User;
-import com.month.bloom.payload.ApiResponse;
-import com.month.bloom.payload.JwtAuthenticationResponse;
-import com.month.bloom.payload.LoginRequest;
-import com.month.bloom.payload.SignUpRequest;
-import com.month.bloom.repository.RoleRepository;
-import com.month.bloom.repository.UserRepository;
-import com.month.bloom.security.JwtTokenProvider;
+import java.net.URI;
+import java.util.Collections;
+
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -25,9 +19,20 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import javax.validation.Valid;
-import java.net.URI;
-import java.util.Collections;
+import com.month.bloom.exception.AppException;
+import com.month.bloom.model.Phase;
+import com.month.bloom.model.PhaseName;
+import com.month.bloom.model.Role;
+import com.month.bloom.model.RoleName;
+import com.month.bloom.model.User;
+import com.month.bloom.payload.ApiResponse;
+import com.month.bloom.payload.JwtAuthenticationResponse;
+import com.month.bloom.payload.LoginRequest;
+import com.month.bloom.payload.SignUpRequest;
+import com.month.bloom.repository.PhaseRepository;
+import com.month.bloom.repository.RoleRepository;
+import com.month.bloom.repository.UserRepository;
+import com.month.bloom.security.JwtTokenProvider;
 
 @RestController
 @RequestMapping("/api/auth")
@@ -43,8 +48,11 @@ public class AuthController {
     RoleRepository roleRepository;
 
     @Autowired
+    PhaseRepository phaseRepository;
+    
+    @Autowired
     PasswordEncoder passwordEncoder;
-
+    
     @Autowired
     JwtTokenProvider tokenProvider;
 
@@ -64,6 +72,7 @@ public class AuthController {
         return ResponseEntity.ok(new JwtAuthenticationResponse(jwt));
     }
 
+    // default Bloom image have
     @PostMapping("/signup")
     public ResponseEntity<?> registerUser(@Valid @RequestBody SignUpRequest signUpRequest) {
         if(userRepository.existsByUsername(signUpRequest.getUsername())) {
@@ -78,7 +87,7 @@ public class AuthController {
 
         // Creating user's account
         User user = new User(signUpRequest.getName(), signUpRequest.getUsername(),
-                signUpRequest.getEmail(), signUpRequest.getPassword(), signUpRequest.getPhonNumber());
+                signUpRequest.getEmail(), signUpRequest.getPassword());
 
         user.setPassword(passwordEncoder.encode(user.getPassword()));
 
@@ -86,9 +95,8 @@ public class AuthController {
                 .orElseThrow(() -> new AppException("User Role not set."));
 
         user.setRoles(Collections.singleton(userRole));
-
+        
         User result = userRepository.save(user);
-
 
         URI location = ServletUriComponentsBuilder
                 .fromCurrentContextPath().path("/api/users/{username}")
