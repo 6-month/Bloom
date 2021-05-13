@@ -6,6 +6,7 @@ import {Button } from 'antd';
 import Post from './Post';
 import Icon from '@ant-design/icons';
 import "./PostList.css";
+import NotFound from '../common/NotFound';
 
 function PostList({currentUser, username, type}) {
     const [posts, setPosts] =useState([]);
@@ -86,6 +87,10 @@ function PostList({currentUser, username, type}) {
             {
                 isLoading ? 
                 <LoadingIndicator /> : null
+            }
+            {
+                // totalElements ? 
+                //     null : <NotFound />
             }
         </div>
     );

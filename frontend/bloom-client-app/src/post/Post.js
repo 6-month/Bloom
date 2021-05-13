@@ -14,9 +14,6 @@ import Profile from "../user/profile/Profile";
 const FormItem = Form.Item;
 
 function Post({post, currentUser}) {
-    useEffect(() => {
-        console.log(post.createdBy)
-    },[])
 
     const profileURL ="/users/" + post.createdBy.username;
 

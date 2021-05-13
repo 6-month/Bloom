@@ -1,6 +1,7 @@
 import Avatar from 'antd/lib/avatar/avatar';
 import React ,{ useEffect, useState } from 'react';
 import PostList from '../../post/PostList';
+import Follow from '../follow/Follow';
 import { checkingFollow, getUserCreatedPosts, getUserProfile } from '../../util/APIUtils';
 import {getAvatarColor} from '../../util/Colors';
 import { formatDateTime } from '../../util/Helpers';
@@ -9,8 +10,6 @@ import "./Profile.css";
 function Profile(props) {
     // console을 한번 찍을줄 알았는데 4번 찍는다 이유는?
     let params = props.match.params;
-    
-    const [currentUser, setCurrentUser] = useState(props.currentUser);
     const [user, setUser] = useState(null);
     
     const [isLoading, setIsLoading] = useState(false);
@@ -22,31 +21,8 @@ function Profile(props) {
         
     },[])
 
-    const checking = () => {
-        // 왜 새로고침을 했을때 currentUser 정보를 읽어올수 없는걸까??
+    // 왜 새로고침을 했을때 currentUser 정보를 읽어올수 없는걸까??
             // 새로고침시 currentUser 자체는 읽어 오지만 currentUser의 데이터들은 null로 읽고 있다.
-        // console.log(currentUser.username)
-       
-       
-        // if(params.username === props.currentUser.username){
-        //     // edit 버튼을 보여줘야함
-        //     console.log("same")
-        // }
-        // else {
-        //     // follow 버튼을 보여줘야함
-        //     checkingFollow(user.username)
-        //         .then(response => {
-        //             // result : true =>  follow를 한 상태이므로 follow가 되어있음을 나타내고 unfollow를 할수 있게 만든다
-        //             if(response.result) {
-        //                     setFollowState(true)
-        //             }
-        //             // result : false => follow를 하지 않은 상태이므로 follow를 할수 있게끔 만든다
-        //         })
-        //         .catch(error => {
-        //             console.log(error.message);
-        //         })
-        // }
-    }
 
     const loadUserProfile = (username) => {
         setIsLoading(true);
@@ -80,6 +56,9 @@ function Profile(props) {
                                     src={`data:image/jpeg;base64,${user.profileImage}`}
                                 >
                                 </Avatar>
+                            </div>
+                            <div className="follow-container">
+                                <Follow user={user} currentUser={props.currentUser} />
                             </div>
                             <div className="user-summary">
                                 <div className="full-name">{user.name}</div>
