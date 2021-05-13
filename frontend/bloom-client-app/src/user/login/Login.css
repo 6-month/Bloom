@@ -29,16 +29,19 @@
     flex-direction: column;
     width: 70%;
 }
+
 .id, .pw {
     color: #707070;
     font-size: 22px;
     margin-bottom: 20px;
 }
+
 .id_form, .pw_form {
     color: #CECECE;
     font-size: 18px;
     margin-bottom: 30px;
 }
+
 .forgot_pw {
     color: #707070;
     font-size: 14px;
