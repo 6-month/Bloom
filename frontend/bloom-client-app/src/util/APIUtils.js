@@ -123,3 +123,24 @@ export function cancelLike(likeRequest) {
         body: JSON.stringify(likeRequest)
     })
 }
+
+export function followUser(username) {
+    return request({
+        url: API_BASE_URL + "/users/" + username + "/follow",
+        method : "GET"
+    })
+}
+
+export function unfollowUser(username) {
+    return request({
+        url: API_BASE_URL + "/users/" + username + "/unfollow",
+        method : "GET"
+    })
+}
+
+export function checkingFollow(username) {
+    return request({
+        url: API_BASE_URL + "/users/" + username + "/checking",
+        method : "GET"
+    })
+}

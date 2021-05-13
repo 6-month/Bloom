@@ -1,6 +1,6 @@
 import React, {useState, useEffect, createElement } from 'react';
 import { Avatar, Input, Button, notification, Form } from 'antd';
-import { Link } from 'react-router-dom';
+import { Link, Route } from 'react-router-dom';
 import { getAvatarColor } from '../util/Colors';
 import { formatDateTime } from '../util/Helpers';
 import { RadioGroup } from '@material-ui/core';
@@ -10,13 +10,16 @@ import { DislikeOutlined, LikeOutlined, LikeFilled } from '@ant-design/icons';
 import {saveComment} from '../util/APIUtils';
 import Comments from './Comments';
 import Likes from "./Likes";
+import Profile from "../user/profile/Profile";
 
 const FormItem = Form.Item;
 
-function Post({post}) {
-    // useEffect(() => {
-    //     console.log(post)
-    // },[])
+function Post({post, currentUser}) {
+    useEffect(() => {
+        console.log(post.createdBy)
+    },[])
+
+    const profileURL ="/users/" + post.createdBy.username;
 
     return (
         <div className="post-content">
@@ -34,7 +37,9 @@ function Post({post}) {
                             {post.createdBy.name}
                         </span>
                         <span className="post-creator-username">
-                            {post.createdBy.username}
+                            <Link to={profileURL}>
+                                {post.createdBy.username}
+                            </Link>
                         </span>
                     </div>
                 </div>

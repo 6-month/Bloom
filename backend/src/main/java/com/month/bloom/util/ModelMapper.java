@@ -19,11 +19,11 @@ public class ModelMapper {
 		
 		UserSummary creatorSummary;
 		if(creator.getUserProfileImage() != null) {
-			creatorSummary = new UserSummary(creator.getId(), creator.getName(), creator.getUsername(), creator.getUserProfileImage().getData());
+			creatorSummary = new UserSummary(creator.getId(), creator.getUsername(), creator.getName(), creator.getUserProfileImage().getData());
 			postResponse.setCreatedBy(creatorSummary);
 		}
 		else {
-			creatorSummary = new UserSummary(creator.getId(), creator.getName(), creator.getUsername(), null);
+			creatorSummary = new UserSummary(creator.getId(), creator.getUsername(), creator.getName(), null);
 			postResponse.setCreatedBy(creatorSummary);
 		}
 		

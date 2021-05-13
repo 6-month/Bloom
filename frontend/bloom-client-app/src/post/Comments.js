@@ -124,7 +124,8 @@ function Comments({post}) {
     const [commentContents, setCommentContents] = useState({
         value : "",
         validateStatus : "false"
-    });
+    })
+    
     const [comments, setComments] = useState(post.comments);
 
     const handleCommentChange = (e) => {

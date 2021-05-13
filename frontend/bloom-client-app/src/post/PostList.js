@@ -61,6 +61,7 @@ function PostList({currentUser, isAuthenticated, onLogout, username, type}) {
         postViews.push(
             <Post 
                 post = {post}
+                currentUser = {currentUser}
             />
         )
     })

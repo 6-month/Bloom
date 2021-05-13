@@ -41,11 +41,11 @@ function App() {
       else {
         history.push("/login");
       }
-    },[])
 
-    useEffect(() => {
-      console.log(currentUser);
-    },[currentUser])
+      return () => {
+        loadCurrentUser();
+      }
+    },[])
 
     const loadCurrentUser = () => {
         setIsLoading(true);
@@ -89,15 +89,6 @@ function App() {
             exact path="/"
             component={Intro}
           />
-          {/* <PrivateRoute 
-            path="/bloom"
-            render={(props) => 
-              <AppHeader 
-                isAuthenticated={isAuthenticated}
-                currentUser={currentUser} 
-                onLogout={handleLogout} 
-              />}
-          /> */}
           <Route 
             path="/bloom" 
             render = {(props) => 
@@ -125,8 +116,7 @@ function App() {
                 {...props}
                 isAuthenticated={isAuthenticated} 
                 currentUser={currentUser} 
-              />
-            }
+              />}
           />
           <PrivateRoute authenticated={isAuthenticated} path="/post/new" component={NewPost} ></PrivateRoute>
           <Route compoent={NotFound} />
