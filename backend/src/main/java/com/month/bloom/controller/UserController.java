@@ -15,6 +15,7 @@ import com.month.bloom.exception.ResourceNotFoundException;
 import com.month.bloom.model.User;
 import com.month.bloom.model.UserProfileImage;
 import com.month.bloom.payload.ApiResponse;
+import com.month.bloom.payload.FollowCheckResponse;
 import com.month.bloom.payload.PagedResponse;
 import com.month.bloom.payload.PostResponse;
 import com.month.bloom.payload.UserIdentityAvailability;
@@ -144,6 +145,20 @@ public class UserController {
     	return ResponseEntity.created(null)
     			.body(new ApiResponse(true, "Successfully unFollowed"));
     	
+    }
+    
+    // follow checking
+    @GetMapping("/users/{username}/checking")
+    public FollowCheckResponse checkingFollow(@CurrentUser UserPrincipal currentUser,
+    		@PathVariable(value = "username") String username) {
+    	
+    	User followingUser = userRepository.findByUsername(username)
+    					.orElseThrow(() ->  new ResourceNotFoundException("User", "username", username));
+    
+    	User followerUser = userRepository.findByUsername(currentUser.getUsername())
+    			.orElseThrow(() ->  new ResourceNotFoundException("User", "username", currentUser.getUsername()));
+    
+    	return followService.checkingFollow(followingUser, followerUser);
     }
     
     

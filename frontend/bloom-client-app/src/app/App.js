@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Route,  useHistory } from 'react-router-dom';
+import { Route,  useHistory, useParams } from 'react-router-dom';
 import { getCurrentUser } from '../util/APIUtils';
 import { ACCESS_TOKEN } from '../constants';
 import Login from '../user/login/Login';
@@ -15,10 +15,10 @@ import Intro from '../common/Intro';
 import 'antd/dist/antd.css';
 import LoadingIndicator from '../common/LoadingIndicator';
 import NotFound from '../common/NotFound';
-import { notification } from 'antd';
-// import { Content } from 'antd/lib/layout/layout';
+import {Layout ,Button, notification } from 'antd';
+import { Content } from 'antd/lib/layout/layout';
 import PrivateRoute from '../common/PrevateRoute';
-// import { Switch } from '@material-ui/core';
+import { Switch } from '@material-ui/core';
 
 function App() {    
     let history = useHistory();
@@ -39,13 +39,13 @@ function App() {
         loadCurrentUser();
       }
       else {
-        history.push("/");
+        history.push("/login");
+      }
+
+      return () => {
+        loadCurrentUser();
       }
     },[])
-
-    useEffect(() => {
-      console.log(currentUser);
-    },[currentUser])
 
     const loadCurrentUser = () => {
         setIsLoading(true);
@@ -78,62 +78,50 @@ function App() {
     }
 
     return (  
-      <div className="app">
-        {/* <Route>
+      <Layout className="app-container">
           <AppHeader 
             isAuthenticated={isAuthenticated}
             currentUser={currentUser} 
             onLogout={handleLogout} 
           />
-        </Route> */}
-
-        <Route 
-          exact path="/"
-          component={Intro}
-        />
-          {/* <PrivateRoute 
-            path="/bloom"
-            render={(props) => 
-              <AppHeader 
-                isAuthenticated={isAuthenticated}
+        <Content className="app-content">
+          <Route 
+            exact path="/"
+            component={Intro}
+          />
+          <Route 
+            path="/bloom" 
+            render = {(props) => 
+              <PostList 
+                {...props}
+                isAuthenticated={isAuthenticated} 
                 currentUser={currentUser} 
-                onLogout={handleLogout} 
+                handleLogout={handleLogout}
               />}
-          /> */}
-        <Route 
-          path="/bloom" 
-          render = {(props) => 
-            <PostList 
-              {...props}
-              isAuthenticated={isAuthenticated} 
-              currentUser={currentUser} 
-              handleLogout={handleLogout}
-            />}
-        />
-        <Route 
-          path="/login" component={Login}
-        />
-        <Route 
-          path="/signup" component={Signup} 
-        />
+          />
+          <Route 
+            path="/login" component={Login}
+          />
+          <Route 
+            path="/signup" component={Signup} 
+          />
           {/* <Route path="/users/:username" 
             >
             <Profile isAuthenticated={isAuthenticated} currentUser={currentUser} />
           </Route> */}
-        <Route 
-          path="/users/:username" 
-          render ={(props) => 
-            <Profile 
-              {...props}
-              isAuthenticated={isAuthenticated} 
-              currentUser={currentUser} 
-            />
-          }
-        />
-        <PrivateRoute authenticated={isAuthenticated} path="/post/new" component={NewPost} ></PrivateRoute>
-        <Route compoent={NotFound} />
-
-      </div>
+          <Route 
+            path="/users/:username" 
+            render ={(props) => 
+              <Profile 
+                {...props}
+                isAuthenticated={isAuthenticated} 
+                currentUser={currentUser} 
+              />}
+          />
+          <PrivateRoute authenticated={isAuthenticated} path="/post/new" component={NewPost} ></PrivateRoute>
+          <Route compoent={NotFound} />
+        </Content> 
+      </Layout>
     );
 }
 

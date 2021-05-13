@@ -7,8 +7,6 @@ function Likes({postId, pushedLike, totalLikes}) {
     const [pLike, setPushedLike] = useState(pushedLike);
 
     useEffect(() => {
-        // console.log(tLike);
-        // console.log(pLike);
     } ,[])
 
     const handleSaveLike = (e) => {
