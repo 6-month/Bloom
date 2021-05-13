@@ -14,7 +14,6 @@ import Intro from '../common/Intro';
 
 import 'antd/dist/antd.css';
 import LoadingIndicator from '../common/LoadingIndicator';
-import NotFound from '../common/NotFound';
 import {Layout ,Button, notification } from 'antd';
 import { Content } from 'antd/lib/layout/layout';
 import PrivateRoute from '../common/PrevateRoute';
@@ -105,10 +104,6 @@ function App() {
           <Route 
             path="/signup" component={Signup} 
           />
-          {/* <Route path="/users/:username" 
-            >
-            <Profile isAuthenticated={isAuthenticated} currentUser={currentUser} />
-          </Route> */}
           <Route 
             path="/users/:username" 
             render ={(props) => 
@@ -119,7 +114,6 @@ function App() {
               />}
           />
           <PrivateRoute authenticated={isAuthenticated} path="/post/new" component={NewPost} ></PrivateRoute>
-          <Route compoent={NotFound} />
         </Content> 
       </Layout>
     );
