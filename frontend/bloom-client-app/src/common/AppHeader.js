@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from 'react';
-import {Link, useLocation, withRouter} from 'react-router-dom';
+import React, { useEffect } from 'react';
+import {Link, useLocation } from 'react-router-dom';
 import { Menu, Dropdown, PageHeader} from 'antd';
 import { HomeOutlined, UserOutlined } from '@ant-design/icons';
 import postIcon from '../post.svg';

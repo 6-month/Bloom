@@ -1,13 +1,12 @@
+
 import React, {useState, useEffect, createElement } from 'react';
 import { Avatar, Input, Button, notification, Form } from 'antd';
 import { Link, Route } from 'react-router-dom';
 import { getAvatarColor } from '../util/Colors';
 import { formatDateTime } from '../util/Helpers';
 import { RadioGroup } from '@material-ui/core';
+
 import './Post.css'
-import moment from 'moment';
-import { DislikeOutlined, LikeOutlined, LikeFilled } from '@ant-design/icons';
-import {saveComment} from '../util/APIUtils';
 import Comments from './Comments';
 import Likes from "./Likes";
 import Profile from "../user/profile/Profile";

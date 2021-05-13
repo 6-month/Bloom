@@ -1,8 +1,5 @@
-import { notification } from 'antd';
 import Avatar from 'antd/lib/avatar/avatar';
-import React ,{ useEffect, useState , params} from 'react';
-import { useParams } from 'react-router';
-import { ACCESS_TOKEN, POST_LIST_SIZE } from '../../constants';
+import React ,{ useEffect, useState } from 'react';
 import PostList from '../../post/PostList';
 import { checkingFollow, getUserCreatedPosts, getUserProfile } from '../../util/APIUtils';
 import {getAvatarColor} from '../../util/Colors';
