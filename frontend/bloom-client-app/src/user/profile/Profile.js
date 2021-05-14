@@ -1,25 +1,58 @@
 import Avatar from 'antd/lib/avatar/avatar';
-import React ,{ useEffect, useState } from 'react';
+import React ,{ useCallback, useEffect, useState } from 'react';
 import PostList from '../../post/PostList';
 import Follow from '../follow/Follow';
-import { checkingFollow, getUserCreatedPosts, getUserProfile } from '../../util/APIUtils';
+import { checkingFollow, getCurrentUser, getUserCreatedPosts, getUserProfile } from '../../util/APIUtils';
 import {getAvatarColor} from '../../util/Colors';
 import { formatDateTime } from '../../util/Helpers';
 import "./Profile.css";
+import EditProfile from './EditProfile';
+
 
 function Profile(props) {
     // console을 한번 찍을줄 알았는데 4번 찍는다 이유는?
+
     let params = props.match.params;
+    const [profileCheck, setProfileCheck] = useState(null);  
     const [user, setUser] = useState(null);
     
     const [isLoading, setIsLoading] = useState(false);
-    const [followState, setFollowState] = useState(false); 
 
+    const profileUrl = "/users/" + params.username;
+    
     useEffect(() => {
         // loadUserProfile (username) => username 자리에 db에 등록된 username을 입력하면 해당 유저의 profile정보를 표시해줌
         loadUserProfile(params.username);
-        
+
+        // props.currentUser.username 으로 해결하기 힘들어서 임시방편으로 만듬...
+        getCurrentUser()
+            .then(response => {
+                if(response.username === params.username){
+                    setProfileCheck(true)
+                }
+                else {
+                    setProfileCheck(false)
+                }
+            })
     },[])
+
+    useEffect(() => {
+        console.log("profileCheck : "+profileCheck)
+    }, [profileCheck])
+
+    useEffect(() => {
+        loadUserProfile(params.username)
+
+        getCurrentUser()
+            .then(response => {
+                if(response.username === params.username){
+                    setProfileCheck(true)
+                }
+                else {
+                    setProfileCheck(false)
+                }
+            })
+    }, [params.username])
 
     // 왜 새로고침을 했을때 currentUser 정보를 읽어올수 없는걸까??
             // 새로고침시 currentUser 자체는 읽어 오지만 currentUser의 데이터들은 null로 읽고 있다.
@@ -35,13 +68,8 @@ function Profile(props) {
             .catch(error => {
                 console.log(error.message)
             })
-        
     } 
 
-    useEffect(() => {
-        console.log(user)
-    }, [user])
-    
     return (
         <div className="profile">
 
@@ -58,10 +86,21 @@ function Profile(props) {
                                 </Avatar>
                             </div>
                             <div className="follow-container">
-                                <Follow 
-                                    user={user} currentUser={props.currentUser} 
-                                    totalFollower={user.totalFollowers} totalFollowing={user.totalFollowings}
-                                />
+                                {
+                                    profileCheck ? (
+                                        <EditProfile />
+                                    ) :  (
+                                        <Follow 
+                                            user={user} currentUser={props.currentUser} 
+                                            totalFollower={user.totalFollowers} totalFollowing={user.totalFollowings}
+                                        />
+                                    )
+                                }
+                                    {/* <Follow 
+                                        user={user} currentUser={props.currentUser} 
+                                        totalFollower={user.totalFollowers} totalFollowing={user.totalFollowings}
+                                    /> */}
+                                
                             </div>
                             <div className="user-summary">
                                 <div className="full-name">{user.name}</div>
@@ -81,8 +120,8 @@ function Profile(props) {
             }
             {
                 /**
-                 * 1. 자신의 프로필이면 Edit Profile 버튼을 추가한다.
-                 * 2. 자신의 프로필이면 Follow버튼이 보여지면 안된다.
+                 * 1. 자신의 프로필이면 Edit Profile 버튼을 추가한다. 
+                 * 2. 자신의 프로필이면 Follow버튼이 보여지면 안된다. 
                  * 3. 다른 사람의 프로필이면 Follow를 할 수 있는 버튼을 보이게 만든다.
                  * 4. 만약 follow되어있는 사람이라면 unfollow를 보여줘야한다.
                     

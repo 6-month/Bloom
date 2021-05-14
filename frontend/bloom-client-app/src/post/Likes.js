@@ -6,9 +6,6 @@ function Likes({postId, pushedLike, totalLikes}) {
     const [tLike, setTotalLikes] = useState(totalLikes);
     const [pLike, setPushedLike] = useState(pushedLike);
 
-    useEffect(() => {
-    } ,[])
-
     const handleSaveLike = (e) => {
         e.preventDefault();
 
