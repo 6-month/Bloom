@@ -5,7 +5,7 @@ import logo from '../img/Bloom_logo.png';
 
 function Intro(props) {
     return (
-        <Link className="container" to="/login">
+        <Link className="container" to="/Bloom">
             <div className="box">
                 <img 
                     src={logo}

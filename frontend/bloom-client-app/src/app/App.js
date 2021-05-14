@@ -17,7 +17,6 @@ import LoadingIndicator from '../common/LoadingIndicator';
 import {Layout ,Button, notification } from 'antd';
 import { Content } from 'antd/lib/layout/layout';
 import PrivateRoute from '../common/PrevateRoute';
-import { Switch } from '@material-ui/core';
 
 function App() {    
     let history = useHistory();
