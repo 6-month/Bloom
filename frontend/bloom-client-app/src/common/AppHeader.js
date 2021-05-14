@@ -65,8 +65,9 @@ function AppHeader(props) {
             </Menu.Item>,
             <Menu.Item key="/profile" className="profile-menu">
                 <ProfileDropdownMenu 
-                currentUser={props.currentUser} 
-                handleMenuClick={handleMenuClick}/>
+                  currentUser={props.currentUser} 
+                  handleMenuClick={handleMenuClick}
+                />
             </Menu.Item>
         ];
     }

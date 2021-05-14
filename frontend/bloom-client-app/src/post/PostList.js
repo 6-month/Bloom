@@ -22,6 +22,10 @@ function PostList({currentUser, username, type}) {
         loadPostList();
     },[])
 
+    useEffect(() => {
+        loadPostList();
+    }, [username])
+
     const loadPostList = (page = 0, size = POST_LIST_SIZE) => {
         let promise;
         if(username) {

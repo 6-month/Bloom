@@ -3,22 +3,14 @@ import { checkingFollow, followUser, unfollowUser } from '../../util/APIUtils';
 import { UserDeleteOutlined, UserAddOutlined } from '@ant-design/icons';
 import {Button, notification} from "antd";
 
-function Follow({user, currentUser, totalFollower, totalFollowing}) {
-    const [profileCheck, setProfileCheck] = useState(null);    
+function Follow({user, currentUser, totalFollower, totalFollowing}) {  
     const [followState, setFollowState] = useState(false);
 
     const [tFollower, setTotalFollower] = useState(totalFollower);
     const [tFollowing, setTotalFolwing] = useState(totalFollowing);
 
     useEffect(() => {
-
-        if(user.username === currentUser.username) {
-            setProfileCheck(true)
-        }
-        else {
-            setProfileCheck(false)
-
-            checkingFollow(user.username)
+        checkingFollow(user.username)
             .then(response => {
                 if(response.result) {
                     console.log("followed")
@@ -32,7 +24,6 @@ function Follow({user, currentUser, totalFollower, totalFollowing}) {
             .catch(error => {
                 console.log(error.message)
             })
-        }
     }, [])
 
     const handleFollowcChanged = () => {
@@ -90,8 +81,8 @@ function Follow({user, currentUser, totalFollower, totalFollowing}) {
                             onClick={handleFollowcChanged}
                         >
                         </Button>
-                        <span>totalFollowers : {totalFollower}</span>
-                        <span>totalFollwings ; {totalFollowing}</span>
+                        <span>totalFollowers : {tFollower}</span>
+                        <span>totalFollwings ; {tFollowing}</span>
                     </div>
                 ) : (
                     // follow를 할것임을 표시
@@ -103,8 +94,8 @@ function Follow({user, currentUser, totalFollower, totalFollowing}) {
                             onClick={handleFollowcChanged}
                         >
                         </Button>
-                        <span>totalFollowers : {totalFollower}</span>
-                        <span>totalFollwings ; {totalFollowing}</span>
+                        <span>totalFollowers : {tFollower}</span>
+                        <span>totalFollwings ; {tFollowing}</span>
                     </div>
                 )
             }
