@@ -17,6 +17,7 @@ import LoadingIndicator from '../common/LoadingIndicator';
 import {Layout ,Button, notification } from 'antd';
 import { Content } from 'antd/lib/layout/layout';
 import PrivateRoute from '../common/PrevateRoute';
+import EditProfile from '../user/profile/EditProfile';
 
 function App() {    
     let history = useHistory();
@@ -111,6 +112,16 @@ function App() {
                 isAuthenticated={isAuthenticated} 
                 currentUser={currentUser} 
               />}
+          />
+          <Route 
+            path="/accounts/edit"
+            render = {(props) => 
+              <EditProfile
+                {...props}
+                isAuthenticated={isAuthenticated} 
+                currentUser={currentUser} 
+               />
+            }
           />
           <PrivateRoute authenticated={isAuthenticated} path="/post/new" component={NewPost} ></PrivateRoute>
         </Content> 

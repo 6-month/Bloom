@@ -16,7 +16,6 @@ function NewPost() {
   const [images, setImages] = useState({
     value : [],
   });
-  const [postData, setPostData] = useState(null);
 
   const isFormInvalid = () => {
     return !(
@@ -24,9 +23,6 @@ function NewPost() {
       images.validateStatus === 'success' 
     )
   }
-  useEffect(() => {
-    console.log(images)
-  },[images])
 
   const onChangedContent = (e) => {
     var {value} = e.target;

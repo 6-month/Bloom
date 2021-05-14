@@ -144,3 +144,11 @@ export function checkingFollow(username) {
         method : "GET"
     })
 }
+
+export function editUserInfo(UserEditInfo) {
+    return request({
+        url : API_BASE_URL + "/accounts/edit",
+        method : "POST",
+        body : JSON.stringify(UserEditInfo)
+    })
+}

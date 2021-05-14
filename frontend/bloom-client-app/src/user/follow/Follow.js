@@ -32,8 +32,8 @@ function Follow({user, currentUser, totalFollower, totalFollowing}) {
         if(followState) {
             unfollowUser(user.username)
                 .then(response => {
-                    setTotalFollower(response.totalFollower)
-                    setTotalFollower(response.totalFollowing)
+                    setTotalFollower(response.totalFollowers)
+                    setTotalFolwing(response.totalFollowings)
                     notification.success({
                         message: "Bloom",
                         description: "Successfully unfollowed"
@@ -51,8 +51,8 @@ function Follow({user, currentUser, totalFollower, totalFollowing}) {
         else {
             followUser(user.username)
                 .then(response => {
-                    setTotalFollower(response.totalFollower)
-                    setTotalFollower(response.totalFollowing)
+                    setTotalFollower(response.totalFollowers)
+                    setTotalFolwing(response.totalFollowings)
                     notification.success({
                         message: "Bloom",
                         description: "Successfully followed"
