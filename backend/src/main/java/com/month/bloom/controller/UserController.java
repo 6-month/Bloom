@@ -16,6 +16,7 @@ import com.month.bloom.model.User;
 import com.month.bloom.model.UserProfileImage;
 import com.month.bloom.payload.ApiResponse;
 import com.month.bloom.payload.FollowCheckResponse;
+import com.month.bloom.payload.FollowResponse;
 import com.month.bloom.payload.PagedResponse;
 import com.month.bloom.payload.PostResponse;
 import com.month.bloom.payload.UserIdentityAvailability;
@@ -122,28 +123,22 @@ public class UserController {
     
     //username : follow를 할 User의 username
     @GetMapping("/users/{username}/follow")
-    public ResponseEntity<?> followUser(@CurrentUser UserPrincipal currentUser, 
-    								@PathVariable(value = "username") String username) {    	
-    	User user = userRepository.findByUsername(username)
-    			.orElseThrow(() ->  new ResourceNotFoundException("User", "username", username));
-    	
-    	followService.followUser(currentUser, user);
-    	
-    	return ResponseEntity.created(null)
-    			.body(new ApiResponse(true, "Successfully followed"));
-    	
+    public FollowResponse followUser(@CurrentUser UserPrincipal currentUser, 
+			@PathVariable(value = "username") String username) {    	
+		User user = userRepository.findByUsername(username)
+				.orElseThrow(() ->  new ResourceNotFoundException("User", "username", username));
+		
+		return followService.followUser(currentUser, user);
+  	
     }
     
     @GetMapping("/users/{username}/unfollow")
-    public ResponseEntity<?> unfollowUser(@CurrentUser UserPrincipal currentUser, 
+    public FollowResponse unfollowUser(@CurrentUser UserPrincipal currentUser, 
     								@PathVariable(value = "username") String username) {    	
     	User user = userRepository.findByUsername(username)
     			.orElseThrow(() ->  new ResourceNotFoundException("User", "username", username));
     	
-    	followService.unfollowUser(currentUser, user);
-    	
-    	return ResponseEntity.created(null)
-    			.body(new ApiResponse(true, "Successfully unFollowed"));
+    	return followService.unfollowUser(currentUser, user);
     	
     }
     

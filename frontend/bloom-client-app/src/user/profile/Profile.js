@@ -35,13 +35,13 @@ function Profile(props) {
             .catch(error => {
                 console.log(error.message)
             })
+        
     } 
 
-    const follow = (username) => {
-        setIsLoading(true);
-
-    }
-
+    useEffect(() => {
+        console.log(user)
+    }, [user])
+    
     return (
         <div className="profile">
 
@@ -58,7 +58,10 @@ function Profile(props) {
                                 </Avatar>
                             </div>
                             <div className="follow-container">
-                                <Follow user={user} currentUser={props.currentUser} />
+                                <Follow 
+                                    user={user} currentUser={props.currentUser} 
+                                    totalFollower={user.totalFollowers} totalFollowing={user.totalFollowings}
+                                />
                             </div>
                             <div className="user-summary">
                                 <div className="full-name">{user.name}</div>
@@ -66,8 +69,8 @@ function Profile(props) {
                                 <div className="user-joined">
                                     Joined {formatDateTime(user.joinedAt)}
                                 </div>
-                                <div className="followers">Followers : {user.totalFollowers}</div>
-                                <div className="followings">Followings : {user.totalFollowings}</div>
+                                {/* <div className="followers">Followers : {user.totalFollowers}</div> */}
+                                {/* <div className="followings">Followings : {user.totalFollowings}</div> */}
                             </div>
                         </div>
                         <div className="user-post-list">
