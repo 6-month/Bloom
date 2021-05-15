@@ -16,7 +16,6 @@ import com.month.bloom.model.User;
 import com.month.bloom.model.UserProfileImage;
 import com.month.bloom.payload.ApiResponse;
 import com.month.bloom.payload.FollowCheckResponse;
-import com.month.bloom.payload.FollowResponse;
 import com.month.bloom.payload.PagedResponse;
 import com.month.bloom.payload.PostResponse;
 import com.month.bloom.payload.UserIdentityAvailability;
@@ -35,44 +34,44 @@ import com.month.bloom.util.AppConstants;
 @RestController
 @RequestMapping("/api")
 public class UserController {
-	
-	@Autowired
-	private UserRepository userRepository;
-	
-	@Autowired
-	private PostRepository postRepository;
-	
-	@Autowired
-	private LikeRepository likeRepository;
-	
-	@Autowired
-	private FollowRepository followRepository;
-	
-	@Autowired
-	private PostService postService;
-	
-	@Autowired
-	private FollowService followService;
-	
-	private static final Logger logger = LoggerFactory.getLogger(UserController.class);
+   
+   @Autowired
+   private UserRepository userRepository;
+   
+   @Autowired
+   private PostRepository postRepository;
+   
+   @Autowired
+   private LikeRepository likeRepository;
+   
+   @Autowired
+   private FollowRepository followRepository;
+   
+   @Autowired
+   private PostService postService;
+   
+   @Autowired
+   private FollowService followService;
+   
+   private static final Logger logger = LoggerFactory.getLogger(UserController.class);
 
-	@GetMapping("/user/me")
-	@PreAuthorize("hasRole('USER')")
+   @GetMapping("/user/me")
+   @PreAuthorize("hasRole('USER')")
     public UserSummary getCurrentUser(@CurrentUser UserPrincipal currentUser) {
         User user = userRepository.getOne(currentUser.getId());
-		
+      
         if(user.getUserProfileImage() != null) {
-	        UserSummary userSummary = 
-	        		new UserSummary(currentUser.getId(), currentUser.getUsername(), currentUser.getName(), user.getUserProfileImage().getData());
-	        return userSummary;
+           UserSummary userSummary = 
+                 new UserSummary(currentUser.getId(), currentUser.getUsername(), currentUser.getName(), user.getUserProfileImage().getData());
+           return userSummary;
         }
         else {
-        	UserSummary userSummary = 
-	        		new UserSummary(currentUser.getId(), currentUser.getUsername(), currentUser.getName(), null);
-	        return userSummary;
+           UserSummary userSummary = 
+                 new UserSummary(currentUser.getId(), currentUser.getUsername(), currentUser.getName(), null);
+           return userSummary;
         }
     }
-	
+   
     @GetMapping("/user/checkUsernameAvailability")
     public UserIdentityAvailability checkUsernameAvailability(@RequestParam(value = "username") String username) {
         Boolean isAvailable = !userRepository.existsByUsername(username);
@@ -85,32 +84,99 @@ public class UserController {
         return new UserIdentityAvailability(isAvailable);
     }
     
+    @GetMapping("user/checkEditUsernameAvailability")
+    public UserIdentityAvailability checkEditUsernameAvailability(@RequestParam(value = "username") String username,
+                                     @CurrentUser UserPrincipal currentUser) {
+       Boolean isAvailable;
+       if(!userRepository.existsByUsername(username)) {
+          isAvailable = true;
+          return new UserIdentityAvailability(isAvailable);
+       }else {
+          if(username.equals(currentUser.getUsername())) {
+             isAvailable = true;
+             return new UserIdentityAvailability(isAvailable);
+          }
+          else {
+             isAvailable = false;
+             return new UserIdentityAvailability(isAvailable);
+          }
+       }
+    }
+    
+    @GetMapping("user/checkEditEmailAvailability")
+    public UserIdentityAvailability checkEditEmailAvailability(@RequestParam(value = "email") String email,
+                                     @CurrentUser UserPrincipal currentUser) {
+       Boolean isAvailable;
+       if(!userRepository.existsByEmail(email)) {
+          isAvailable = true;
+          return new UserIdentityAvailability(isAvailable);
+       }else {
+          if(email.equals(currentUser.getEmail())){
+             isAvailable = true;
+             return new UserIdentityAvailability(isAvailable);
+          }
+          else {
+             isAvailable = false;
+             return new UserIdentityAvailability(isAvailable);
+          }
+       }
+    }
+    
     // profile
     @GetMapping("users/{username}")
     public UserProfile getUserProfile(@PathVariable(value= "username") String username) {
-    	User user = userRepository.findByUsername(username)
-    			.orElseThrow(() -> new ResourceNotFoundException("User", "username", username));
-    	
-    	Long postCount = postRepository.countByCreatedBy(user.getId());
-    	
-    	// total followers : count(following_id = user_id)
-    	// total followings : count(follower_id = user_id)
-    	Long totalFollowers = followRepository.countByFollowerId(user.getId());
-    	
-    	Long totalFollowings = followRepository.countByFollowingId(user.getId());
-    	
-    	UserProfileImage userProfileImage = user.getUserProfileImage();
-    			
-    	if(userProfileImage != null ) {
-    		UserProfile userProfile = new UserProfile(user.getId(), user.getUsername(),
-        			user.getName(), user.getCreatedAt(), postCount, userProfileImage.getData(), totalFollowers, totalFollowings);
-    		return userProfile;
-    	}
-		UserProfile userProfile = new UserProfile(user.getId(), user.getUsername(),
-			user.getName(), user.getCreatedAt(), postCount, null, totalFollowers, totalFollowings);
-    	
-    	
-    	return userProfile;
+       User user = userRepository.findByUsername(username)
+             .orElseThrow(() -> new ResourceNotFoundException("User", "username", username));
+       
+       Long postCount = postRepository.countByCreatedBy(user.getId());
+       
+       // total followers : count(following_id = user_id)
+       // total followings : count(follower_id = user_id)
+       Long totalFollowers = followRepository.countByFollowerId(user.getId());
+       
+       Long totalFollowings = followRepository.countByFollowingId(user.getId());
+       
+       UserProfileImage userProfileImage = user.getUserProfileImage();
+             
+       if(userProfileImage != null ) {
+          if(user.getBio() != null) {
+             if(user.getPhoneNumber() != null) {
+                UserProfile userProfile = new UserProfile(user.getId(), user.getUsername(),
+                        user.getName(), user.getCreatedAt(), postCount, userProfileImage.getData(),
+                        totalFollowers, totalFollowings, user.getBio(), user.getPhoneNumber());
+                 return userProfile;
+             }
+             else {
+                UserProfile userProfile = new UserProfile(user.getId(), user.getUsername(),
+                        user.getName(), user.getCreatedAt(), postCount, userProfileImage.getData(),
+                        totalFollowers, totalFollowings, user.getBio(), null);
+                 return userProfile;
+             }
+          }
+          UserProfile userProfile = new UserProfile(user.getId(), user.getUsername(),
+                 user.getName(), user.getCreatedAt(), postCount, userProfileImage.getData(), totalFollowers, totalFollowings, null, null);
+          return userProfile;
+       }
+       else {
+          if(user.getBio() != null) {
+             if(user.getPhoneNumber() != null) {
+                UserProfile userProfile = new UserProfile(user.getId(), user.getUsername(),
+                       user.getName(), user.getCreatedAt(), postCount, null, 
+                       totalFollowers, totalFollowings, user.getBio(), user.getPhoneNumber());
+                  return userProfile;
+             }
+             else {
+                UserProfile userProfile = new UserProfile(user.getId(), user.getUsername(),
+                       user.getName(), user.getCreatedAt(), postCount, null, 
+                       totalFollowers, totalFollowings, user.getBio(), null);
+                  return userProfile;
+             }
+          }
+          UserProfile userProfile = new UserProfile(user.getId(), user.getUsername(),
+                user.getName(), user.getCreatedAt(), postCount, null, 
+                totalFollowers, totalFollowings, null, null);
+           return userProfile;
+       }       
     }
     
     @GetMapping("/users/{username}/posts")
@@ -123,37 +189,43 @@ public class UserController {
     
     //username : follow를 할 User의 username
     @GetMapping("/users/{username}/follow")
-    public FollowResponse followUser(@CurrentUser UserPrincipal currentUser, 
-			@PathVariable(value = "username") String username) {    	
-		User user = userRepository.findByUsername(username)
-				.orElseThrow(() ->  new ResourceNotFoundException("User", "username", username));
-		
-		return followService.followUser(currentUser, user);
-  	
+    public ResponseEntity<?> followUser(@CurrentUser UserPrincipal currentUser, 
+                            @PathVariable(value = "username") String username) {       
+       User user = userRepository.findByUsername(username)
+             .orElseThrow(() ->  new ResourceNotFoundException("User", "username", username));
+       
+       followService.followUser(currentUser, user);
+       
+       return ResponseEntity.created(null)
+             .body(new ApiResponse(true, "Successfully followed"));
+       
     }
     
     @GetMapping("/users/{username}/unfollow")
-    public FollowResponse unfollowUser(@CurrentUser UserPrincipal currentUser, 
-    								@PathVariable(value = "username") String username) {    	
-    	User user = userRepository.findByUsername(username)
-    			.orElseThrow(() ->  new ResourceNotFoundException("User", "username", username));
-    	
-    	return followService.unfollowUser(currentUser, user);
-    	
+    public ResponseEntity<?> unfollowUser(@CurrentUser UserPrincipal currentUser, 
+                            @PathVariable(value = "username") String username) {       
+       User user = userRepository.findByUsername(username)
+             .orElseThrow(() ->  new ResourceNotFoundException("User", "username", username));
+       
+       followService.unfollowUser(currentUser, user);
+       
+       return ResponseEntity.created(null)
+             .body(new ApiResponse(true, "Successfully unFollowed"));
+       
     }
     
     // follow checking
     @GetMapping("/users/{username}/checking")
     public FollowCheckResponse checkingFollow(@CurrentUser UserPrincipal currentUser,
-    		@PathVariable(value = "username") String username) {
-    	
-    	User followingUser = userRepository.findByUsername(username)
-    					.orElseThrow(() ->  new ResourceNotFoundException("User", "username", username));
+          @PathVariable(value = "username") String username) {
+       
+       User followingUser = userRepository.findByUsername(username)
+                   .orElseThrow(() ->  new ResourceNotFoundException("User", "username", username));
     
-    	User followerUser = userRepository.findByUsername(currentUser.getUsername())
-    			.orElseThrow(() ->  new ResourceNotFoundException("User", "username", currentUser.getUsername()));
+       User followerUser = userRepository.findByUsername(currentUser.getUsername())
+             .orElseThrow(() ->  new ResourceNotFoundException("User", "username", currentUser.getUsername()));
     
-    	return followService.checkingFollow(followingUser, followerUser);
+       return followService.checkingFollow(followingUser, followerUser);
     }
     
     
