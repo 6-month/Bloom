@@ -20,6 +20,7 @@ function Profile(props) {
     
     const [isLoading, setIsLoading] = useState(false);
     
+
     useEffect(() => {
         // loadUserProfile (username) => username 자리에 db에 등록된 username을 입력하면 해당 유저의 profile정보를 표시해줌
         loadUserProfile(params.username);

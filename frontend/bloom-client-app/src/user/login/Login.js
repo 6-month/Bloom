@@ -18,9 +18,6 @@ function Login() {
                     message: 'Bloom',
                     description: "You're successfully logged in.",
                   });
-                // history.push({
-                //     pathname : '/',
-                // })
                 window.location.replace("/bloom");
             })
             .catch(error => {

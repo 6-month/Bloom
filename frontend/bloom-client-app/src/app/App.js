@@ -93,9 +93,8 @@ function App() {
             render = {(props) => 
               <PostList 
                 {...props}
-                isAuthenticated={isAuthenticated} 
                 currentUser={currentUser} 
-                handleLogout={handleLogout}
+                onLogout={handleLogout}
               />}
           />
           <Route 

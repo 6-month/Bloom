@@ -7,6 +7,7 @@ import Post from './Post';
 import Icon from '@ant-design/icons';
 import "./PostList.css";
 import NotFound from '../common/NotFound';
+ 
 
 function PostList({currentUser, username, type}) {
     const [posts, setPosts] =useState([]);

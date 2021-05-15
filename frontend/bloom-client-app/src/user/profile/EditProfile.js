@@ -14,7 +14,7 @@ import {
 const FormItem = Form.Item;
 
 function EditProfileImage() {
-    const [images, setImages] = useState({
+    const [images, setImages] =  useState({
         value : null,
     })
 
@@ -26,10 +26,6 @@ function EditProfileImage() {
             errorMsg : null
         })
     }
-
-    useEffect(() => {
-        console.log(images)
-    }, [images])
 
     const handleImageSubmit = (e) => {
         e.preventDefault();
@@ -105,8 +101,44 @@ function EditProfileImage() {
 
 function EditProfile({currentUser}) {
     // 현재 edit 하고 있는 유저의 username, email을 제외하고 validate를 진행하는 코드를 만들어야함.
-
     const [user, setUser] = useState(null);
+
+    useEffect(() => {   
+        // 새로 리랜더링하면 에러나는건 react의 특징인가?
+        console.log(currentUser.username)
+        loadUserProfile(currentUser.username)
+    }, [])
+
+    const loadUserProfile = (username) => {
+
+        getUserProfile(username)
+            .then(response => {
+                setUser(response);
+            })
+            .catch(error => {
+                console.log(error.message)
+            })
+    } 
+
+    useEffect(() => {
+        console.log(user)
+
+        setName({
+            value : user.name
+        })
+        setUsername({
+            value : user.username
+        })
+        setEmail({
+            value : user.email
+        })
+        setPhoneNumber({
+            value : user.phoneNumber
+        })
+        setBio({
+            value : user.bio
+        })
+    }, [user])
 
     const [name, setName] = useState({
         value : '',
@@ -123,15 +155,6 @@ function EditProfile({currentUser}) {
     const [phoneNumber, setPhoneNumber] = useState({
         value : '',
     })
-
-    useEffect(() => {   
-        // 새로 리랜더링하면 에러나는건 react의 특징인가?
-        loadUserProfile(currentUser.username)
-    }, [])
-
-    useEffect(() => {
-        console.log(user)
-    }, [user])
 
     const handleEditSubmit = () => {
         const UserEditInfo = {
@@ -197,7 +220,7 @@ function EditProfile({currentUser}) {
     const onChangedPhoneNumber = (event) => {
         var { value } = event.target;
 
-        setBio({
+        setPhoneNumber({
             ...phoneNumber,
             value : value,
             validateStatus : 'success',
@@ -269,17 +292,6 @@ function EditProfile({currentUser}) {
 
     }, [email])
 
-    const loadUserProfile = (username) => {
-
-        getUserProfile(username)
-            .then(response => {
-                setUser(response);
-            })
-            .catch(error => {
-                console.log(error.message)
-            })
-    } 
-
     const validateName = () => {
         if((name.value !== undefined) && (name.value.length < NAME_MIN_LENGTH)) {
             return {
@@ -350,7 +362,7 @@ function EditProfile({currentUser}) {
     return (
         <div className="edit-profile-container">
             <EditProfileImage />
-            {/* <Form
+            <Form
                 onFindish
                 requiredMark="true"
             >
@@ -363,7 +375,7 @@ function EditProfile({currentUser}) {
                         size="large"
                         name="name"
                         authoComplete="off"
-                        placeholder="Please input your full name!"
+                        placeholder={name.value || "Please input your full name!"}
                         allowClear="true"
                         onChange={(e) => {onChangedName(e)}}
                     />
@@ -378,7 +390,7 @@ function EditProfile({currentUser}) {
                         size="large"
                         name="username"
                         authoComplete="off"
-                        placeholder="Please input your username!"
+                        placeholder={username.value || "Please input your username!"}
                         allowClear="true"
                         onChange={(e) => {onChangedUsername(e)}}
                     />
@@ -393,7 +405,7 @@ function EditProfile({currentUser}) {
                         size="large"
                         name="email"
                         authoComplete="off"
-                        placeholder="Please input your email!"
+                        placeholder={email.value || "Please input your email!"}
                         onChange={(e) => {onChangedEmail(e)}}
                     />
                 </FormItem>
@@ -407,7 +419,7 @@ function EditProfile({currentUser}) {
                         size="large"
                         name="bio"
                         authoComplete="off"
-                        placeholder="personal information"
+                        placeholder={bio.value || "personal information"}
                         onChange={(e) => {onChangedBio(e)}}
                     />
                 </FormItem>
@@ -421,7 +433,7 @@ function EditProfile({currentUser}) {
                         size="large"
                         name="phoneNumber"
                         authoComplete="off"
-                        placeholder="Please input your phoneNumber"
+                        placeholder={phoneNumber.value || "Please input your phoneNumber"}
                         onChange={(e) => {onChangedPhoneNumber(e)}}
                     />
                 </FormItem>
@@ -439,7 +451,7 @@ function EditProfile({currentUser}) {
                         Save
                     </Button>
                 </FormItem>
-            </Form> */}
+            </Form>
         </div>
     );
 }

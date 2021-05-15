@@ -1,8 +1,9 @@
 import React, { useEffect } from 'react';
 import {Link, useLocation } from 'react-router-dom';
-import { Menu, Dropdown, PageHeader} from 'antd';
-import { HomeOutlined, UserOutlined } from '@ant-design/icons';
-import postIcon from '../post.svg';
+import { Menu, Dropdown } from 'antd';
+import { HomeOutlined, UserOutlined,EditOutlined } from '@ant-design/icons';
+import logo from '../img/Bloom_logo.png';
+
 import './AppHeader.css';
 
 function ProfileDropdownMenu(props) {
@@ -53,15 +54,15 @@ function AppHeader(props) {
     let menuItems;
     if(props.currentUser !== null) {
         menuItems = [
-            <Menu.Item key ="/">
-                <Link to="/">
-                    <HomeOutlined className="nav-icon" />
-                </Link>
+            <Menu.Item>
+              <Link to="/bloom">
+                  <HomeOutlined  />
+              </Link>
             </Menu.Item>,
-            <Menu.Item key ="/post/new">
-                <Link to="/post/new">
-                    <img src={postIcon} alt="" className="nav-icon"/>
-                </Link>
+            <Menu.Item>
+              <Link to='/post/new'>
+                <EditOutlined />
+              </Link>
             </Menu.Item>,
             <Menu.Item key="/profile" className="profile-menu">
                 <ProfileDropdownMenu 
@@ -82,22 +83,19 @@ function AppHeader(props) {
         ]
     }
     return (
-        <PageHeader className="app-header">
-          <div className="container">
-            <div className="app-title">
-                <Link to="/">Bloom</Link>
-            </div>
-            <div className="app-body">
-              <Menu
-                className="app-menu"
-                mode="horizontal"
-                selectedKeys={[location.pathname]}
-                  >
-                  {menuItems}
-              </Menu>
-            </div>
-          </div>
-        </PageHeader>
+      <div className="nav">
+        <img
+          src={logo}
+          className="logo_size"
+        />
+        <Menu
+          className="app-menu"
+          mode="horizontal"
+          selectedKeys={[location.pathname]}
+            >
+            {menuItems}
+        </Menu>
+    </div>
     );
 }
 

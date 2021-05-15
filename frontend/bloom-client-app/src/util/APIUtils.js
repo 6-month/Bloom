@@ -69,6 +69,19 @@ export function checkEmailAvailability(email) {
     });
 }
 
+export function checkEditUsernameAvailability(username) {
+    return request({
+        url : API_BASE_URL + "/user/checkEditUsernameAvailability?username=" +username,
+        method: 'GET'
+    });
+}
+
+export function checkEditEmailAvailability(email) {
+    return request({
+        url : API_BASE_URL + "/user/checkEditEmailAvailability?email=" +email,
+        method: 'GET'
+    });
+}
 
 export function getCurrentUser() {
     if(!localStorage.getItem(ACCESS_TOKEN)) {
