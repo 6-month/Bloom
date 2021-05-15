@@ -73,7 +73,12 @@ function PostList({currentUser, username, type}) {
     })
     return (
         <div className="posts-container">
-            {postViews}
+            <div className="post-body">
+                {postViews}
+            </div>
+            <div className="flower-container">
+                <span>flower</span>
+            </div>
             {
                 isLoading && posts.length === 0 ? (
                     <div className="no-posts-found">

@@ -19,6 +19,8 @@ import { Content } from 'antd/lib/layout/layout';
 import PrivateRoute from '../common/PrevateRoute';
 import EditProfile from '../user/profile/EditProfile';
 
+import "./App.css"
+
 function App() {    
     let history = useHistory();
 
@@ -77,13 +79,12 @@ function App() {
     }
 
     return (  
-      <Layout className="app-container">
+      <div className="app-container">
           <AppHeader 
             isAuthenticated={isAuthenticated}
             currentUser={currentUser} 
             onLogout={handleLogout} 
           />
-        <Content className="app-content">
           <Route 
             exact path="/"
             component={Intro}
@@ -123,8 +124,7 @@ function App() {
             }
           />
           <PrivateRoute authenticated={isAuthenticated} path="/post/new" component={NewPost} ></PrivateRoute>
-        </Content> 
-      </Layout>
+      </div>
     );
 }
 
