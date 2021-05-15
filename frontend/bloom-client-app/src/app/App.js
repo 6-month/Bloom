@@ -123,7 +123,7 @@ function App() {
                />
             }
           />
-          <PrivateRoute authenticated={isAuthenticated} path="/post/new" component={NewPost} ></PrivateRoute>
+          <Route authenticated={isAuthenticated} path="/post/new" component={NewPost} ></Route>
       </div>
     );
 }
