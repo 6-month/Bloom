@@ -1,29 +1,30 @@
 import Avatar from 'antd/lib/avatar/avatar';
-import React ,{ useCallback, useEffect, useState } from 'react';
+import React ,{useEffect, useState } from 'react';
 import PostList from '../../post/PostList';
 import Follow from '../follow/Follow';
-import { checkingFollow, getCurrentUser, getUserCreatedPosts, getUserProfile } from '../../util/APIUtils';
+import {  getCurrentUser, getUserProfile } from '../../util/APIUtils';
 import {getAvatarColor} from '../../util/Colors';
 import { formatDateTime } from '../../util/Helpers';
 import "./Profile.css";
 import EditProfile from './EditProfile';
-
+import { Button } from 'antd';
+import {useHistory} from "react-router-dom"
 
 function Profile(props) {
     // console을 한번 찍을줄 알았는데 4번 찍는다 이유는?
+    const history = useHistory();
 
     let params = props.match.params;
     const [profileCheck, setProfileCheck] = useState(null);  
     const [user, setUser] = useState(null);
     
     const [isLoading, setIsLoading] = useState(false);
-
-    const profileUrl = "/users/" + params.username;
     
+
     useEffect(() => {
         // loadUserProfile (username) => username 자리에 db에 등록된 username을 입력하면 해당 유저의 profile정보를 표시해줌
         loadUserProfile(params.username);
-
+        console.log(params.username)
         // props.currentUser.username 으로 해결하기 힘들어서 임시방편으로 만듬...
         getCurrentUser()
             .then(response => {
@@ -35,10 +36,6 @@ function Profile(props) {
                 }
             })
     },[])
-
-    useEffect(() => {
-        console.log("profileCheck : "+profileCheck)
-    }, [profileCheck])
 
     useEffect(() => {
         loadUserProfile(params.username)
@@ -54,6 +51,10 @@ function Profile(props) {
             })
     }, [params.username])
 
+    useEffect(() => {
+        console.log(user)
+    }, [user])
+
     // 왜 새로고침을 했을때 currentUser 정보를 읽어올수 없는걸까??
             // 새로고침시 currentUser 자체는 읽어 오지만 currentUser의 데이터들은 null로 읽고 있다.
 
@@ -62,6 +63,7 @@ function Profile(props) {
 
         getUserProfile(username)
             .then(response => {
+                console.log(response)
                 setUser(response);
                 setIsLoading(false);
             })
@@ -69,6 +71,10 @@ function Profile(props) {
                 console.log(error.message)
             })
     } 
+
+    const pushEditComponent = () => {
+        history.push("/accounts/edit")
+    }
 
     return (
         <div className="profile">
@@ -88,19 +94,19 @@ function Profile(props) {
                             <div className="follow-container">
                                 {
                                     profileCheck ? (
-                                        <EditProfile />
-                                    ) :  (
+                                        <Button 
+                                            onClick={pushEditComponent}
+                                        >
+                                            Edit
+                                        </Button>
+                                        
+                                    ) : (
                                         <Follow 
                                             user={user} currentUser={props.currentUser} 
                                             totalFollower={user.totalFollowers} totalFollowing={user.totalFollowings}
                                         />
                                     )
                                 }
-                                    {/* <Follow 
-                                        user={user} currentUser={props.currentUser} 
-                                        totalFollower={user.totalFollowers} totalFollowing={user.totalFollowings}
-                                    /> */}
-                                
                             </div>
                             <div className="user-summary">
                                 <div className="full-name">{user.name}</div>
@@ -108,8 +114,9 @@ function Profile(props) {
                                 <div className="user-joined">
                                     Joined {formatDateTime(user.joinedAt)}
                                 </div>
-                                {/* <div className="followers">Followers : {user.totalFollowers}</div> */}
-                                {/* <div className="followings">Followings : {user.totalFollowings}</div> */}
+                            </div>
+                            <div className="user-bio-container">
+                                Bio : {user.bio}
                             </div>
                         </div>
                         <div className="user-post-list">
@@ -117,19 +124,6 @@ function Profile(props) {
                         </div>
                     </div>
                 ) : null
-            }
-            {
-                /**
-                 * 1. 자신의 프로필이면 Edit Profile 버튼을 추가한다. 
-                 * 2. 자신의 프로필이면 Follow버튼이 보여지면 안된다. 
-                 * 3. 다른 사람의 프로필이면 Follow를 할 수 있는 버튼을 보이게 만든다.
-                 * 4. 만약 follow되어있는 사람이라면 unfollow를 보여줘야한다.
-                    
-                cf) 검색 기능을 구현해야함 
-                */
-            }
-            {
-
             }
         </div>
     );

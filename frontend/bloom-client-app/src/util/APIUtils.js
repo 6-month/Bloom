@@ -69,6 +69,19 @@ export function checkEmailAvailability(email) {
     });
 }
 
+export function checkEditUsernameAvailability(username) {
+    return request({
+        url : API_BASE_URL + "/user/checkEditUsernameAvailability?username=" +username,
+        method: 'GET'
+    });
+}
+
+export function checkEditEmailAvailability(email) {
+    return request({
+        url : API_BASE_URL + "/user/checkEditEmailAvailability?email=" +email,
+        method: 'GET'
+    });
+}
 
 export function getCurrentUser() {
     if(!localStorage.getItem(ACCESS_TOKEN)) {
@@ -142,5 +155,13 @@ export function checkingFollow(username) {
     return request({
         url: API_BASE_URL + "/users/" + username + "/checking",
         method : "GET"
+    })
+}
+
+export function editUserInfo(UserEditInfo) {
+    return request({
+        url : API_BASE_URL + "/accounts/edit",
+        method : "POST",
+        body : JSON.stringify(UserEditInfo)
     })
 }
