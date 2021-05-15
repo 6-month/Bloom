@@ -93,10 +93,6 @@ function PostList({currentUser, username, type}) {
                 isLoading ? 
                 <LoadingIndicator /> : null
             }
-            {
-                // totalElements ? 
-                //     null : <NotFound />
-            }
         </div>
     );
 }

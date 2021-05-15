@@ -3,7 +3,7 @@ import './EditProfile.css';
 import {Form, Input, notification, Button} from 'antd';
 import {post} from 'axios';
 import { getCurrentUser, getUserProfile } from '../../util/APIUtils';
-import {  checkUsernameAvailability, checkEmailAvailability, editUserInfo } from '../../util/APIUtils';
+import {  checkEditUsernameAvailability, checkEditEmailAvailability, editUserInfo } from '../../util/APIUtils';
 import { 
     NAME_MIN_LENGTH, NAME_MAX_LENGTH, 
     USERNAME_MIN_LENGTH, USERNAME_MAX_LENGTH,
@@ -123,21 +123,22 @@ function EditProfile({currentUser}) {
     useEffect(() => {
         console.log(user)
 
-        setName({
-            value : user.name
-        })
-        setUsername({
-            value : user.username
-        })
-        setEmail({
-            value : user.email
-        })
-        setPhoneNumber({
-            value : user.phoneNumber
-        })
-        setBio({
-            value : user.bio
-        })
+        // setName({
+        //     value : user.name
+        // })
+        // setUsername({
+        //     value : user.username
+        // })
+        // setEmail({
+        //     value : user.email
+        // })
+        // setPhoneNumber({
+        //     value : user.phoneNumber
+        // })
+        // setBio({
+        //     value : user.bio
+        // })
+
     }, [user])
 
     const [name, setName] = useState({
@@ -158,10 +159,15 @@ function EditProfile({currentUser}) {
 
     const handleEditSubmit = () => {
         const UserEditInfo = {
+            userId : user.id,
             name : name.value,
             username : username.value,
             email : email.value,
+            bio : bio.value,
+            phoneNumber : phoneNumber.value
         };
+
+        const profileURL = "/users/" + user.username;
 
         editUserInfo(UserEditInfo)
             .then(response => {
@@ -169,6 +175,7 @@ function EditProfile({currentUser}) {
                     message: 'Polling App',
                     description: "Thank you! You're successfully registered. Please Login to continue!",
                 }); 
+                window.location.replace(profileURL);
             }).catch(error => {
                 notification.error({
                     message: 'Polling App',
@@ -230,8 +237,9 @@ function EditProfile({currentUser}) {
 
     useEffect(() => {
         if(username.validateStatus === null){
-            checkUsernameAvailability(username.value)
+            checkEditUsernameAvailability(username.value)
                 .then(response => {
+                    console.log(response)
                     if(response.available){
                         setUsername({
                             ...username,
@@ -262,7 +270,7 @@ function EditProfile({currentUser}) {
 
     useEffect(() => {
         if(email.validateStatus === null) {
-            checkEmailAvailability(email.value)
+            checkEditEmailAvailability(email.value)
                 .then(response => {
                     if(response.available) {
                         setEmail({
@@ -365,6 +373,7 @@ function EditProfile({currentUser}) {
             <Form
                 onFindish
                 requiredMark="true"
+                onFinish={handleEditSubmit}
             >
                 <FormItem
                     label="Full Name"

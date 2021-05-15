@@ -24,7 +24,7 @@ function Profile(props) {
     useEffect(() => {
         // loadUserProfile (username) => username 자리에 db에 등록된 username을 입력하면 해당 유저의 profile정보를 표시해줌
         loadUserProfile(params.username);
-
+        console.log(params.username)
         // props.currentUser.username 으로 해결하기 힘들어서 임시방편으로 만듬...
         getCurrentUser()
             .then(response => {
@@ -51,6 +51,10 @@ function Profile(props) {
             })
     }, [params.username])
 
+    useEffect(() => {
+        console.log(user)
+    }, [user])
+
     // 왜 새로고침을 했을때 currentUser 정보를 읽어올수 없는걸까??
             // 새로고침시 currentUser 자체는 읽어 오지만 currentUser의 데이터들은 null로 읽고 있다.
 
@@ -59,6 +63,7 @@ function Profile(props) {
 
         getUserProfile(username)
             .then(response => {
+                console.log(response)
                 setUser(response);
                 setIsLoading(false);
             })
@@ -109,6 +114,9 @@ function Profile(props) {
                                 <div className="user-joined">
                                     Joined {formatDateTime(user.joinedAt)}
                                 </div>
+                            </div>
+                            <div className="user-bio-container">
+                                Bio : {user.bio}
                             </div>
                         </div>
                         <div className="user-post-list">
