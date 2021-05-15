@@ -109,7 +109,11 @@ function NewPost() {
             imgExtension={['.jpg', '.gif', '.png', '.gif']}
             maxFileSize={5242880}
         /> */}
-        <input type="file" onChange={(e) => {onChangedImages(e)}}/>
+        <input 
+          type="file" 
+          onChange={(e) => {onChangedImages(e)}}
+          className="image-upload"
+        />
       </Form.Item>
       <Form.Item>
         <TextArea 

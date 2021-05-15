@@ -77,7 +77,7 @@ function PostList({currentUser, username, type}) {
                 {postViews}
             </div>
             <div className="flower-container">
-                <span>flower</span>
+                <span></span>
             </div>
             {
                 isLoading && posts.length === 0 ? (

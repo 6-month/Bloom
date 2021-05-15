@@ -1,3 +1,10 @@
 .new-post-form {
-    margin-top: 110px;
+    margin-top: 200px;
+}
+
+.image-upload {
+}
+
+.new-post-form {
+    border: 1px solid black;
 }
