@@ -1,3 +1,31 @@
-.profile {
-    /* margin-top: 100px; */
+.user-profile {
+    /* border: 1px solid red; */
+    margin-left: 30px;
+    margin-right: 30px;
+    margin-top: 20px;
+    margin-bottom: 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+.user-profile-body {
+    /* border: 1px solid red; */
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    height: 40vh;
+    width: 75vw;
+}
+.user-details {
+    border: 1px solid black;
+    margin-right: 100px;
+    width: 65vw;
+}
+.user-flower-container {
+    border: 1px solid black;
+    width: 35vw;
+}
+.user-post-list {
+    width: 75vw;
 }
