@@ -4,18 +4,45 @@ import { Avatar, Input, Button, notification, Form } from 'antd';
 import { Link, Route } from 'react-router-dom';
 import { getAvatarColor } from '../util/Colors';
 import { formatDateTime } from '../util/Helpers';
-import { RadioGroup } from '@material-ui/core';
+import { SettingOutlined } from '@ant-design/icons';
 
 import './Post.css'
 import Comments from './Comments';
 import Likes from "./Likes";
 import Profile from "../user/profile/Profile";
+import {deletePost} from "../util/APIUtils";
 
 const FormItem = Form.Item;
 
 function Post({post, currentUser}) {
+   const profileURL ="/users/" + post.createdBy.username;
 
-    const profileURL ="/users/" + post.createdBy.username;
+   const [setting, setSetting] = useState(false);
+
+   useEffect(() => {
+        if(currentUser.username == post.createdBy.username) {
+            setSetting(true)
+        }
+        console.log(post.id)
+    }, [])
+
+
+    const deltePostSubmit = () => {
+        deletePost(post.id)
+            .then(response => {
+                notification.success({
+                    message : "Bloom",
+                    description: response.message
+                })
+                window.location.replace(profileURL);
+            }) 
+            .catch(error => {
+                notification.error({
+                    message: "Bloom",
+                    description: error.message
+                })
+            })
+    }
 
     return (
         <div className="post-content">
@@ -37,6 +64,22 @@ function Post({post, currentUser}) {
                                 {post.createdBy.username}
                             </Link>
                         </span>
+                    </div>
+                    <div className="post-setting-container">
+                        {
+                            setting ? (
+                                <Button 
+                                    icon={
+                                        <SettingOutlined />
+                                    }
+                                    onClick={deltePostSubmit}
+                                >
+                                    delete
+                                </Button>
+                            ) : (
+                                null
+                            )
+                        }
                     </div>
                 </div>
             </div>
