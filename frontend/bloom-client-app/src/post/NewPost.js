@@ -1,13 +1,19 @@
 import React, {  useEffect, useState } from 'react';
-import {Form, Input, notification, Button} from 'antd';
+import {Avatar,notification, Button} from 'antd';
 import { ACCESS_TOKEN, API_BASE_URL } from '../constants';
 import {post} from 'axios';
 import { useHistory } from 'react-router-dom';
 import "./NewPost.css";
 
-const {TextArea} = Input;
+function NewPost({currentUser}) {
+  useEffect(() => {
+    console.log(currentUser.profileImage)
+  }, [])
 
-function NewPost() {
+  let today = new Date();
+  let year = today.getFullYear();
+  let month = today.getMonth() + 1; 
+  let date = today.getDate();    
   let history = useHistory();
   
   const [content, setContent] = useState({
@@ -44,7 +50,7 @@ function NewPost() {
   }
 
   const validateContent = () => {
-    if(content.value.length <10) {
+    if(content.value.length <4) {
       return {
         validateStatus : 'error',
         errorMsg : 'Content is too short'
@@ -59,7 +65,9 @@ function NewPost() {
   }
   
 
-  const handleSubmit = () => {
+  const handleSubmit = (e) => {
+    e.preventDefault();
+
     const formData = new FormData();
     formData.append('content',content.value);
 
@@ -99,49 +107,53 @@ function NewPost() {
   }
 
   return (
-    <Form 
-      onFinish={handleSubmit} 
-      requiredMark="true" 
-      encType="multi" 
-      // className="new-post-form"
-      style={{ 
-        marginTop: '100px',
-        marginBottom: '100px',
-        marginLeft: '30px',
-        border: '1px solid black',
-        width: '80vw',
-        height: '70vh',
-        display: 'flex',
-
-            }}
-    >
-      
-      <Form.Item>
-        <input 
-          type="file" 
-          onChange={(e) => {onChangedImages(e)}}
-          className="image-upload"
-        />
-      </Form.Item>
-      <Form.Item>
-        <TextArea 
-          placeholder="Enter your Content"
-          style = {{ fontSize: '16px' }} 
-          autosize={{ minRows: 3, maxRows: 6 }} 
-          name = "content"
-          onChange = {(e) => {onChangedContent(e)}} 
-        />
-      </Form.Item>
-      <Form.Item>
-        <Button type="primary" 
+    <div className="new-post-container">
+      <form className="new-post-form">
+        <div className="new-post-imageUpload">
+          <label className="input-file-button" for="new-post-image">UpLoad</label>
+          <input 
+              type="file" 
+              onChange={(e) => {onChangedImages(e)}}
+              id="new-post-image"
+              style={{display:"none"}}
+            />
+        </div>
+        <div className="new-post-sidecontainer">
+          <div className="new-post-creator">
+            <div className="creator-detail-avatar">
+              <Avatar 
+                  style={{
+                    width:"70px",
+                    height:"70px",
+                    marginRight:"20px",
+                  }}
+                  src={`data:image/jpeg;base64,${currentUser.profileImage}`}
+              />
+            </div>
+            <div className="creator-detail-username">
+              <span className="username">{currentUser.username}</span>
+              <span className="date">{year + '/' + month + '/' + date}</span>
+            </div>
+          </div>
+          <input 
+            type="text" 
+            onChange = {(e) => {onChangedContent(e)}}
+            className="new-post-content"
+            placeholder="Pleas enter content..."
+          />
+          <Button 
+            type="primary" 
             htmlType="submit" 
             size="large"
             disabled={isFormInvalid()}
-        >
-        Save
-        </Button>
-      </Form.Item>
-    </Form>
+            onClick={handleSubmit}
+            className="new-post-btn"
+          >
+            Save
+          </Button>
+        </div>
+      </form>
+    </div>
   );
 }
 
