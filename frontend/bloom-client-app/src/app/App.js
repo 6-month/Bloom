@@ -48,6 +48,10 @@ function App() {
       }
     },[])
 
+    useEffect(() => {
+      console.log(currentUser)
+    }, [currentUser])
+
     const loadCurrentUser = () => {
         setIsLoading(true);
         
@@ -72,7 +76,7 @@ function App() {
           message: 'Bloom',
           description: description,
         });
-        window.location.replace("/")
+        window.location.replace(redirectTo);
     }  
     if(isLoading) {
       return <LoadingIndicator />

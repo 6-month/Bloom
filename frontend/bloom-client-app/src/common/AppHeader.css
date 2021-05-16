@@ -114,6 +114,7 @@
 } */
 
 .nav {
+    border: 1px solid black;
     background-color: white;
     display: flex;
     align-items: center;

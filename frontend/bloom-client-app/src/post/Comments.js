@@ -20,6 +20,12 @@ function ReplyComments({postId,p_comment_id, pComment}) {
     });
     const [comments, setComments] = useState(pComment);
 
+    useEffect(() => {
+        if(comments === null) {
+            setComments([]);
+        }
+    } ,[])
+
     const handleCommentChange = (e) => {
         setCommentContents({
             ...commentContents,
@@ -49,7 +55,6 @@ function ReplyComments({postId,p_comment_id, pComment}) {
             p_comment_id : p_comment_id,
             text : commentContents.value,
         }
-        console.log(commentRequest);
 
         saveComment(commentRequest)
             .then(response => {
@@ -62,7 +67,7 @@ function ReplyComments({postId,p_comment_id, pComment}) {
             .catch(err => {
                 notification.error({
                     message : "Bloom",
-                    description : err.message || "Failed registered commnet..."
+                    description : err.message || "Failed registered comments..."
                 })
             })
         setCommentContents({
@@ -107,7 +112,6 @@ function ReplyComments({postId,p_comment_id, pComment}) {
                     type="text"
                     onChange={(e) => handleCommentChange(e)}
                     placeholder="Please enter comments.."
-                    // placeholder={commentContents.value}
                 />
                 <button
                     disabled={commentContents.validateStatus}
@@ -229,7 +233,7 @@ function Comments({post}) {
             p_comment_id : null,
             text : commentContents.value,
         }
-        console.log(commentRequest);
+
 
         saveComment(commentRequest)
             .then(response => {

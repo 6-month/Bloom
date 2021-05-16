@@ -7,12 +7,12 @@ import javax.validation.Valid;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.repository.query.Param;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -86,9 +86,9 @@ public class PostController {
 				.body(new ApiResponse(true, "Post Created Successfully"));
 	}	
 	
-	@DeleteMapping("{postId}")
+	@DeleteMapping
 	@PreAuthorize("hasRole('USER')")
-	public ResponseEntity<?> deletePost(@PathVariable Long postId) {
+	public ResponseEntity<?> deletePost(@RequestParam(value ="postId") Long postId) {
 		postService.deletePost(postId);
 		
 		return ResponseEntity.created(null)

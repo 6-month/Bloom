@@ -21,6 +21,7 @@ function PostList({currentUser, username, type}) {
 
     useEffect(() => {
         loadPostList();
+        console.log(currentUser.username)
     },[])
 
     useEffect(() => {

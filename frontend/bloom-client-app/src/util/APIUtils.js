@@ -137,6 +137,13 @@ export function cancelLike(likeRequest) {
     })
 }
 
+export function deletePost(postId) {
+    return request({
+        url: API_BASE_URL + "/posts?postId=" +postId,
+        method: "DELETE"
+    })
+}
+
 export function followUser(username) {
     return request({
         url: API_BASE_URL + "/users/" + username + "/follow",
@@ -165,3 +172,4 @@ export function editUserInfo(UserEditInfo) {
         body : JSON.stringify(UserEditInfo)
     })
 }
+

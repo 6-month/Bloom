@@ -57,29 +57,6 @@ function EditProfileImage() {
 
     return (
         <div className="edit-profile-container">
-            {/* <Form 
-                onFindish={handleImageSubmit}
-                requiredMark="true" 
-                encType="multi"
-            >
-                <FormItem>
-                    <input type="file" onChange={(e) => {onChangedImages(e)}}/>
-                </FormItem>
-
-                <FormItem>
-                    <Button 
-                        style={{
-                            borderStyle: "none",
-                            backgroundImage: "linear-gradient(135deg, #FFFABF, #D8DFEC, #D5C6E3)" 
-                        }} 
-                        type="primary" 
-                        block shape ="round" 
-                        htmlType="submit"
-                    >
-                        Save
-                    </Button>
-                </FormItem>
-            </Form> */}
             <form >
                 <input type="file" onChange={(e) => {onChangedImages(e)}}/>
                 <Button 
@@ -122,22 +99,6 @@ function EditProfile({currentUser}) {
 
     useEffect(() => {
         console.log(user)
-
-        // setName({
-        //     value : user.name
-        // })
-        // setUsername({
-        //     value : user.username
-        // })
-        // setEmail({
-        //     value : user.email
-        // })
-        // setPhoneNumber({
-        //     value : user.phoneNumber
-        // })
-        // setBio({
-        //     value : user.bio
-        // })
 
     }, [user])
 

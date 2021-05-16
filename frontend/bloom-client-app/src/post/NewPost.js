@@ -84,7 +84,10 @@ function NewPost() {
           message : 'Bloom',
           description : 'Successfully create post!'
         })
-        history.push("/")
+        // window.location.replace("/bloom"); 
+        history.push("/bloom")
+
+
       })
       .catch(error => {
         notification.error({
@@ -100,15 +103,20 @@ function NewPost() {
       onFinish={handleSubmit} 
       requiredMark="true" 
       encType="multi" 
-      className="new-post-form">
+      // className="new-post-form"
+      style={{ 
+        marginTop: '100px',
+        marginBottom: '100px',
+        marginLeft: '30px',
+        border: '1px solid black',
+        width: '80vw',
+        height: '70vh',
+        display: 'flex',
+
+            }}
+    >
+      
       <Form.Item>
-        {/* <ImageUploader
-            withIcon={true}
-            buttonText='Choose images'
-            onChange={onChangedImages}
-            imgExtension={['.jpg', '.gif', '.png', '.gif']}
-            maxFileSize={5242880}
-        /> */}
         <input 
           type="file" 
           onChange={(e) => {onChangedImages(e)}}
