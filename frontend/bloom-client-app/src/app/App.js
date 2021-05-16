@@ -127,7 +127,15 @@ function App() {
                />
             }
           />
-          <Route authenticated={isAuthenticated} path="/post/new" component={NewPost} ></Route>
+          <Route  
+            path="/post/new" 
+            render = {(props) => 
+              <NewPost 
+                {...props}
+                currentUser = {currentUser}
+              />
+            }
+          />
       </div>
     );
 }

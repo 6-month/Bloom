@@ -23,7 +23,7 @@ function Post({post, currentUser}) {
         if(currentUser.username == post.createdBy.username) {
             setSetting(true)
         }
-        console.log(post.id)
+        console.log(post)
     }, [])
 
 
