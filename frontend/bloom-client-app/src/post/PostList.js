@@ -8,7 +8,6 @@ import Icon from '@ant-design/icons';
 import "./PostList.css";
 import NotFound from '../common/NotFound';
  
-
 function PostList({currentUser, username, type}) {
     const [posts, setPosts] =useState([]);
 
@@ -21,7 +20,6 @@ function PostList({currentUser, username, type}) {
 
     useEffect(() => {
         loadPostList();
-        console.log(currentUser.username)
     },[])
 
     useEffect(() => {
@@ -74,7 +72,7 @@ function PostList({currentUser, username, type}) {
     })
     return (
         <div className="posts-container">
-            <div className="post-body">
+            <div>
                 {postViews}
             </div>
             {

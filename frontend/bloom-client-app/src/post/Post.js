@@ -4,7 +4,7 @@ import { Avatar, Input, Button, notification, Form } from 'antd';
 import { Link, Route } from 'react-router-dom';
 import { getAvatarColor } from '../util/Colors';
 import { formatDateTime } from '../util/Helpers';
-import { SettingOutlined } from '@ant-design/icons';
+import { DeleteOutlined } from '@ant-design/icons';
 
 import './Post.css'
 import Comments from './Comments';
@@ -48,34 +48,31 @@ function Post({post, currentUser}) {
         <div className="post-content">
             <div className="post-header">
                 <div className="post-creator-info">
-                    <div className="post-creator-profile-image">
-                        <Link className="creator-link">
-                            <Avatar className="post-creator-avatar"
-                                src={`data:image/jpeg;base64,${post.createdBy.profileImage}`}>  
-                            </Avatar>
-                        </Link>
-                    </div>
-                    <div className="post-creator-detail">
-                        <span className="post-creator-name">
-                            {post.createdBy.name}
-                        </span>
-                        <span className="post-creator-username">
-                            <Link to={profileURL}>
-                                {post.createdBy.username}
+                    <div className="post-creator-infos">
+                        <div className="post-creator-profile-image">
+                            <Link className="creator-link">
+                                <Avatar className="post-creator-avatar"
+                                    src={`data:image/jpeg;base64,${post.createdBy.profileImage}`}>  
+                                </Avatar>
                             </Link>
-                        </span>
+                        </div>
+                        <div className="post-creator-detail">
+                            {/* <span className="post-creator-name">
+                                {post.createdBy.name}
+                            </span> */}
+                            <span className="post-creator-username">
+                                <Link to={profileURL}>
+                                    {post.createdBy.username}
+                                </Link>
+                            </span>
+                        </div>
                     </div>
                     <div className="post-setting-container">
                         {
                             setting ? (
-                                <Button 
-                                    icon={
-                                        <SettingOutlined />
-                                    }
-                                    onClick={deltePostSubmit}
-                                >
-                                    delete
-                                </Button>
+                                <div className="deleteButton" onClick={deltePostSubmit}>
+                                    <DeleteOutlined />
+                                </div>
                             ) : (
                                 null
                             )
@@ -91,11 +88,11 @@ function Post({post, currentUser}) {
                         )
                     }
                 </div>
-                <div className="post-text">
-                    {post.content}
-                </div>
                 <div className="post-like-container">
                     <Likes postId={post.id} pushedLike={post.pushedLike} totalLikes={post.totalLikes} />
+                </div>
+                <div className="post-text">
+                    {post.content}
                 </div>
                 <div className="post-comment-container">
                     <Comments post={post} />

@@ -7,6 +7,7 @@ import { DislikeOutlined, LikeOutlined, LikeFilled } from '@ant-design/icons';
 import {saveComment} from '../util/APIUtils';
 import HashMap from 'hashmap';
 import ArrayList from "arraylist";
+import './Comments.css';
 
 // 문제점
 // 기존 댓글에 대댓글을 다는건 문제 없이 되지만 새로운 댓글을 생성하고 대댓글을 달때 에러메시지가 뜸, 근데 db에 저장은 됌...
@@ -105,19 +106,21 @@ function ReplyComments({postId,p_comment_id, pComment}) {
 
 
     return (
-        <div className="re-comment-container">
+        <div className="re-comment-container" id="showRecomments">
             {commentView}
-            <form className="comment-form">
+            <form className="comment-form" id="comment-form">
                 <input 
                     type="text"
                     onChange={(e) => handleCommentChange(e)}
-                    placeholder="Please enter comments.."
+                    placeholder="답글 쓰기"
+                    className="input-container"
                 />
                 <button
                     disabled={commentContents.validateStatus}
                     onClick={recommentSubmit}
+                    className="button-container"
                 >
-                    Add
+                    게시
                 </button>
             </form>
         </div>
@@ -193,6 +196,7 @@ function Comments({post}) {
                             </Tooltip>
                         }
                     >
+                        <div>답글 보기</div>
                         <ReplyComments postId={post.id} p_comment_id={comment.id} pComment={map.get(comment.id)} />
                     </Comment>
                 )
@@ -218,6 +222,7 @@ function Comments({post}) {
                             </Tooltip>
                         }
                     >
+                        <div>답글 쓰기</div>
                         <ReplyComments postId={post.id} p_comment_id={comment.id} pComment={null}/>
                     </Comment>
                 )
@@ -259,22 +264,23 @@ function Comments({post}) {
 
     return (
         <div className="comment-container">
-            {commentView}
             <form className="comment-form">
                 <input 
                     type="text"
                     onChange={(e) => handleCommentChange(e)}
-                    placeholder="Please enter coments.."
+                    placeholder="댓글 쓰기"
+                    className="input-container"
                 />
                 <button
                     disabled={commentContents.validateStatus}
                     onClick={commentSubmit}
+                    className="button-container"
                 >
-                    Add Comment
+                    게시
                 </button>
             </form>
+            {commentView}
         </div>
-        
     );
 }
 
