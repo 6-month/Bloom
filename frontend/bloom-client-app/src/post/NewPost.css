@@ -5,20 +5,15 @@
     align-items: center;
 }
 
-.new-post-imageUpload {
-    border: 1px solid black;
-    width: 60vw;
-}
-
 .new-post-form {
-    border: 1px solid black;
+    border: 1px solid #d5c6e3;
     display: flex;
     flex-direction: row;
     justify-content: center;
     width: 70vw;
-    height: 70vw;
-    margin-top: 30px;
-    margin-bottom: 30px;
+    height: 50vw;
+    margin-top: 50px;
+    margin-bottom: 50px;
 }
 
 .new-post-sidecontainer {
@@ -34,13 +29,15 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
+    width: 60vw;
+    border-right: 1px solid #d5c6e3;
 }
 
 .input-file-button {
-    border: 2px solid black;
+    border: 2px solid #d5c6e3;
 
     padding: 6px 25px;
-    background-color: white;
+    background-color: #d5c6e3;
     border-radius: 4px;
     color: black;
     cursor: pointer;
@@ -51,15 +48,16 @@
     flex-direction: row;
     justify-content: center;
     padding: 10px;
+    border-bottom: 1px solid #d5c6e3;
 }
 
 .new-post-content {
     height: 80vw;
-    border: 1px solid black;
+    border: none;
+    border-bottom: 1px solid #d5c6e3;
 }
 input::placeholder {
     font-weight: 500;
-    display: flex;
 }
 
 .creator-detail-username {

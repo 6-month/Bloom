@@ -1,3 +1,51 @@
+.nav {
+    border: 1px solid #d5c6e3;
+    background-color: white;
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    /* padding-left: 180px;
+    padding-right: 180px; */
+}
+
+.logo_size {
+    width: 93px;
+    height: 53px;
+}
+
+.app-menu {
+    /* border: 1px solid black; */
+    /* line-height: 10px; */
+    float: right;
+}
+
+.profile-dropdown-menu {
+    min-width: 180px;
+}
+
+.profile-menu .user-full-name-info {
+    font-size: 17px;
+    font-weight: 600;
+    color: rgba(0, 0, 0, 0.85);
+}
+
+.profile-menu .username-info {
+    font-size: 14px;
+    color: rgba(0, 0, 0, 0.65);
+}
+
+.dropdown-item {
+    padding: 10px 12px;
+}
+
+.dropdown-item a {
+    padding: 10px 12px;
+    margin: -10px -12px;
+}
+
+.nav-icon {
+    font-size: 30px;
+}
 /* .app-title {
     float: left;
     margin-left: 10px;
@@ -114,7 +162,7 @@
 } */
 
 .nav {
-    border: 1px solid black;
+    /* border: 1px solid black; */
     background-color: white;
     display: flex;
     align-items: center;
