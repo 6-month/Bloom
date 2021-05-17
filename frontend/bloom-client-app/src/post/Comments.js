@@ -265,10 +265,12 @@ function Comments({post}) {
                     type="text"
                     onChange={(e) => handleCommentChange(e)}
                     placeholder="Please enter coments.."
+                    className="input-container"
                 />
                 <button
                     disabled={commentContents.validateStatus}
                     onClick={commentSubmit}
+                    className="button-container"
                 >
                     Add Comment
                 </button>

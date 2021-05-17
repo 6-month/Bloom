@@ -1,7 +1,7 @@
 
 import React, {useState, useEffect, createElement } from 'react';
 import { Avatar, Input, Button, notification, Form } from 'antd';
-import { Link, Route } from 'react-router-dom';
+import { Link, Route, useHistory } from 'react-router-dom';
 import { getAvatarColor } from '../util/Colors';
 import { formatDateTime } from '../util/Helpers';
 import { SettingOutlined } from '@ant-design/icons';
@@ -15,7 +15,10 @@ import {deletePost} from "../util/APIUtils";
 const FormItem = Form.Item;
 
 function Post({post, currentUser}) {
-   const profileURL ="/users/" + post.createdBy.username;
+    // delte 후 response로 post들의 정보를 받고 state로 관리해야할것 같음..
+
+    let history = useHistory();
+    const profileURL ="/users/" + post.createdBy.username;
 
    const [setting, setSetting] = useState(false);
 
@@ -34,7 +37,7 @@ function Post({post, currentUser}) {
                     message : "Bloom",
                     description: response.message
                 })
-                window.location.replace(profileURL);
+                window.location.replace("/");
             }) 
             .catch(error => {
                 notification.error({

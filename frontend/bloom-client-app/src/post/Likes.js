@@ -1,6 +1,7 @@
 import { notification } from 'antd';
 import React, { useEffect, useState } from 'react';
 import {addLike, cancelLike} from '../util/APIUtils';
+import "./Like.css"
 
 function Likes({postId, pushedLike, totalLikes}) {
     const [tLike, setTotalLikes] = useState(totalLikes);

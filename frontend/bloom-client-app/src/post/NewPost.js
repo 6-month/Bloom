@@ -4,12 +4,11 @@ import { ACCESS_TOKEN, API_BASE_URL } from '../constants';
 import {post} from 'axios';
 import { useHistory } from 'react-router-dom';
 import "./NewPost.css";
+import { Upload } from 'antd';
+import ImgCrop from 'antd-img-crop';
+
 
 function NewPost({currentUser}) {
-  useEffect(() => {
-    console.log(currentUser.profileImage)
-  }, [])
-
   let today = new Date();
   let year = today.getFullYear();
   let month = today.getMonth() + 1; 
@@ -19,9 +18,19 @@ function NewPost({currentUser}) {
   const [content, setContent] = useState({
     value : ''
   });
+
   const [images, setImages] = useState({
-    value : [],
+    value : ''
   });
+  
+  const onChangedImages = (e) => {
+    setImages({
+      ...images,
+      value : [...images.value, {value : e.target.files[0]}],
+      validateStatus : 'success',
+      errorMsg : null
+    });
+  }
 
   const isFormInvalid = () => {
     return !(
@@ -40,15 +49,6 @@ function NewPost({currentUser}) {
     })
   }
 
-  const onChangedImages = (e) => {
-    setImages({
-      ...images,
-      value : [...images.value, {value : e.target.files[0]}],
-      validateStatus : 'success',
-      errorMsg : null
-    });
-  }
-
   const validateContent = () => {
     if(content.value.length <4) {
       return {
@@ -63,6 +63,31 @@ function NewPost({currentUser}) {
       };
     }
   }
+
+  const [fileList, setFileList] = useState([]);
+
+  // const [images, setImages] = useState({
+  //   value : [],
+  // });
+
+  const handleUpload = (info) => {
+    setFileList(info.fileList)
+  }
+
+  const onPreview = async file => {
+    let src = file.url;
+    if (!src) {
+      src = await new Promise(resolve => {
+        const reader = new FileReader();
+        reader.readAsDataURL(file.originFileObj);
+        reader.onload = () => resolve(reader.result);
+      });
+    }
+    const image = new Image();
+    image.src = src;
+    const imgWindow = window.open(src);
+    imgWindow.document.write(image.outerHTML);
+  };
   
 
   const handleSubmit = (e) => {
@@ -71,9 +96,18 @@ function NewPost({currentUser}) {
     const formData = new FormData();
     formData.append('content',content.value);
 
-    for(var i = 0; i<images.value.length; i++) {
-      formData.append('images', images.value[i].value);
-    }
+    console.log(fileList)
+    // let files = fileList;
+
+    fileList.forEach((file) => {
+      formData.append("images", file.originFileObj);
+      console.log(file.originFileObj);
+    })
+
+    // for(let i = 0; i<fil.length; i++) {
+    //   formData.append("image", files[i]);
+    //   console.log(files[i])
+    // }
 
     const config = {
       headers : {
@@ -82,20 +116,13 @@ function NewPost({currentUser}) {
       }
     }
 
-    for(var keyValue of formData) {
-      console.log(keyValue)
-    }
- 
     return post(API_BASE_URL+'/posts', formData, config)
       .then(response => {
         notification.success({
           message : 'Bloom',
           description : 'Successfully create post!'
         })
-        // window.location.replace("/bloom"); 
         history.push("/bloom")
-
-
       })
       .catch(error => {
         notification.error({
@@ -110,13 +137,25 @@ function NewPost({currentUser}) {
     <div className="new-post-container">
       <form className="new-post-form">
         <div className="new-post-imageUpload">
-          <label className="input-file-button" for="new-post-image">UpLoad</label>
+          {/* <label className="input-file-button" for="new-post-image">UpLoad</label>
           <input 
-              type="file" 
-              onChange={(e) => {onChangedImages(e)}}
-              id="new-post-image"
-              style={{display:"none"}}
-            />
+            type="file" 
+            onChange={(e) => {onChangedImages(e)}}
+            id="new-post-image"
+            style={{display:"none"}}
+          /> */}
+            <ImgCrop rotate>
+              <Upload
+                listType="picture-card"
+                fileList={fileList}
+                // onChange={onChange}
+                onChange={handleUpload}
+                // beforeUpload={handleUpload}
+                onPreview={onPreview}
+              >
+                {fileList && '+ Upload'}
+              </Upload>
+            </ImgCrop>
         </div>
         <div className="new-post-sidecontainer">
           <div className="new-post-creator">
@@ -145,7 +184,7 @@ function NewPost({currentUser}) {
             type="primary" 
             htmlType="submit" 
             size="large"
-            disabled={isFormInvalid()}
+            // disabled={isFormInvalid()}
             onClick={handleSubmit}
             className="new-post-btn"
           >
