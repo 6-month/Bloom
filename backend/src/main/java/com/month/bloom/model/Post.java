@@ -27,7 +27,7 @@ public class Post extends UserDateAudit {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
-	
+
 	@NotBlank
 	@Size(max = 140)
 	private String content;

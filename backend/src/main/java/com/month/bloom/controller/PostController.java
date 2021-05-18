@@ -68,6 +68,13 @@ public class PostController {
 		return postService.getAllPosts(currentUser, page, size);
 	}
 	
+	@GetMapping
+	public PagedResponse<PostResponse> getFollowedUserPosts(@CurrentUser UserPrincipal currentUser,
+												@RequestParam(value = "page", defaultValue = AppConstants.DEFAULT_PAGE_NUMBER) int page,
+												@RequestParam(value = "size", defaultValue = AppConstants.DEFAULT_PAGE_SIZE) int size) {	
+		return postService.getFollowedUserPosts(currentUser, page, size);
+	}
+	
 	@PostMapping
 	@PreAuthorize("hasRole('USER')")
 	// MultipartFile can't use JSON data (@RequestBody means use of JSON or XML data with maps your DTO bean) 
@@ -94,6 +101,15 @@ public class PostController {
 		return ResponseEntity.created(null)
 				.body(new ApiResponse(true, "Post Successfully deleted"));
 	}
+	
+//	@DeleteMapping
+//	@PreAuthorize("hasRole('USER')")
+//	public PagedResponse<PostResponse> deletePost(@CurrentUser UserPrincipal currentUser,
+//										@RequestParam(value ="postId") Long postId) {
+//		postService.deletePost(postId);
+//	
+//		return postService.getAllPosts(currentUser, 0, 30);
+//	}
 	
 	@PostMapping("/likes")
 	@PreAuthorize("hasRole('USER')")
@@ -152,4 +168,6 @@ public class PostController {
 			}
 		}
 	}
+	
+	
 }

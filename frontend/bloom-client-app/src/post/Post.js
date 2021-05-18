@@ -20,22 +20,25 @@ function Post({post, currentUser}) {
     let history = useHistory();
     const profileURL ="/users/" + post.createdBy.username;
 
-   const [setting, setSetting] = useState(false);
+    const [setting, setSetting] = useState(false);
 
-   useEffect(() => {
+    useEffect(() => {
         if(currentUser.username == post.createdBy.username) {
             setSetting(true)
         }
-        console.log(post)
+        // notification.button({
+        //     message : "Bloom",
+        //     description: "Are you sure you want to delete it? Once deleted, it cannot be recovered.",
+    
+        // })
     }, [])
 
-
-    const deltePostSubmit = () => {
+    const deltePostSubmit = () => {    
         deletePost(post.id)
             .then(response => {
                 notification.success({
                     message : "Bloom",
-                    description: response.message
+                    description: "Successfully deleted post"
                 })
                 window.location.replace("/");
             }) 

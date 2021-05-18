@@ -25,10 +25,10 @@
 }
 
 .new-post-imageUpload {
+    /* border: 1px solid black; */
     display: flex;
     flex-direction: column;
     justify-content: center;
-    align-items: center;
     width: 60vw;
     border-right: 1px solid #d5c6e3;
 }

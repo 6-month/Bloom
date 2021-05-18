@@ -18,7 +18,7 @@ function Login() {
                     message: 'Bloom',
                     description: "You're successfully logged in.",
                   });
-                window.location.replace("/bloom");
+                window.location.replace("/");
             })
             .catch(error => {
                 if(error.status === 401) {

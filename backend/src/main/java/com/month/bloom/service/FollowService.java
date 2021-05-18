@@ -73,4 +73,6 @@ public class FollowService {
 		}
 		return checkResponse;
 	}
+	
+	// follow를 하고 있는 사람들의 게시물을 보여주는 Service
 }

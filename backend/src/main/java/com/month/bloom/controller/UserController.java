@@ -228,5 +228,8 @@ public class UserController {
        return followService.checkingFollow(followingUser, followerUser);
     }
     
-    
+    // user검색 query
+//    select *
+//    from users
+//    where username like '%min%' or name like '%Min%';
 }
