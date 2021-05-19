@@ -13,8 +13,9 @@
 .user-profile-body {
     /* border: 3px solid purple; */
     display: flex;
-    width: 70vw;
-    margin: 20px;
+    margin-top: 40px;
+    padding-top: 20px;
+    padding-bottom: 20px;
 }
 
 .user-details {
@@ -22,9 +23,9 @@
     background-color: white;
     display: flex;
     align-items: center;
-    width: 45vw;
-    height: 25vh;
-    margin-right: 20px;
+    width: 600px;
+    height: 200px;
+    /* margin-right: 20px; */
 }
 
 .user-avatar {
@@ -49,20 +50,24 @@
     /* border: 3px solid orange; */
 }
 
+.user-joined {
+    color: #c9c9c9;
+}
+
 .user-bio-container {
     border: 1px solid black;
     background-color: white;
     margin-right: 20px;
-    width: 45vw;
-    height: 45vh;
+    width: 600px;
+    height: 300px;
     margin-top: 40px;
 }
 
 .user-flower-container {
     border: 1px solid black;
     background-color: white;
-    width: 35vw;
-    height: 60vh;
+    width: 260px;
+    height: 400px;
     margin-left: 20px;
 }
 

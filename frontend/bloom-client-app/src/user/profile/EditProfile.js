@@ -1,6 +1,9 @@
 import React, { useEffect , useState} from 'react';
+import Avatar from 'antd/lib/avatar/avatar';
+import {getAvatarColor} from '../../util/Colors';
+import { formatDateTime } from '../../util/Helpers';
 import './EditProfile.css';
-import {Form, Input, notification, Button} from 'antd';
+import {Form, Input, notification, Button, Menu, Dropdown} from 'antd';
 import {post} from 'axios';
 import { getCurrentUser, getUserProfile } from '../../util/APIUtils';
 import {  checkEditUsernameAvailability, checkEditEmailAvailability, editUserInfo } from '../../util/APIUtils';
@@ -56,8 +59,8 @@ function EditProfileImage() {
     }
 
     return (
-        <div className="edit-profile-container">
-            <form >
+        <div className="edit-profile-image-container">
+            {/* <form >
                 <input type="file" onChange={(e) => {onChangedImages(e)}}/>
                 <Button 
                         style={{
@@ -69,9 +72,9 @@ function EditProfileImage() {
                         htmlType="submit"
                         onClick={handleImageSubmit}
                     >
-                        Save
-                    </Button>
-            </form>
+                    Save
+                </Button>
+            </form> */}
         </div>
     );
 }
@@ -330,98 +333,137 @@ function EditProfile({currentUser}) {
     
     return (
         <div className="edit-profile-container">
-            <EditProfileImage />
-            <Form
-                onFindish
-                requiredMark="true"
-                onFinish={handleEditSubmit}
-            >
-                <FormItem
-                    label="Full Name"
-                    validateStatus={name.validateStatus}
-                    help={name.errorMsg}
-                >
-                    <Input 
-                        size="large"
-                        name="name"
-                        authoComplete="off"
-                        placeholder={name.value || "Please input your full name!"}
-                        allowClear="true"
-                        onChange={(e) => {onChangedName(e)}}
-                    />
-                </FormItem>
-
-                <FormItem
-                    label="Username"
-                    validateStatus={username.validateStatus}
-                    help={username.errorMsg}
-                >
-                    <Input 
-                        size="large"
-                        name="username"
-                        authoComplete="off"
-                        placeholder={username.value || "Please input your username!"}
-                        allowClear="true"
-                        onChange={(e) => {onChangedUsername(e)}}
-                    />
-                </FormItem>
-
-                <FormItem
-                    label="Email"
-                    validateStatus={email.validateStatus}
-                    help={email.errorMsg}
-                >
-                    <Input 
-                        size="large"
-                        name="email"
-                        authoComplete="off"
-                        placeholder={email.value || "Please input your email!"}
-                        onChange={(e) => {onChangedEmail(e)}}
-                    />
-                </FormItem>
-
-                <FormItem
-                    label="Bio"
-                    validateStatus={bio.validateStatus}
-                    help={bio.errorMsg}
-                >
-                    <Input 
-                        size="large"
-                        name="bio"
-                        authoComplete="off"
-                        placeholder={bio.value || "personal information"}
-                        onChange={(e) => {onChangedBio(e)}}
-                    />
-                </FormItem>
+            <div className="edit-profile-base-container">
+                <div className="edit-profile-menubar">
+                    <div className="edit-profile">Edit Profile</div>
+                </div>
                 
-                <FormItem
-                    label="phoneNumber"
-                    validateStatus={phoneNumber.validateStatus}
-                    help={phoneNumber.errorMsg}
-                >
-                    <Input 
-                        size="large"
-                        name="phoneNumber"
-                        authoComplete="off"
-                        placeholder={phoneNumber.value || "Please input your phoneNumber"}
-                        onChange={(e) => {onChangedPhoneNumber(e)}}
-                    />
-                </FormItem>
+                <div className="edit-profile-info-container">
+                    <div className="for-profile-user-details">
+                        <div className="user-avatar">
+                            <Avatar  
+                                style={{
+                                    backgroundColor: getAvatarColor(user.name),
+                                    width: "90px",
+                                    height: "90px"
+                                }} 
+                                src={`data:image/jpeg;base64,${user.profileImage}`}
+                            >
+                            </Avatar>
+                        </div>
+                        <div className="user-detail-info">
+                            <div className="user-summary">
+                                <div className="username">{user.username}</div>
+                                <div className="full-name">{user.name}</div>
+                                <div className="user-joined">
+                                    Joined {formatDateTime(user.joinedAt)}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
 
-                <FormItem>
-                    <Button 
-                        style={{
-                            borderStyle: "none",
-                            backgroundImage: "linear-gradient(135deg, #FFFABF, #D8DFEC, #D5C6E3)" 
-                        }} 
-                        type="primary" 
-                        block shape ="round" 
-                        htmlType="submit"
-                    >
-                        Save
-                    </Button>
-                </FormItem>
-            </Form>
+
+                    <div className="edit-profile-image">
+                        <div className="edit-profile-image-sub">Edit Profile image</div>
+                        <EditProfileImage />
+                    </div>
+
+                    <div className="edit-profile-info-container">
+                        <Form
+                            onFindish
+                            requiredMark="true"
+                            onFinish={handleEditSubmit}
+                        >
+                            <FormItem
+                                label="Full Name"
+                                validateStatus={name.validateStatus}
+                                help={name.errorMsg}
+                            >
+                                <Input 
+                                    size="large"
+                                    name="name"
+                                    authoComplete="off"
+                                    placeholder={name.value || "Please input your full name!"}
+                                    allowClear="true"
+                                    onChange={(e) => {onChangedName(e)}}
+                                />
+                            </FormItem>
+
+                            <FormItem
+                                label="Username"
+                                validateStatus={username.validateStatus}
+                                help={username.errorMsg}
+                            >
+                                <Input 
+                                    size="large"
+                                    name="username"
+                                    authoComplete="off"
+                                    placeholder={username.value || "Please input your username!"}
+                                    allowClear="true"
+                                    onChange={(e) => {onChangedUsername(e)}}
+                                />
+                            </FormItem>
+
+                            <FormItem
+                                label="Email"
+                                validateStatus={email.validateStatus}
+                                help={email.errorMsg}
+                            >
+                                <Input 
+                                    size="large"
+                                    name="email"
+                                    authoComplete="off"
+                                    placeholder={email.value || "Please input your email!"}
+                                    onChange={(e) => {onChangedEmail(e)}}
+                                />
+                            </FormItem>
+
+                            <FormItem
+                                label="Bio"
+                                validateStatus={bio.validateStatus}
+                                help={bio.errorMsg}
+                            >
+                                <Input 
+                                    size="large"
+                                    name="bio"
+                                    authoComplete="off"
+                                    placeholder={bio.value || "personal information"}
+                                    onChange={(e) => {onChangedBio(e)}}
+                                />
+                            </FormItem>
+                            
+                            <FormItem
+                                label="phoneNumber"
+                                validateStatus={phoneNumber.validateStatus}
+                                help={phoneNumber.errorMsg}
+                            >
+                                <Input 
+                                    size="large"
+                                    name="phoneNumber"
+                                    authoComplete="off"
+                                    placeholder={phoneNumber.value || "Please input your phoneNumber"}
+                                    onChange={(e) => {onChangedPhoneNumber(e)}}
+                                />
+                            </FormItem>
+
+                            <FormItem>
+                                <Button 
+                                    style={{
+                                        width: "100px",
+                                        borderStyle: "none",
+                                        backgroundImage: "linear-gradient(135deg, #FFFABF, #D8DFEC, #D5C6E3)" 
+                                    }} 
+                                    type="primary" 
+                                    block shape ="round" 
+                                    htmlType="submit"
+                                >
+                                    Save
+                                </Button>
+                            </FormItem>
+                        </Form>
+                    </div>
+                </div>
+            </div>
         </div>
     );
 }
