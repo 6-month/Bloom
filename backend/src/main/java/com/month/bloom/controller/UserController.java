@@ -1,5 +1,8 @@
 package com.month.bloom.controller;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -82,6 +85,27 @@ public class UserController {
     public UserIdentityAvailability checkEmailAvailability(@RequestParam(value = "email") String email) {
         Boolean isAvailable = !userRepository.existsByEmail(email);
         return new UserIdentityAvailability(isAvailable);
+    }
+    
+    // Search
+    @GetMapping("users/findUsernameOrName")
+    public List<UserSummary> findUserByUsernameOrName(@RequestParam(value= "usernameOrName") String usernameOrEmail) {
+    	List<User> users = userRepository.findUserByUsernameOrName(usernameOrEmail);
+    	
+    	List<UserSummary> userLists = new ArrayList<>();
+    	
+    	for(User user : users) {
+    		if(user.getUserProfileImage() != null) {
+    			UserSummary userSummary = new UserSummary(user.getId(), user.getUsername(), user.getName(), user.getUserProfileImage().getData());
+    			userLists.add(userSummary);
+    		}
+    		else {
+    			UserSummary userSummary = new UserSummary(user.getId(), user.getUsername(), user.getName(), null);
+    			userLists.add(userSummary);
+    		}
+    	}
+    	
+    	return userLists;
     }
     
     @GetMapping("user/checkEditUsernameAvailability")
@@ -227,9 +251,7 @@ public class UserController {
     
        return followService.checkingFollow(followingUser, followerUser);
     }
+
     
-    // user검색 query
-//    select *
-//    from users
-//    where username like '%min%' or name like '%Min%';
+
 }

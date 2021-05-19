@@ -55,6 +55,13 @@ export function signup(signupRequest) {
     });
 }
 
+export function findUserByUsernameOrName(usernameOrName) {
+    return request({
+        url: API_BASE_URL + "users/findUsernameOrName?usernameOrName=" + usernameOrName,
+        method: 'GET'
+    })
+}
+
 export function checkUsernameAvailability(username) {
     return request({
         url: API_BASE_URL + "/user/checkUsernameAvailability?username=" + username,

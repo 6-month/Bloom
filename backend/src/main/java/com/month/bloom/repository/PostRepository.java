@@ -26,20 +26,6 @@ public interface PostRepository extends JpaRepository<Post, Long>{
 	
 	List<Post> findByIdIn(List<Long> postIds, Sort sort);
 	
-	// follow를 하고 있는 사람들의 포스터를 보여주는 Repository
-//	@Query(	select *
-//			from posts
-//			where created_by in (
-//				select id
-//				from users
-//				where id in (
-//					select following_id
-//					from followes
-//					where follower_id = 1 and following_id in(2,3)
-//				) 
-//			))
-	
-	// 상속된 createdBy 데이터를 post에서 쓰는 방법
 	@Query("SELECT p FROM Post p WHERE p.user.id In"
 			+ " (SELECT u.id FROM User u WHERE u.id In "
 			+ " (SELECT f.following.id FROM Follow f WHERE f.follower.id = :followerId and f.following.id In :followingIds))")

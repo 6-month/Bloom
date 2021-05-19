@@ -6,6 +6,10 @@ public class UserSummary {
     private String name;
     private byte[] profileImage;
     
+    public UserSummary() {
+    	
+    }
+    
     public UserSummary(Long id, String username, String name) {
 		this.id = id;
 		this.username = username;

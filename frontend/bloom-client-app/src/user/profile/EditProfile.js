@@ -60,17 +60,17 @@ function EditProfileImage() {
             <form >
                 <input type="file" onChange={(e) => {onChangedImages(e)}}/>
                 <Button 
-                        style={{
-                            borderStyle: "none",
-                            backgroundImage: "linear-gradient(135deg, #FFFABF, #D8DFEC, #D5C6E3)" 
-                        }} 
-                        type="primary" 
-                        block shape ="round" 
-                        htmlType="submit"
-                        onClick={handleImageSubmit}
-                    >
-                        Save
-                    </Button>
+                    style={{
+                        borderStyle: "none",
+                        backgroundImage: "linear-gradient(135deg, #FFFABF, #D8DFEC, #D5C6E3)" 
+                    }} 
+                    type="primary" 
+                    block shape ="round" 
+                    htmlType="submit"
+                    onClick={handleImageSubmit}
+                >
+                    Save
+                </Button>
             </form>
         </div>
     );
@@ -350,6 +350,18 @@ function EditProfile({currentUser}) {
                         onChange={(e) => {onChangedName(e)}}
                     />
                 </FormItem>
+
+                {/* <FormItem
+                    label="Full Name"
+                    validateStatus={name.validateStatus}
+                    help={name.errorMsg}
+                >
+                    {
+                        user.profileImage !==null ? (
+
+                        ) : ()
+                    }
+                </FormItem> */}
 
                 <FormItem
                     label="Username"
