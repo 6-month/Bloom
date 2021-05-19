@@ -61,7 +61,7 @@ public class PostController {
 	
 	private static final Logger logger = LoggerFactory.getLogger(PostController.class);
 
-	@GetMapping
+	@GetMapping("/explore")
 	public PagedResponse<PostResponse> getAllPosts(@CurrentUser UserPrincipal currentUser,
             									@RequestParam(value = "page", defaultValue = AppConstants.DEFAULT_PAGE_NUMBER) int page,
             									@RequestParam(value = "size", defaultValue = AppConstants.DEFAULT_PAGE_SIZE) int size) {
@@ -79,8 +79,10 @@ public class PostController {
 	@PreAuthorize("hasRole('USER')")
 	// MultipartFile can't use JSON data (@RequestBody means use of JSON or XML data with maps your DTO bean) 
 	// So Use @ModelAttribute
-	public ResponseEntity<?> createPost(@Valid @ModelAttribute PostRequest postReqeust) {
-		Post post = postService.createPost(postReqeust);
+	public ResponseEntity<?> createPost(@Valid @ModelAttribute PostRequest postReqeust,
+										@CurrentUser UserPrincipal currentUser) {
+		
+		Post post = postService.createPost(postReqeust, currentUser);
 		
 		// Rest API를 구현하는 과정에서 특정값을 포함한 URI를 전달하는 상황
 		URI location = ServletUriComponentsBuilder

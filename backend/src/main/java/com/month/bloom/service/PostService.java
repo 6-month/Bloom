@@ -133,12 +133,7 @@ public class PostService {
 				posts.getSize(), posts.getTotalElements(), posts.getTotalPages(), posts.isLast());
 		
 	}
-	
-	public void deletePost(Long postId) {
-		Post post = postRepository.findById(postId).orElseThrow();
-		
-		postRepository.delete(post);
-	}
+
 	
 	public PagedResponse<PostResponse> getPostsCreatedBy(String username, UserPrincipal currentUser, int page, int size) {
 		validatePageNumberAndSize(page, size);
@@ -171,7 +166,7 @@ public class PostService {
 	}
 
 
-	public Post createPost(PostRequest postRequest) {
+	public Post createPost(PostRequest postRequest, UserPrincipal currentUser) {
 		Post post = new Post();
 		post.setContent(postRequest.getContent());
 		
@@ -187,8 +182,16 @@ public class PostService {
 	            throw new FileStorageException("Could not store file " + fileName + ". Please try again!", ex);
 	        }
 		}
+		User user = userRepository.getOne(currentUser.getId());
+		post.setUser(user);
 		
 		return postRepository.save(post);
+	}
+	
+	public void deletePost(Long postId) {
+		Post post = postRepository.findById(postId).orElseThrow();
+		
+		postRepository.delete(post);
 	}
 	
 	public Comment createComment(UserPrincipal currentUser, CommentRequest commentRequest) {

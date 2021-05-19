@@ -40,9 +40,9 @@ public interface PostRepository extends JpaRepository<Post, Long>{
 //			))
 	
 	// 상속된 createdBy 데이터를 post에서 쓰는 방법
-	@Query("SELECT p FROM Post p WHERE p.created.By In"
+	@Query("SELECT p FROM Post p WHERE p.user.id In"
 			+ " (SELECT u.id FROM User u WHERE u.id In "
-			+ " (SELECT f.following.id FROM f WHERE f.follower.id = :followerId and f.following.id In :followingIds))")
+			+ " (SELECT f.following.id FROM Follow f WHERE f.follower.id = :followerId and f.following.id In :followingIds))")
 	Page<Post> findByFollowedUserId(@Param("followingIds") List<Long> followingIds, 
 									@Param("followerId") Long followerId,
 									Pageable pageable);

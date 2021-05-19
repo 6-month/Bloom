@@ -9,6 +9,8 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotBlank;
@@ -17,7 +19,6 @@ import javax.validation.constraints.Size;
 import org.hibernate.annotations.BatchSize;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
-import org.springframework.web.multipart.MultipartFile;
 
 import com.month.bloom.model.audit.UserDateAudit;
 
@@ -47,6 +48,10 @@ public class Post extends UserDateAudit {
 			fetch = FetchType.EAGER,
 			orphanRemoval = true)
 	private List<Comment> comments = new ArrayList<>();
+	
+	@ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "user_id", nullable = false)
+    private User user;
 	
 	public Long getId() {
 		return id;
@@ -100,4 +105,14 @@ public class Post extends UserDateAudit {
 		comments.remove(comment);
 		comment.setPost(this);
 	}
+
+	public User getUser() {
+		return user;
+	}
+
+	public void setUser(User user) {
+		this.user = user;
+	}
+	
+	
 }
