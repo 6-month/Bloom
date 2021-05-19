@@ -1,10 +1,11 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import {Link, useLocation } from 'react-router-dom';
 import { Menu, Dropdown } from 'antd';
 import { HomeOutlined, UserOutlined,EditOutlined } from '@ant-design/icons';
 import logo from '../img/Bloom_logo.png';
 
 import './AppHeader.css';
+import { findUserByUsernameOrName } from '../util/APIUtils';
 
 function ProfileDropdownMenu(props) {
   useEffect(() => {
@@ -51,6 +52,24 @@ function AppHeader(props) {
         }
     };
 
+    const [usernameOrName, setUsernameOrName] = useState('')
+    const [users, setUsers] = useState([])
+
+    useEffect(() => {
+      console.log(usernameOrName)
+      findUserByUsernameOrName(usernameOrName)
+        .then(response => {
+          setUsers(response);
+        })
+        .catch(error => {
+          console.log(error.message);
+        })
+    }, [usernameOrName])
+
+    useEffect(() => {
+      console.log(users)
+    }, [users])
+
     let menuItems;
     if(props.currentUser !== null) {
         menuItems = [
@@ -82,12 +101,30 @@ function AppHeader(props) {
             </Menu.Item>
         ]
     }
+
+    // let userLists;
+    // if(users !== null) {
+    //   userLists = [
+        
+    //   ]
+    // }
+
+
     return (
       <div className="nav">
         <img
           src={logo}
           className="logo_size"
         />
+        <input 
+          onChange={(e) => {setUsernameOrName(e.target.value)}} 
+          placeholder="Search"
+        />
+        {
+          // 여기에 검색 결과를 보여주는 코드를 만들어야함
+          // antd Search?
+        }
+        
         <Menu
           className="app-menu"
           mode="horizontal"
