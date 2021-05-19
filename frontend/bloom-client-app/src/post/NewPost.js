@@ -4,12 +4,11 @@ import { ACCESS_TOKEN, API_BASE_URL } from '../constants';
 import {post} from 'axios';
 import { useHistory } from 'react-router-dom';
 import "./NewPost.css";
+import { Upload } from 'antd';
+import ImgCrop from 'antd-img-crop';
+
 
 function NewPost({currentUser}) {
-  useEffect(() => {
-    console.log(currentUser.profileImage)
-  }, [])
-
   let today = new Date();
   let year = today.getFullYear();
   let month = today.getMonth() + 1; 
@@ -19,14 +18,23 @@ function NewPost({currentUser}) {
   const [content, setContent] = useState({
     value : ''
   });
-  const [images, setImages] = useState({
-    value : [],
-  });
+
+  // const [images, setImages] = useState({
+  //   value : ''
+  // });
+  
+  // const onChangedImages = (e) => {
+  //   setImages({
+  //     ...images,
+  //     value : [...images.value, {value : e.target.files[0]}],
+  //     validateStatus : 'success',
+  //     errorMsg : null
+  //   });
+  // }
 
   const isFormInvalid = () => {
     return !(
-      content.validateStatus === 'success' &&
-      images.validateStatus === 'success' 
+      content.validateStatus === 'success'
     )
   }
 
@@ -38,15 +46,6 @@ function NewPost({currentUser}) {
       value : value,
       ...validateContent()
     })
-  }
-
-  const onChangedImages = (e) => {
-    setImages({
-      ...images,
-      value : [...images.value, {value : e.target.files[0]}],
-      validateStatus : 'success',
-      errorMsg : null
-    });
   }
 
   const validateContent = () => {
@@ -63,6 +62,28 @@ function NewPost({currentUser}) {
       };
     }
   }
+
+  const [fileList, setFileList] = useState([]);
+
+  const handleUpload = (info) => {
+    setFileList(info.fileList)
+  }
+
+  // upload 후에 image를 보여주는 코드
+  const onPreview = async file => {
+    let src = file.url;
+    if (!src) {
+      src = await new Promise(resolve => {
+        const reader = new FileReader();
+        reader.readAsDataURL(file.originFileObj);
+        reader.onload = () => resolve(reader.result);
+      });
+    }
+    const image = new Image();
+    image.src = src;
+    const imgWindow = window.open(src);
+    imgWindow.document.write(image.outerHTML);
+  };
   
 
   const handleSubmit = (e) => {
@@ -71,9 +92,10 @@ function NewPost({currentUser}) {
     const formData = new FormData();
     formData.append('content',content.value);
 
-    for(var i = 0; i<images.value.length; i++) {
-      formData.append('images', images.value[i].value);
-    }
+    fileList.forEach((file) => {
+      formData.append("images", file.originFileObj);
+      console.log(file.originFileObj);
+    })
 
     const config = {
       headers : {
@@ -82,20 +104,13 @@ function NewPost({currentUser}) {
       }
     }
 
-    for(var keyValue of formData) {
-      console.log(keyValue)
-    }
- 
     return post(API_BASE_URL+'/posts', formData, config)
       .then(response => {
         notification.success({
           message : 'Bloom',
           description : 'Successfully create post!'
         })
-        // window.location.replace("/bloom"); 
         history.push("/bloom")
-
-
       })
       .catch(error => {
         notification.error({
@@ -109,50 +124,63 @@ function NewPost({currentUser}) {
   return (
     <div className="new-post-container">
       <form className="new-post-form">
+        <div className="new-post-creator">
+          <div className="creator-detail-avatar">
+            <Avatar 
+                style={{
+                  width:"70px",
+                  height:"70px",
+                  marginRight:"20px",
+                }}
+                src={`data:image/jpeg;base64,${currentUser.profileImage}`}
+            />
+          </div>
+          <div className="creator-detail-username">
+            <span className="username">{currentUser.username}</span>
+            <span className="date">{year + '/' + month + '/' + date}</span>
+          </div>
+        </div>
+
         <div className="new-post-imageUpload">
-          <label className="input-file-button" for="new-post-image">UpLoad</label>
-          <input 
-              type="file" 
-              onChange={(e) => {onChangedImages(e)}}
-              id="new-post-image"
-              style={{display:"none"}}
+          <ImgCrop
+            className="imageUpload-container"
+          >
+            <Upload
+              listType="picture-card"
+              fileList={fileList}
+              onChange={handleUpload}
+              onPreview={onPreview}
+            >
+              {fileList && '+ Upload'}
+            </Upload>
+          </ImgCrop>
+        </div>
+
+        <div className="new-post-content">
+          <textarea 
+              type="text" 
+              onChange = {(e) => {onChangedContent(e)}}
+              placeholder="Please enter content here"
+              className="input-content"
             />
         </div>
-        <div className="new-post-sidecontainer">
-          <div className="new-post-creator">
-            <div className="creator-detail-avatar">
-              <Avatar 
-                  style={{
-                    width:"70px",
-                    height:"70px",
-                    marginRight:"20px",
-                  }}
-                  src={`data:image/jpeg;base64,${currentUser.profileImage}`}
-              />
-            </div>
-            <div className="creator-detail-username">
-              <span className="username">{currentUser.username}</span>
-              <span className="date">{year + '/' + month + '/' + date}</span>
-            </div>
-          </div>
-          <input 
-            type="text" 
-            onChange = {(e) => {onChangedContent(e)}}
-            className="new-post-content"
-            placeholder="Pleas enter content..."
-          />
-          <Button 
-            type="primary" 
-            htmlType="submit" 
-            size="large"
-            disabled={isFormInvalid()}
-            onClick={handleSubmit}
-            className="new-post-btn"
-          >
-            Save
-          </Button>
-        </div>
       </form>
+      <Button 
+          type="primary" 
+          htmlType="submit" 
+          size="large"
+          disabled={isFormInvalid()}
+          onClick={handleSubmit}
+          block shape ="round" 
+          style={{
+            marginBottom: "40px",
+            borderStyle: "none",
+            width: "120px",
+            backgroundImage: "linear-gradient(135deg, #fffabf, #d8dfec, #d5c6e3)"
+          }}
+        >
+          save
+        </Button>
     </div>
   );
 }

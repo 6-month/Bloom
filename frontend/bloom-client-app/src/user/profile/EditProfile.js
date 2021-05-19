@@ -340,16 +340,18 @@ function EditProfile({currentUser}) {
                 
                 <div className="edit-profile-info-container">
                     <div className="for-profile-user-details">
-                        <div className="user-avatar">
-                            <Avatar  
-                                style={{
-                                    backgroundColor: getAvatarColor(user.name),
-                                    width: "90px",
-                                    height: "90px"
-                                }} 
-                                src={`data:image/jpeg;base64,${user.profileImage}`}
-                            >
-                            </Avatar>
+                        {/* <div className="user-avatar">
+                            {
+                                user.profileImage !==null ? (
+                                    <Avatar>
+                                        <img src={`data:image/jpeg;base64,${user.getprofileImage}`}  />
+                                    </Avatar>
+                                ) : (
+                                    <Avatar 
+                                        
+                                    />
+                                )
+                            }
                         </div>
                         <div className="user-detail-info">
                             <div className="user-summary">
@@ -359,7 +361,7 @@ function EditProfile({currentUser}) {
                                     Joined {formatDateTime(user.joinedAt)}
                                 </div>
                             </div>
-                        </div>
+                        </div> */}
                     </div>
 
 
