@@ -20,8 +20,6 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.month.bloom.exception.AppException;
-import com.month.bloom.model.Phase;
-import com.month.bloom.model.PhaseName;
 import com.month.bloom.model.Role;
 import com.month.bloom.model.RoleName;
 import com.month.bloom.model.User;
@@ -29,7 +27,6 @@ import com.month.bloom.payload.ApiResponse;
 import com.month.bloom.payload.JwtAuthenticationResponse;
 import com.month.bloom.payload.LoginRequest;
 import com.month.bloom.payload.SignUpRequest;
-import com.month.bloom.repository.PhaseRepository;
 import com.month.bloom.repository.RoleRepository;
 import com.month.bloom.repository.UserRepository;
 import com.month.bloom.security.JwtTokenProvider;
@@ -46,9 +43,6 @@ public class AuthController {
 
     @Autowired
     RoleRepository roleRepository;
-
-    @Autowired
-    PhaseRepository phaseRepository;
     
     @Autowired
     PasswordEncoder passwordEncoder;

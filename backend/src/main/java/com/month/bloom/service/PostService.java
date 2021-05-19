@@ -29,11 +29,11 @@ import com.month.bloom.model.LikeCount;
 import com.month.bloom.model.Post;
 import com.month.bloom.model.User;
 import com.month.bloom.payload.CommentRequest;
-import com.month.bloom.payload.CommentResponse;
 import com.month.bloom.payload.PagedResponse;
 import com.month.bloom.payload.PostRequest;
 import com.month.bloom.payload.PostResponse;
 import com.month.bloom.repository.CommentRepository;
+import com.month.bloom.repository.FollowRepository;
 import com.month.bloom.repository.LikeRepository;
 import com.month.bloom.repository.PostRepository;
 import com.month.bloom.repository.UserRepository;
@@ -56,6 +56,9 @@ public class PostService {
 	@Autowired
 	private CommentRepository commentRepository;
 	
+	@Autowired
+	private FollowRepository followRepository;
+	
 	private static final Logger logger = LoggerFactory.getLogger(PostService.class);
 
 	public PagedResponse<PostResponse> getAllPosts(UserPrincipal currentUser, int page, int size) {
@@ -64,7 +67,9 @@ public class PostService {
 		//Retrieve Post
 		Pageable pagealbe = PageRequest.of(page, size, Sort.Direction.DESC, "createdAt");
 		// Retrieve All Post in Page
+		System.out.println(pagealbe);
 		Page<Post> posts = postRepository.findAll(pagealbe);
+		System.out.println(posts);
 		
 		if(posts.getNumberOfElements() == 0) {
 			return new PagedResponse<>(Collections.emptyList(), posts.getNumber(),
@@ -95,11 +100,40 @@ public class PostService {
 				posts.getSize(), posts.getTotalElements(), posts.getTotalPages(), posts.isLast());
 	}
 	
-	public void deletePost(Long postId) {
-		Post post = postRepository.findById(postId).orElseThrow(() -> new ResourceNotFoundException("Post", "id", postId));
+public PagedResponse<PostResponse> getFollowedUserPosts(UserPrincipal currentUser, int page, int size) {
+		validatePageNumberAndSize(page, size);
 		
-		postRepository.delete(post);
+		List<Long> followingIds = followRepository.findFollowingsByFollowerId(currentUser.getId());
+		
+		Pageable pagealbe = PageRequest.of(page, size, Sort.Direction.DESC, "createdAt");
+		
+		Page<Post> posts = postRepository.findByFollowedUserId(followingIds, currentUser.getId(), pagealbe);
+		
+		if(posts.getNumberOfElements() == 0) {
+			return new PagedResponse<>(Collections.emptyList(), posts.getNumber(),
+					posts.getSize(), posts.getTotalElements(), posts.getTotalPages(), posts.isLast());			
+		}
+		
+		List<Long> postIds = posts.map(Post::getId).getContent();
+		
+		Map<Long, Long> totalLikeCountMap = getTotalLikesMap(postIds);
+		
+		Map<Long, Long> postUserLikeMap = getPostUserLikeMap(currentUser, postIds);
+		
+		Map<Long, User> creatorMap = getPostCreatorMap(posts.getContent());
+		
+		List<PostResponse> postResponse = posts.map(post -> {
+			return ModelMapper.mapPostToPostResponse(post, 
+					totalLikeCountMap.get(post.getId()), 
+					creatorMap.get(post.getCreatedBy()),
+					postUserLikeMap == null ? null : postUserLikeMap.getOrDefault(post.getId(), null));
+		}).getContent();
+		
+		return new PagedResponse<>(postResponse, posts.getNumber(),
+				posts.getSize(), posts.getTotalElements(), posts.getTotalPages(), posts.isLast());
+		
 	}
+
 	
 	public PagedResponse<PostResponse> getPostsCreatedBy(String username, UserPrincipal currentUser, int page, int size) {
 		validatePageNumberAndSize(page, size);
@@ -132,7 +166,7 @@ public class PostService {
 	}
 
 
-	public Post createPost(PostRequest postRequest) {
+	public Post createPost(PostRequest postRequest, UserPrincipal currentUser) {
 		Post post = new Post();
 		post.setContent(postRequest.getContent());
 		
@@ -148,8 +182,16 @@ public class PostService {
 	            throw new FileStorageException("Could not store file " + fileName + ". Please try again!", ex);
 	        }
 		}
+		User user = userRepository.getOne(currentUser.getId());
+		post.setUser(user);
 		
 		return postRepository.save(post);
+	}
+	
+	public void deletePost(Long postId) {
+		Post post = postRepository.findById(postId).orElseThrow();
+		
+		postRepository.delete(post);
 	}
 	
 	public Comment createComment(UserPrincipal currentUser, CommentRequest commentRequest) {

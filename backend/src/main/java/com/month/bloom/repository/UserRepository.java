@@ -12,6 +12,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import com.month.bloom.model.User;
+import com.month.bloom.payload.UserSummary;
 
 @Repository
 public interface UserRepository extends JpaRepository<User, Long> {
@@ -34,5 +35,10 @@ public interface UserRepository extends JpaRepository<User, Long> {
     void updateUser(@Param("userId") Long userId, @Param("username") String username, @Param("name") String name, 
     				@Param("bio") String bio, @Param("email") String email, @Param("phoneNumber") String phoneNumber);
 
-    
+    // user검색 query
+//  select *
+//  from users
+//  where username like '%min%' or name like '%Min%';
+    @Query("SELECT u FROM User u WHERE u.username LIKE %:usernameOrName% OR u.name LIKE %:usernameOrName%")
+    List<User> findUserByUsernameOrName(@Param("usernameOrName") String usernameOrName);
 }

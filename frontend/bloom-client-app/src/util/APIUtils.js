@@ -55,6 +55,13 @@ export function signup(signupRequest) {
     });
 }
 
+export function findUserByUsernameOrName(usernameOrName) {
+    return request({
+        url: API_BASE_URL + "users/findUsernameOrName?usernameOrName=" + usernameOrName,
+        method: 'GET'
+    })
+}
+
 export function checkUsernameAvailability(username) {
     return request({
         url: API_BASE_URL + "/user/checkUsernameAvailability?username=" + username,
@@ -102,6 +109,16 @@ export function getUserProfile(username) {
 }
 
 export function getAllPosts(page, size) {
+    page = page || 0;
+    size = size || POST_LIST_SIZE;
+
+    return request({
+        url: API_BASE_URL + "/posts/explore?page=" + page + "&size=" + size,
+        method: 'GET'
+    });
+}
+
+export function getFollowedUserPosts(page, size) {
     page = page || 0;
     size = size || POST_LIST_SIZE;
 
