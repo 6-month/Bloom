@@ -57,7 +57,7 @@ export function signup(signupRequest) {
 
 export function findUserByUsernameOrName(usernameOrName) {
     return request({
-        url: API_BASE_URL + "users/findUsernameOrName?usernameOrName=" + usernameOrName,
+        url: API_BASE_URL + "/users/findUsernameOrName?usernameOrName=" + usernameOrName,
         method: 'GET'
     })
 }
