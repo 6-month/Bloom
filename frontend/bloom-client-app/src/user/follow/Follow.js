@@ -81,8 +81,9 @@ function Follow({user, currentUser, totalFollower, totalFollowing}) {
                             onClick={handleFollowcChanged}
                         >
                         </Button>
-                        <span>totalFollowers : {tFollower}</span>
-                        <span>totalFollwings ; {tFollowing}</span>
+                        <span>Follower : {tFollower}</span>
+                        <span>  /  </span>
+                        <span>Following : {tFollowing}</span>
                     </div>
                 ) : (
                     // follow를 할것임을 표시
@@ -94,8 +95,9 @@ function Follow({user, currentUser, totalFollower, totalFollowing}) {
                             onClick={handleFollowcChanged}
                         >
                         </Button>
-                        <span>totalFollowers : {tFollower}</span>
-                        <span>totalFollwings ; {tFollowing}</span>
+                        <span>Follower : {tFollower}</span>
+                        <span>  /  </span>
+                        <span>Following : {tFollowing}</span>
                     </div>
                 )
             }

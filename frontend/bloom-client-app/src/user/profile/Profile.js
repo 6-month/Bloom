@@ -6,9 +6,12 @@ import {  getCurrentUser, getUserProfile } from '../../util/APIUtils';
 import {getAvatarColor} from '../../util/Colors';
 import { formatDateTime } from '../../util/Helpers';
 import "./Profile.css";
-import EditProfile from './EditProfile';
 import { Button } from 'antd';
 import {useHistory} from "react-router-dom"
+import first from '../../img/Bloom1.png';
+import second from '../../img/Bloom2.png';
+import thrid from '../../img/Bloom3.png';
+import fourth from '../../img/Bloom4.png';
 
 function Profile(props) {
     // console을 한번 찍을줄 알았는데 4번 찍는다 이유는?
@@ -17,7 +20,8 @@ function Profile(props) {
     let params = props.match.params;
     const [profileCheck, setProfileCheck] = useState(null);  
     const [user, setUser] = useState(null);
-    
+    const [bloom, setBloom] = useState("first");
+
     const [isLoading, setIsLoading] = useState(false);
     
 
@@ -51,10 +55,6 @@ function Profile(props) {
                 }
             })
     }, [params.username])
-
-    useEffect(() => {
-        console.log(user)
-    }, [user])
 
     // 왜 새로고침을 했을때 currentUser 정보를 읽어올수 없는걸까??
             // 새로고침시 currentUser 자체는 읽어 오지만 currentUser의 데이터들은 null로 읽고 있다.
@@ -102,8 +102,8 @@ function Profile(props) {
                                                     Edit
                                                 </Button>
                                                 <div>
-                                                    <span>totalFollowers : {user.totalFollowers}</span>
-                                                    <span>totalFollowings : {user.totalFollowings}</span>
+                                                    <span>Follower : {user.totalFollowers}</span>
+                                                    <span>Following : {user.totalFollowings}</span>
                                                 </div>    
                                             </div>
                                             
@@ -126,8 +126,22 @@ function Profile(props) {
                                     Bio : {user.bio}
                                 </div>
                             </div>
-                            <div className="user-flower-container">
-                                <span></span>
+                            <div className="user-bloom-container">
+                                {
+                                    user.postCount <= 5 ? (
+                                        <img src={first} className="bloom"/>
+                                    ) : (
+                                        user.postCount <= 10 ? (
+                                            <img src={second} className="bloom"/>
+                                        ) :(
+                                            user.postCount <= 15 ? (
+                                                <img src={thrid} className="bloom"/>
+                                            ) : (
+                                                    <img src={fourth} className="bloom"/>
+                                            )
+                                        )
+                                    )
+                                }
                             </div>
                         </div>
                         <div className="user-post-list">
