@@ -1,11 +1,54 @@
 import React, { useEffect, useState } from 'react';
 import {Link, useLocation } from 'react-router-dom';
-import { Menu, Dropdown } from 'antd';
-import { HomeOutlined, UserOutlined,EditOutlined } from '@ant-design/icons';
+import { Menu, Dropdown, Input, Avatar } from 'antd';
+import { HomeOutlined, UserOutlined,EditOutlined, SearchOutlined  } from '@ant-design/icons';
 import logo from '../img/Bloom_logo.png';
+import {getAvatarColor} from '../util/Colors';
 
 import './AppHeader.css';
 import { findUserByUsernameOrName } from '../util/APIUtils';
+
+const {Search} = Input;
+
+function SearchUserDropdownMenu({users}) {
+  const dropdownMenu = (
+    <Menu className="profile-dropdown-menu">
+      {
+        users.map((user) => 
+          <Menu.Item key="user-info" className="dropdown-item">
+            <div className="user-container">
+                <Link to={`/users/${user.username}`}>
+                  <Avatar 
+                    className="user-avatar-circle" 
+                    style={{ backgroundColor: getAvatarColor(user.name)}} 
+                    src={`data:image/jpeg;base64,${user.profileImage}`}
+                  >
+                  </Avatar>
+                </Link>
+              <div className="user-username">
+                <Link to={`/users/${user.username}`}>
+                  {user.username}
+                </Link>
+              </div>  
+              <div className="user.name">
+                {user.name}
+              </div>
+            </div>            
+          </Menu.Item>
+        )
+      }
+    </Menu>
+  );
+
+  return (
+    <Dropdown 
+      overlay={dropdownMenu} >
+      <a className="ant-dropdown-link">
+        <SearchOutlined  className="nav-icon" onClick={(e) => e.preventDefault()} style={{marginTop:"8px"}} /> 
+      </a>
+    </Dropdown>
+  );
+}
 
 function ProfileDropdownMenu(props) {
   useEffect(() => {
@@ -54,6 +97,7 @@ function AppHeader(props) {
 
     const [usernameOrName, setUsernameOrName] = useState('')
     const [users, setUsers] = useState([])
+    const [searchCheck, setSearchCheck] = useState(false);
 
     useEffect(() => {
       console.log(usernameOrName)
@@ -102,13 +146,12 @@ function AppHeader(props) {
         ]
     }
 
-    // let userLists;
-    // if(users !== null) {
-    //   userLists = [
-        
-    //   ]
-    // }
-
+    let searchItems;
+    searchItems = [
+      <SearchUserDropdownMenu 
+        users={users}
+      />
+    ]
 
     return (
       <div className="nav">
@@ -116,15 +159,22 @@ function AppHeader(props) {
           src={logo}
           className="logo_size"
         />
-        <input 
-          onChange={(e) => {setUsernameOrName(e.target.value)}} 
-          placeholder="Search"
-        />
-        {
-          // 여기에 검색 결과를 보여주는 코드를 만들어야함
-          // antd Search?
-        }
-        
+        <Menu 
+          className="search-menu"
+          mode="horizontal"
+        >
+          <Search 
+            placeholder="searh" 
+            enterButton={false}
+            onChange={(e) => {setUsernameOrName(e.target.value)}}
+            style={{ 
+              width: 200, 
+              marginTop:"8px",
+            }} 
+          />
+          {searchItems}
+
+        </Menu>
         <Menu
           className="app-menu"
           mode="horizontal"

@@ -22,10 +22,17 @@
     margin-right: 100px;
     width: 65vw;
 }
-.user-flower-container {
+.user-bloom-container {
     border: 1px solid black;
     width: 35vw;
+    display: flex;
+    justify-content: center;
+    /* align-items: center; */
 }
 .user-post-list {
     width: 75vw;
+}
+.bloom {
+    max-width: 100vw;
+    max-height: 100vh;
 }
