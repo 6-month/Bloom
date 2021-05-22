@@ -58,11 +58,7 @@ function ReplyComments({postId,p_comment_id, pComment}) {
 
         saveComment(commentRequest)
             .then(response => {
-
-                // 수정
                 setComments(comments.concat(response));
-                
-                
                 notification.success({
                     message : "Bloom",
                     description : "Successfully registered comments"
@@ -135,12 +131,6 @@ function Comments({post}) {
     })
     
     const [comments, setComments] = useState(post.comments);
-
-    useEffect(() => {
-        comments.forEach(comment =>
-                console.log(comment.createdBy)
-            )
-    }, [comments])
 
     const handleCommentChange = (e) => {
         setCommentContents({
@@ -247,11 +237,7 @@ function Comments({post}) {
 
         saveComment(commentRequest)
             .then(response => {
-                
-                // 수정
                 setComments(comments.concat(response));
-                
-                
                 notification.success({
                     message : "Bloom",
                     description : "Successfully registered comments"
