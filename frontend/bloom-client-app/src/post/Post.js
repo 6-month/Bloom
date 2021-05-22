@@ -10,28 +10,34 @@ import './Post.css'
 import Comments from './Comments';
 import Likes from "./Likes";
 import Profile from "../user/profile/Profile";
-import {deletePost} from "../util/APIUtils";
+import {deletePost, getCurrentUser} from "../util/APIUtils";
 
 const FormItem = Form.Item;
 
-function Post({post, currentUser}) {
+function Post({post}) {
     // delte 후 response로 post들의 정보를 받고 state로 관리해야할것 같음..
 
     let history = useHistory();
     const profileURL ="/users/" + post.createdBy.username;
 
+    const [currentUser, setCurrentUser] = useState([]);
     const [setting, setSetting] = useState(false);
+
+    useEffect(() => {
+        getCurrentUser()
+            .then(response => {
+                setCurrentUser(response)
+            })
+            .catch(error => {
+                console.log(error.message)
+            })
+    }, [])
 
     useEffect(() => {
         if(currentUser.username == post.createdBy.username) {
             setSetting(true)
         }
-        // notification.button({
-        //     message : "Bloom",
-        //     description: "Are you sure you want to delete it? Once deleted, it cannot be recovered.",
-    
-        // })
-    }, [])
+    }, [currentUser])
 
     const deltePostSubmit = () => {    
         deletePost(post.id)
