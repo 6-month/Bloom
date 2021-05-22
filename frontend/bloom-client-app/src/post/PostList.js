@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import LoadingIndicator from '../common/LoadingIndicator';
 import { POST_LIST_SIZE } from '../constants';
-import {getAllPosts, getUserCreatedPosts } from '../util/APIUtils'
+import {getAllPosts, getCurrentUser, getUserCreatedPosts } from '../util/APIUtils'
 import {Button } from 'antd';
 import Post from './Post';
 import Icon from '@ant-design/icons';
@@ -9,8 +9,9 @@ import "./PostList.css";
 import NotFound from '../common/NotFound';
  
 
-function PostList({currentUser, username, type}) {
+function PostList({username, type}) {
     const [posts, setPosts] =useState([]);
+    const [currentUser, setCurrentUser] = useState(null);
 
     const [page, setPage] = useState(0);
     const [size, setSize] = useState(10);
@@ -21,7 +22,13 @@ function PostList({currentUser, username, type}) {
 
     useEffect(() => {
         loadPostList();
-        console.log(currentUser.username)
+        getCurrentUser()
+            .then(response => {
+                setCurrentUser(response)
+            })
+            .catch(error => {
+                console.log(error.message)
+            })
     },[])
 
     useEffect(() => {

@@ -41,10 +41,6 @@ function App() {
       else {
         history.push("/login");
       }
-
-      return () => {
-        loadCurrentUser();
-      }
     },[])
 
     useEffect(() => {
