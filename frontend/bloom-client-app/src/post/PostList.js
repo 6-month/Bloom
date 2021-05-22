@@ -72,6 +72,7 @@ function PostList({username, type}) {
 
     const postViews = [];
     posts.forEach((post) => {
+        console.log(post)
         postViews.push(
             <Post 
                 post = {post}

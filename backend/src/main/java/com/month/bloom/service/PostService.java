@@ -67,9 +67,7 @@ public class PostService {
 		//Retrieve Post
 		Pageable pagealbe = PageRequest.of(page, size, Sort.Direction.DESC, "createdAt");
 		// Retrieve All Post in Page
-		System.out.println(pagealbe);
 		Page<Post> posts = postRepository.findAll(pagealbe);
-		System.out.println(posts);
 		
 		if(posts.getNumberOfElements() == 0) {
 			return new PagedResponse<>(Collections.emptyList(), posts.getNumber(),
@@ -198,10 +196,12 @@ public PagedResponse<PostResponse> getFollowedUserPosts(UserPrincipal currentUse
 		if(commentRequest.getP_comment_id() != null) {
 			Comment mainComment = commentRepository.getOne(commentRequest.getP_comment_id());
 			
+			User writeUser = userRepository.getOne(currentUser.getId());
+			
 			Comment subComment = new Comment();
 			subComment.setText(commentRequest.getText());
 			subComment.setPost(mainComment.getPost());
-			subComment.setUser(mainComment.getUser());
+			subComment.setUser(writeUser);
 			subComment.setDeleted(false);
 			subComment.setComment(mainComment);
 			
