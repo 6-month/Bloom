@@ -86,6 +86,16 @@ function EditProfile({currentUser}) {
         loadUserProfile(currentUser.username)
     }, [])
 
+    const isFormInvalid = () => {
+        return !(
+            name.validateStatus === 'success' &&
+            username.validateStatus === 'success' &&
+            email.validateStatus === 'success' &&
+            bio.validateStatus === 'success' &&
+            phoneNumber.validateStatus === 'succcess'
+        )
+    }
+
     const loadUserProfile = (username) => {
 
         getUserProfile(username)
@@ -119,6 +129,8 @@ function EditProfile({currentUser}) {
     })
 
     const handleEditSubmit = () => {
+
+
         const UserEditInfo = {
             userId : user.id,
             name : name.value,
@@ -429,6 +441,7 @@ function EditProfile({currentUser}) {
                         type="primary" 
                         block shape ="round" 
                         htmlType="submit"
+                        disabled={isFormInvalid()}
                     >
                         Save
                     </Button>

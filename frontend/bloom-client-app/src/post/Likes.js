@@ -12,11 +12,13 @@ function Likes({postId, pushedLike, totalLikes}) {
 
         const likeRequest ={
             postId : postId,
-            pushedLike : true
+            checkedLike : true
         }
+        console.log(likeRequest)
 
         addLike(likeRequest)
             .then(response => {
+                console.log(response)
                 setTotalLikes(response.totalLikes)
                 setPushedLike(response.pushedLike)
                 notification.success({
@@ -32,13 +34,22 @@ function Likes({postId, pushedLike, totalLikes}) {
             })
     }
 
+    useEffect(() => {
+        console.log(pLike)
+    }, [])
+
+    // useEffect(() => {
+    //     console.log(tLike);
+    //     console.log(pLike);
+    // } , [tLike])
+
     // cancel 부분 수정이 필요함
     const handleCancelLike = (e) => {
         e.preventDefault();
 
         const likeRequest ={
             postId : postId,
-            pushedLike : false
+            checkedLike : false
         }
 
         cancelLike(likeRequest)

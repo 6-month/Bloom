@@ -103,6 +103,7 @@ function Profile(props) {
                                                 </Button>
                                                 <div>
                                                     <span>Follower : {user.totalFollowers}</span>
+                                                    <span>  /  </span>
                                                     <span>Following : {user.totalFollowings}</span>
                                                 </div>    
                                             </div>
