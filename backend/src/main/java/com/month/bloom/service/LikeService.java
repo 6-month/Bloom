@@ -33,74 +33,35 @@ public class LikeService {
    private UserRepository userRepository;
    
    private static final  Logger logger = LoggerFactory.getLogger(LikeService.class);
-
-   public LikeResponse storeLike(UserPrincipal currentUser, LikeRequest likeRequest) {
-      Post post = postRepository.findById(likeRequest.getPostId())
-            .orElseThrow(() -> new ResourceNotFoundException("Post", "id", likeRequest.getPostId()));
-      User user = userRepository.getOne(currentUser.getId());
    
-      Like like = new Like(post, user);
-      
-      boolean pushedLike = false;
-      Long totalLikes = likeRepository.countByPost(post);
-
-      if(isNotAlreadyLike(user, post)) {
-         try {
-            like = likeRepository.save(like);
-            pushedLike = true; 
-            totalLikes = likeRepository.countByPost(post);
-                  
-         } catch (DataIntegrityViolationException ex) {
-            logger.info("Like has already registered");
-            throw new BadRequestException("Sorry! You have already Like registered");
-         }
-      }
-      LikeResponse likeResponse = new LikeResponse();
-      likeResponse.setPushedLike(pushedLike);
-      likeResponse.setTotalLikes(totalLikes);
-      
-      return likeResponse;
-      
+   public LikeResponse storeLike(UserPrincipal currentUser, LikeRequest likeRequest) {
+	   Post post = postRepository.getOne(likeRequest.getPostId());
+	   User user = userRepository.getOne(currentUser.getId());
+	   
+	   Like like = new Like(post, user);
+	   
+	   likeRepository.save(like);
+	   
+	   LikeResponse likeResponse = new LikeResponse();
+	   likeResponse.setPushedLike(likeRequest.isCheckedLike());
+	   likeResponse.setTotalLikes(likeRepository.countByPost(post));
+	   
+	   return likeResponse;
    }
    
    public LikeResponse cancelLike(UserPrincipal currentUser, LikeRequest likeRequest) {
-      // likeRequest checkedLike : false
-      
-      Post post = postRepository.findById(likeRequest.getPostId())
-            .orElseThrow(() -> new ResourceNotFoundException("Post", "id", likeRequest.getPostId()));
-      User user = userRepository.getOne(currentUser.getId());
-      Like like = likeRepository.findByUserAndPost(user, post)
-            .orElseThrow(() ->new ResourceNotFoundException("Like", "id", likeRequest.isCheckedLike()) );
-      
-      likeRepository.delete(like);
-      
-      LikeResponse likeResponse = new LikeResponse();
-      likeResponse.setPushedLike(false);
-      
-      Long totalLikes = likeRepository.countByPost(post);
-      likeResponse.setTotalLikes(totalLikes);
-      
-      return likeResponse;
+	   Post post = postRepository.getOne(likeRequest.getPostId());
+	   User user = userRepository.getOne(currentUser.getId());
+	   Like like = likeRepository.findByUserAndPost(user, post)
+			   				.orElseThrow(() -> new ResourceNotFoundException("Like", "like", likeRequest));
    
+	   likeRepository.delete(like);
+	   
+	   LikeResponse likeResponse = new LikeResponse();
+	   likeResponse.setPushedLike(likeResponse.isPushedLike());
+	   likeResponse.setTotalLikes(likeRepository.countByPost(post));
+	   
+	   return likeResponse;
    }
    
-//   public void cancelLike(UserPrincipal currentUser, LikeRequest likeRequest) {
-//      if(likeRequest.isCheckedLike()) {
-//         Post post = postRepository.findById(likeRequest.getPostId()).orElseThrow();
-//         User user = userRepository.getOne(currentUser.getId());
-//         Like like = likeRepository.findByUserAndPost(user, post).orElseThrow();
-//         
-//         likeRepository.delete(like);
-//      }
-//   }
-   
-   private boolean isNotAlreadyLike(User user,  Post post) {
-	   Optional<Like> like = likeRepository.findByUserAndPost(user, post);
-	      if(like != null) {
-	         return false;
-	      }
-	      else {
-	         return true;
-	      }
-   }
 }
