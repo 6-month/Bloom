@@ -6,9 +6,11 @@ import { useHistory } from 'react-router-dom';
 import "./NewPost.css";
 import { Upload } from 'antd';
 import ImgCrop from 'antd-img-crop';
+import { getAvatarColor } from '../util/Colors';
+import { getCurrentUser } from '../util/APIUtils';
 
 
-function NewPost({currentUser}) {
+function NewPost() {
   let today = new Date();
   let year = today.getFullYear();
   let month = today.getMonth() + 1; 
@@ -18,6 +20,18 @@ function NewPost({currentUser}) {
   const [content, setContent] = useState({
     value : ''
   });
+
+  const [currentUser, setCurrentUser] = useState([])
+
+  useEffect(() => {
+    getCurrentUser()
+      .then(response => {
+        setCurrentUser(response)
+      })
+      .catch(error => {
+        console.log(error.message)
+      })
+  }, [])
 
   // const [images, setImages] = useState({
   //   value : ''
@@ -143,14 +157,27 @@ function NewPost({currentUser}) {
         <div className="new-post-sidecontainer">
           <div className="new-post-creator">
             <div className="creator-detail-avatar">
-              <Avatar 
-                  style={{
-                    width:"70px",
-                    height:"70px",
-                    marginRight:"20px",
-                  }}
-                  src={`data:image/jpeg;base64,${currentUser.profileImage}`}
-              />
+              {
+                currentUser.profileImage !== null ? ( 
+                  <Avatar 
+                    style={{
+                      width:"70px",
+                      height:"70px",
+                      marginRight:"20px",
+                    }}
+                    src={`data:image/jpeg;base64,${currentUser.profileImage}`}
+                  />
+                ) : (
+                  <Avatar 
+                    style={{
+                      width:"70px",
+                      height:"70px",
+                      marginRight:"20px",
+                      backgroundColor : getAvatarColor(currentUser.name)
+                    }}
+                  />
+                )
+              }
             </div>
             <div className="creator-detail-username">
               <span className="username">{currentUser.username}</span>

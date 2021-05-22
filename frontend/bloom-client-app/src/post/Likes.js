@@ -34,16 +34,7 @@ function Likes({postId, pushedLike, totalLikes}) {
             })
     }
 
-    useEffect(() => {
-        console.log(pLike)
-    }, [])
 
-    // useEffect(() => {
-    //     console.log(tLike);
-    //     console.log(pLike);
-    // } , [tLike])
-
-    // cancel 부분 수정이 필요함
     const handleCancelLike = (e) => {
         e.preventDefault();
 
