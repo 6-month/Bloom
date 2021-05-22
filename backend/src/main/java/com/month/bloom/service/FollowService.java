@@ -57,7 +57,6 @@ public class FollowService {
 		return followResponse;
 	}
 	
-	// 팔로우를 했는지 안했는지 검사
 	public FollowCheckResponse checkingFollow(User followingUser, User followerUser) {
 		Long followingId = followingUser.getId();
 		Long followerId = followerUser.getId();
@@ -74,5 +73,4 @@ public class FollowService {
 		return checkResponse;
 	}
 	
-	// follow를 하고 있는 사람들의 게시물을 보여주는 Service
 }
