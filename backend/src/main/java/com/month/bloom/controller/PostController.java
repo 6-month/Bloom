@@ -21,6 +21,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.month.bloom.model.Comment;
 import com.month.bloom.model.Post;
+import com.month.bloom.model.User;
 import com.month.bloom.payload.ApiResponse;
 import com.month.bloom.payload.CommentRequest;
 import com.month.bloom.payload.CommentResponse;
@@ -177,5 +178,19 @@ public class PostController {
 		}
 	}
 	
-	
+	@DeleteMapping("/comments")
+	@PreAuthorize("hasRole('USER')")
+	public void deleteComment(@CurrentUser UserPrincipal currentUser, 
+											@Valid @RequestBody CommentRequest commentRequest,
+											@RequestParam(value = "commentId") Long commentId) {
+		Comment comment = commentRepository.getOne(commentId);
+		
+		if(commentRequest.getP_comment_id() != null) {
+			 commentRepository.delete(comment);
+		}
+		else {
+			commentRepository.updateIsDelete(commentId, true);
+		}
+	}
+
 }
