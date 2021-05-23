@@ -100,7 +100,6 @@ function AppHeader(props) {
     const [searchCheck, setSearchCheck] = useState(false);
 
     useEffect(() => {
-      console.log(usernameOrName)
       findUserByUsernameOrName(usernameOrName)
         .then(response => {
           setUsers(response);
@@ -109,10 +108,6 @@ function AppHeader(props) {
           console.log(error.message);
         })
     }, [usernameOrName])
-
-    useEffect(() => {
-      console.log(users)
-    }, [users])
 
     let menuItems;
     if(props.currentUser !== null) {

@@ -21,9 +21,7 @@ function ReplyComments({postId,p_comment_id, pComment}) {
     const [comments, setComments] = useState(pComment);
 
     useEffect(() => {
-        if(comments === null) {
-            setComments([]);
-        }
+        console.log(pComment)
     } ,[])
 
     const handleCommentChange = (e) => {
@@ -58,11 +56,7 @@ function ReplyComments({postId,p_comment_id, pComment}) {
 
         saveComment(commentRequest)
             .then(response => {
-
-                // 수정
                 setComments(comments.concat(response));
-                
-                
                 notification.success({
                     message : "Bloom",
                     description : "Successfully registered comments"
@@ -137,9 +131,9 @@ function Comments({post}) {
     const [comments, setComments] = useState(post.comments);
 
     useEffect(() => {
-        comments.forEach(comment =>
-                console.log(comment.createdBy)
-            )
+        // comments.forEach(comment =>
+        //         // console.log(comment.createdBy)
+        //     )
     }, [comments])
 
     const handleCommentChange = (e) => {
@@ -228,7 +222,7 @@ function Comments({post}) {
                             </Tooltip>
                         }
                     >
-                        <ReplyComments postId={post.id} p_comment_id={comment.id} pComment={null}/>
+                        <ReplyComments postId={post.id} p_comment_id={comment.id} pComment={[]}/>
                     </Comment>
                 )
             }
@@ -247,11 +241,7 @@ function Comments({post}) {
 
         saveComment(commentRequest)
             .then(response => {
-                
-                // 수정
                 setComments(comments.concat(response));
-                
-                
                 notification.success({
                     message : "Bloom",
                     description : "Successfully registered comments"
