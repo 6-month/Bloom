@@ -74,7 +74,7 @@ function Likes({postId, pushedLike, totalLikes}) {
                         >
                             <HeartOutlined />
                         </form>
-                        <div>{tLike}명이 좋아합니다.</div>
+                        <div>{tLike} likes.</div>
                     </div>
                 ) : (
                     //like save
@@ -90,7 +90,7 @@ function Likes({postId, pushedLike, totalLikes}) {
                                 }}  />
                         </form>
                         <div className="like-sentences">
-                            {tLike}명이 좋아합니다.
+                            {tLike} likes.
                         </div>
                     </div>
                 )

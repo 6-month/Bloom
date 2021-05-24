@@ -1,14 +1,17 @@
 .post-image-container {
     /* border: 1px solid black; */
-    height: 300px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 450px;
 }
 
 .post-image {
     /* border: 1px solid black; */
 
     /* border-right: 0.2px solid #d5c6e3; */
-    width: 38vw;
-    height: 300px;
+    max-width: 100%;
+    max-height: 100%;
 }
 
 .post-text {
@@ -36,7 +39,8 @@
 .post-content {
     border: 0.2px solid #d5c6e3;
     background-color: white;
-    width: 40vw;
+    /* max-width: 80vw; */
+    width: 500px;
     margin: 30px;
 }
 
