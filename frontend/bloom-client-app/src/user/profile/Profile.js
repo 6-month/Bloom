@@ -12,6 +12,7 @@ import first from '../../img/Bloom1.png';
 import second from '../../img/Bloom2.png';
 import thrid from '../../img/Bloom3.png';
 import fourth from '../../img/Bloom4.png';
+import { SettingOutlined } from '@ant-design/icons';
 
 function Profile(props) {
     // console을 한번 찍을줄 알았는데 4번 찍는다 이유는?
@@ -83,51 +84,66 @@ function Profile(props) {
                 user ? (
                     <div className="user-profile">
                         <div className="user-profile-body">
-                            <div className="user-details">
-                                <div className="user-avatar">
-                                    <Avatar 
-                                        className="user-avatar-circle" 
-                                        style={{ backgroundColor: getAvatarColor(user.name)}} 
-                                        src={`data:image/jpeg;base64,${user.profileImage}`}
-                                    >
-                                    </Avatar>
-                                </div>
-                                <div className="follow-container">
-                                    {
-                                        profileCheck ? (
-                                            <div>
-                                                <Button 
-                                                    onClick={pushEditComponent}
-                                                >
-                                                    Edit
-                                                </Button>
-                                                <div>
-                                                    <span>Follower : {user.totalFollowers}</span>
-                                                    <span>  /  </span>
-                                                    <span>Following : {user.totalFollowings}</span>
-                                                </div>    
+                            <div className="user-details-container">
+                                <div className="user-details">
+                                    <div className="user-avatar">
+                                        <Avatar  
+                                            style={{
+                                                backgroundColor: getAvatarColor(user.name),
+                                                width: "120px",
+                                                height: "120px"
+                                            }} 
+                                            src={`data:image/jpeg;base64,${user.profileImage}`}
+                                        >
+                                        </Avatar>
+                                    </div>
+                                    <div className="user-detail-info">
+                                        <div className="user-summary">
+                                            <div className="edit-container">
+                                                <div className="username">{user.username}</div>
+                                                {
+                                                    profileCheck ? (
+                                                        <div>
+                                                            <SettingOutlined
+                                                                onClick={pushEditComponent} 
+                                                            />
+                                                        </div>
+                                                        
+                                                    ) : (
+                                                        null
+                                                    )
+                                                }
                                             </div>
-                                            
-                                        ) : (
-                                            <Follow 
-                                                user={user} currentUser={props.currentUser} 
-                                                totalFollower={user.totalFollowers} totalFollowing={user.totalFollowings}
-                                            />
-                                        )
-                                    }
-                                </div>
-                                <div className="user-summary">
-                                    <div className="full-name">{user.name}</div>
-                                    <div className="username">{user.username}</div>
-                                    <div className="user-joined">
-                                        Joined {formatDateTime(user.joinedAt)}
+                                            <div className="full-name">{user.name}</div>
+                                            <div className="user-joined">
+                                                Joined {formatDateTime(user.joinedAt)}
+                                            </div>
+                                        </div>
+                                        <div className="follow-container">
+                                            {
+                                                profileCheck ? (
+                                                    <div>
+                                                        <div className="span">
+                                                            <span>Followers {user.totalFollowers}</span>
+                                                            <span>Followings {user.totalFollowings}</span>
+                                                        </div>    
+                                                    </div>
+                                                    
+                                                ) : (
+                                                    <Follow 
+                                                        user={user} currentUser={props.currentUser} 
+                                                        totalFollower={user.totalFollowers} totalFollowing={user.totalFollowings}
+                                                    />
+                                                )
+                                            }
+                                        </div>
                                     </div>
                                 </div>
                                 <div className="user-bio-container">
                                     Bio : {user.bio}
                                 </div>
                             </div>
-                            <div className="user-bloom-container">
+                            <div className="user-flower-container">
                                 {
                                     user.postCount <= 5 ? (
                                         <img src={first} className="bloom"/>

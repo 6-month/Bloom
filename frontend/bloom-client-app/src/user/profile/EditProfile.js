@@ -370,7 +370,6 @@ function EditProfile({currentUser}) {
                 >
                     {
                         user.profileImage !==null ? (
-
                         ) : ()
                     }
                 </FormItem> */}

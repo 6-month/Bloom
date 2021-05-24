@@ -138,70 +138,63 @@ function NewPost() {
   return (
     <div className="new-post-container">
       <form className="new-post-form">
-        <div className="new-post-imageUpload">
-            <ImgCrop 
-              rotate
-              className="imageUpload-container"
-            >
-              <Upload
-                style={{marginLeft:"20px"}}
-                listType="picture-card"
-                fileList={fileList}
-                onChange={handleUpload}
-                onPreview={onPreview}
-              >
-                {fileList && '+ Upload'}
-              </Upload>
-            </ImgCrop>
-        </div>
-        <div className="new-post-sidecontainer">
-          <div className="new-post-creator">
-            <div className="creator-detail-avatar">
-              {
-                currentUser.profileImage !== null ? ( 
-                  <Avatar 
-                    style={{
-                      width:"70px",
-                      height:"70px",
-                      marginRight:"20px",
-                    }}
-                    src={`data:image/jpeg;base64,${currentUser.profileImage}`}
-                  />
-                ) : (
-                  <Avatar 
-                    style={{
-                      width:"70px",
-                      height:"70px",
-                      marginRight:"20px",
-                      backgroundColor : getAvatarColor(currentUser.name)
-                    }}
-                  />
-                )
-              }
-            </div>
-            <div className="creator-detail-username">
-              <span className="username">{currentUser.username}</span>
-              <span className="date">{year + '/' + month + '/' + date}</span>
-            </div>
+        <div className="new-post-creator">
+          <div className="creator-detail-avatar">
+            <Avatar 
+                style={{
+                  width:"70px",
+                  height:"70px",
+                  marginRight:"20px",
+                }}
+                src={`data:image/jpeg;base64,${currentUser.profileImage}`}
+            />
           </div>
-          <input 
-            type="text" 
-            onChange = {(e) => {onChangedContent(e)}}
-            className="new-post-content"
-            placeholder="Pleas enter content..."
-          />
-          <Button 
-            type="primary" 
-            htmlType="submit" 
-            size="large"
-            disabled={isFormInvalid()}
-            onClick={handleSubmit}
-            className="new-post-btn"
+          <div className="creator-detail-username">
+            <span className="username">{currentUser.username}</span>
+            <span className="date">{year + '/' + month + '/' + date}</span>
+          </div>
+        </div>
+
+        <div className="new-post-imageUpload">
+          <ImgCrop
+            className="imageUpload-container"
           >
-            Save
-          </Button>
+            <Upload
+              listType="picture-card"
+              fileList={fileList}
+              onChange={handleUpload}
+              onPreview={onPreview}
+            >
+              {fileList && '+ Upload'}
+            </Upload>
+          </ImgCrop>
+        </div>
+
+        <div className="new-post-content">
+          <textarea 
+              type="text" 
+              onChange = {(e) => {onChangedContent(e)}}
+              placeholder="Please enter content here"
+              className="input-content"
+            />
         </div>
       </form>
+      <Button 
+          type="primary" 
+          htmlType="submit" 
+          size="large"
+          disabled={isFormInvalid()}
+          onClick={handleSubmit}
+          block shape ="round" 
+          style={{
+            marginBottom: "40px",
+            borderStyle: "none",
+            width: "120px",
+            backgroundImage: "linear-gradient(135deg, #fffabf, #d8dfec, #d5c6e3)"
+          }}
+        >
+          save
+        </Button>
     </div>
   );
 }
