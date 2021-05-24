@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -21,7 +22,6 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.month.bloom.model.Comment;
 import com.month.bloom.model.Post;
-import com.month.bloom.model.User;
 import com.month.bloom.payload.ApiResponse;
 import com.month.bloom.payload.CommentRequest;
 import com.month.bloom.payload.CommentResponse;
@@ -180,16 +180,32 @@ public class PostController {
 	
 	@DeleteMapping("/comments")
 	@PreAuthorize("hasRole('USER')")
-	public void deleteComment(@CurrentUser UserPrincipal currentUser, 
-											@Valid @RequestBody CommentRequest commentRequest,
+	public ResponseEntity<?> deleteComment(@CurrentUser UserPrincipal currentUser, 
 											@RequestParam(value = "commentId") Long commentId) {
 		Comment comment = commentRepository.getOne(commentId);
+		commentRepository.delete(comment);
 		
-		if(commentRequest.getP_comment_id() != null) {
-			 commentRepository.delete(comment);
+		return ResponseEntity.created(null)
+				.body(new ApiResponse(true, "Post Successfully deleted"));
+	}
+	
+	@PutMapping("/comments")
+	@PreAuthorize("hasRole('USER')")
+	public CommentResponse updateIsDeletedComment(@RequestParam(value = "commentId") Long commentId) {
+		Comment comment = commentRepository.getOne(commentId);
+		commentRepository.updateIsDelete(commentId, "Deleted Comment");
+		
+		if(comment.getUser().getUserProfileImage() != null) {
+			UserSummary userSummary = new UserSummary(comment.getUser().getId(), comment.getUser().getUsername(), comment.getUser().getName(), comment.getUser().getUserProfileImage().getData());
+			CommentResponse commentResponse = new CommentResponse(comment.getId(), comment.getText(), 
+					userSummary, comment.getCreatedAt(), comment.getComment().getId());
+			return commentResponse;
 		}
 		else {
-			commentRepository.updateIsDelete(commentId, true);
+			UserSummary userSummary = new UserSummary(comment.getUser().getId(), comment.getUser().getUsername(), comment.getUser().getName(), null);
+			CommentResponse commentResponse = new CommentResponse(comment.getId(), comment.getText(),
+					userSummary, comment.getCreatedAt(), comment.getComment().getId());
+			return commentResponse;
 		}
 	}
 

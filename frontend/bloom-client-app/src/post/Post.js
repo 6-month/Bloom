@@ -33,6 +33,7 @@ function Post({post}) {
             })
     }, [])
 
+
     useEffect(() => {
         if(currentUser.username == post.createdBy.username) {
             setSetting(true)
