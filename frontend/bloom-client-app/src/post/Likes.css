@@ -12,7 +12,6 @@
 }
 
 .button-container {
-    width: 10%;
     border: none;
     color: white;
     background-color: #D5C6E3;
@@ -23,7 +22,6 @@
     display: flex;
     flex-direction: row;
     justify-content: space-between;
-    padding: 10px;
-    padding-left: 20px;
-    padding-right: 20px;
+    margin-top: 5px;
+    padding: 20px;
 }

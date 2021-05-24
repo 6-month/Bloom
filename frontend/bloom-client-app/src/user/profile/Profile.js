@@ -11,7 +11,14 @@ import { Button } from 'antd';
 import {useHistory} from "react-router-dom"
 import { SettingOutlined } from '@ant-design/icons';
 
+import first from '../../img/Bloom1.png';
+import second from '../../img/Bloom2.png';
+import thrid from '../../img/Bloom3.png';
+import fourth from '../../img/Bloom4.png';
+
 function Profile(props) {
+    const [bloom, setBloom] = useState("first");
+
     // console을 한번 찍을줄 알았는데 4번 찍는다 이유는?
     const history = useHistory();
 
@@ -146,7 +153,22 @@ function Profile(props) {
                                     Bio : {user.bio}
                                 </div>
                             </div>
-                            <div className="user-flower-container">
+                            <div className="user-bloom-container">
+                                {
+                                    user.postCount <= 5 ? (
+                                        <img src={first} className="bloom"/>
+                                    ) : (
+                                        user.postCount <= 10 ? (
+                                            <img src={second} className="bloom"/>
+                                        ) :(
+                                            user.postCount <= 15 ? (
+                                                <img src={thrid} className="bloom"/>
+                                            ) : (
+                                                    <img src={fourth} className="bloom"/>
+                                            )
+                                        )
+                                    )
+                                }
                             </div>
                         </div>
                         <div className="user-post-list">

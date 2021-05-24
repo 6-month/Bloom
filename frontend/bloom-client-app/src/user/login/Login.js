@@ -40,9 +40,9 @@ function Login() {
     };
     
     return (
-        // <div className="login_form">
+        <div className="login_body">
             <Form
-                className="login_body"
+                className="login_form"
                 name="basic"
                 onFinish={onFinish}
                 onFinishFailed={onFinishFailed}
@@ -101,11 +101,11 @@ function Login() {
                     </Form.Item>
 
                     <Form.Item style={{ textAlign: "center" }}>
-                        계정이 없으신가요? <Link style={{ color: "#D5C6E3" }} to="/signup">Sign up</Link>
+                        Don't have an account? <Link style={{ color: "#D5C6E3" }} to="/signup">Sign up</Link>
                     </Form.Item>
                 </Form.Item>
             </Form>
-        // </div>
+        </div>
     );
 }
 

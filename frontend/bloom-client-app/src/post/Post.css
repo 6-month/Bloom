@@ -3,21 +3,17 @@
 }
 
 .post-image {
-    /* border: 0.2px solid #D5C6E3; */
-    width: 40vw;
-    height: 70vh;
+    /* border: 1px solid #D5C6E3; */
+    width: 498px;
+    height: 498px;
 }
 
 .post-text {
-    border-top: 0.2px solid #D5C6E3;
-    border-bottom: 0.2px solid #D5C6E3;
+    border-top: 1px solid #D5C6E3;
+    border-bottom: 1px solid #D5C6E3;
     padding: 20px;
 
 }
-
-/* .post-like-container {
-    border-top: 0.2px solid #D5C6E3;
-} */
 
 /* tile uploaded pictures */
 .comment-action {
@@ -29,15 +25,18 @@
     padding-right: 8px;
     padding-left: 0;
 }
+
 .post-content {
-    border: 0.2px solid #D5C6E3;
+    border: 1px solid #D5C6E3;
     background-color: white;
-    width: 40vw;
-    margin: 30px;
+    width: 500px;
+    margin: 40px;
+    margin-top: 60px;
+    border-radius: 5px;
 }
 
 .post-header {
-    border-bottom: 0.2px solid #D5C6E3;
+    border-bottom: 1px solid #D5C6E3;
 }
 
 /* .post-body {

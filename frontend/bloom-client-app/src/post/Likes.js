@@ -70,7 +70,8 @@ function Likes({postId, pushedLike, totalLikes}) {
                             type="submit" 
                             onClick={handleSaveLike}
                         >
-                            <HeartOutlined />
+                            <HeartOutlined 
+                            />
                         </form>
                         <div>{tLike}명이 좋아합니다.</div>
                     </div>
@@ -84,7 +85,8 @@ function Likes({postId, pushedLike, totalLikes}) {
                         >
                             <HeartFilled
                                 style={{
-                                    color: "#D5C6E3"
+                                    color: "#D5C6E3",
+                                    width: "24px"
                                 }}  />
                         </form>
                         <div className="like-sentences">
