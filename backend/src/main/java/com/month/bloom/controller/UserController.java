@@ -205,7 +205,7 @@ public class UserController {
     }
     
     @GetMapping("/users/{username}/posts")
-    public PagedResponse<PostResponse> getPollsCreatedBy(@PathVariable(value = "username") String username,
+    public PagedResponse<PostResponse> getPostsCreatedBy(@PathVariable(value = "username") String username,
                                                          @CurrentUser UserPrincipal currentUser,
                                                          @RequestParam(value = "page", defaultValue = AppConstants.DEFAULT_PAGE_NUMBER) int page,
                                                          @RequestParam(value = "size", defaultValue = AppConstants.DEFAULT_PAGE_SIZE) int size) {

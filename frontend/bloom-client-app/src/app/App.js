@@ -96,6 +96,7 @@ function App() {
                 {...props}
                 currentUser={currentUser} 
                 onLogout={handleLogout}
+                type={"FOLLOWING_USER_POST"}
               />}
           />
           {/* /explore : all post */}
@@ -106,7 +107,6 @@ function App() {
                 {...props}
                 currentUser={currentUser} 
                 onLogout={handleLogout}
-                type="explore"
               />}
           />
           <Route 

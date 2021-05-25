@@ -98,7 +98,7 @@ public class PostService {
 				posts.getSize(), posts.getTotalElements(), posts.getTotalPages(), posts.isLast());
 	}
 	
-public PagedResponse<PostResponse> getFollowedUserPosts(UserPrincipal currentUser, int page, int size) {
+	public PagedResponse<PostResponse> getFollowedUserPosts(UserPrincipal currentUser, int page, int size) {
 		validatePageNumberAndSize(page, size);
 		
 		List<Long> followingIds = followRepository.findFollowingsByFollowerId(currentUser.getId());

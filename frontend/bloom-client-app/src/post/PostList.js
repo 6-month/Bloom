@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import LoadingIndicator from '../common/LoadingIndicator';
 import { POST_LIST_SIZE } from '../constants';
-import {getAllPosts, getCurrentUser, getUserCreatedPosts } from '../util/APIUtils'
+import {getAllPosts, getCurrentUser, getFollowedUserPosts, getUserCreatedPosts } from '../util/APIUtils'
 import {Button } from 'antd';
 import Post from './Post';
 import Icon from '@ant-design/icons';
@@ -35,15 +35,18 @@ function PostList({username, type}) {
         loadPostList();
     }, [username])
 
+    useEffect(() => {
+        console.log(type)
+        console.log(posts)
+    }, [posts])
+
     const loadPostList = (page = 0, size = POST_LIST_SIZE) => {
         let promise;
-        if(username) {
-            if(type === "USER_CREATED_POSTS") {
-                promise = getUserCreatedPosts(username, page, size)
-            }
-        } 
-        else if(type == "FOLLOWING_USER_POST") {
-
+        if(type === "USER_CREATED_POSTS") {
+            promise = getUserCreatedPosts(username, page, size)
+        }
+        else if(type === "FOLLOWING_USER_POST") {
+            promise = getFollowedUserPosts(username, page, size)
         }
         else {
             promise =  getAllPosts(page, size);
@@ -66,6 +69,7 @@ function PostList({username, type}) {
             })
             .catch(error => {
                 setIsLoading(false);
+                console.log(error.message)
             })
     }
 
