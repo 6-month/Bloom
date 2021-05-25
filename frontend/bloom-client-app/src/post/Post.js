@@ -4,7 +4,7 @@ import { Avatar, Input, Button, notification, Form } from 'antd';
 import { Link, Route, useHistory } from 'react-router-dom';
 import { getAvatarColor } from '../util/Colors';
 import { formatDateTime } from '../util/Helpers';
-import { SettingOutlined } from '@ant-design/icons';
+import { DeleteOutlined  } from '@ant-design/icons';
 
 import './Post.css'
 import Comments from './Comments';
@@ -81,14 +81,9 @@ function Post({post}) {
                     <div className="post-setting-container">
                         {
                             setting ? (
-                                <Button 
-                                    icon={
-                                        <SettingOutlined />
-                                    }
-                                    onClick={deltePostSubmit}
-                                >
-                                    delete
-                                </Button>
+                                <div className="deleteButton" onClick={deltePostSubmit}>
+                                    <DeleteOutlined />
+                                </div>
                             ) : (
                                 null
                             )

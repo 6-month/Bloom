@@ -36,7 +36,7 @@ public class FollowService {
 		Long totalFollowings = followRepository.countByFollowingId(user.getId());
 		
 		followResponse.setTotalFollowers(totalFollowers);
-		followResponse.setTotalFollings(totalFollowings);
+		followResponse.setTotalFollowings(totalFollowings);
 		
 		return followResponse;
 	}
@@ -52,7 +52,7 @@ public class FollowService {
 		Long totalFollowings = followRepository.countByFollowingId(user.getId());
 		
 		followResponse.setTotalFollowers(totalFollowers);
-		followResponse.setTotalFollings(totalFollowings);
+		followResponse.setTotalFollowings(totalFollowings);
 		
 		return followResponse;
 	}

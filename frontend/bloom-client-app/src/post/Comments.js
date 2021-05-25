@@ -1,15 +1,11 @@
 import React, {useState, useEffect } from 'react';
 import { Avatar, Input, Button, notification, Form } from 'antd';
-import { Link, matchPath } from 'react-router-dom';
 import { Comment, Tooltip } from 'antd';
 import moment from 'moment';
-import { DislikeOutlined, LikeOutlined, LikeFilled } from '@ant-design/icons';
 import {saveComment, deleteComment, updateIsDeletedComment} from '../util/APIUtils';
 import HashMap from 'hashmap';
 import ArrayList from "arraylist";
-
-// 문제점
-// 기존 댓글에 대댓글을 다는건 문제 없이 되지만 새로운 댓글을 생성하고 대댓글을 달때 에러메시지가 뜸, 근데 db에 저장은 됌...
+import "./Comment.css"
 
 const FormItem = Form.Item;
 
@@ -135,17 +131,19 @@ function ReplyComments({postId,p_comment_id, pComment}) {
 
 
     return (
-        <div className="re-comment-container">
+        <div className="re-comment-container" id="showRecomments">
             {commentView}
-            <form className="comment-form">
+            <form className="comment-form" id="comment-form">
                 <input 
                     type="text"
                     onChange={(e) => handleCommentChange(e)}
                     placeholder="Please enter comments.."
+                    className="input-container"
                 />
                 <button
                     disabled={commentContents.validateStatus}
                     onClick={recommentSubmit}
+                    className="button-container"
                 >
                     Add
                 </button>
@@ -332,7 +330,6 @@ function Comments({post}) {
 
     return (
         <div className="comment-container">
-            {commentView}
             <form className="comment-form">
                 <input 
                     type="text"
@@ -345,9 +342,10 @@ function Comments({post}) {
                     onClick={commentSubmit}
                     className="button-container"
                 >
-                    Add Comment
+                    Add
                 </button>
             </form>
+            {commentView}
         </div>
         
     );

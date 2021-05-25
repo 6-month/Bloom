@@ -150,10 +150,12 @@ function AppHeader(props) {
 
     return (
       <div className="nav">
-        <img
-          src={logo}
-          className="logo_size"
-        />
+        <Link to="/explore">
+          <img
+            src={logo}
+            className="logo_size"
+          />
+        </Link>
         <Menu 
           className="search-menu"
           mode="horizontal"
