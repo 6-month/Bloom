@@ -79,13 +79,22 @@ function EditProfileImage() {
     );
 }
 
-function EditProfile({currentUser}) {
+function EditProfile() {
     // 현재 edit 하고 있는 유저의 username, email을 제외하고 validate를 진행하는 코드를 만들어야함.
     const [user, setUser] = useState(null);
+    const [currentUser, setCurrentUser] = useState([]);
 
     useEffect(() => {   
         // 새로 리랜더링하면 에러나는건 react의 특징인가?
-        console.log(currentUser.username)
+        // console.log(currentUser.username)
+        getCurrentUser()
+            .then(response => {
+                setCurrentUser(response);
+            })
+            .catch(error => {
+                console.log(error.message);
+            })
+
         loadUserProfile(currentUser.username)
     }, [])
 
@@ -350,28 +359,30 @@ function EditProfile({currentUser}) {
                 
                 <div className="edit-profile-info-container">
                     <div className="for-profile-user-details">
-                        {/* <div className="user-avatar">
+                        <div className="user-avatar">
                             {
-                                user.profileImage !==null ? (
+                                currentUser.profileImage !==null ? (
                                     <Avatar>
-                                        <img src={`data:image/jpeg;base64,${user.getprofileImage}`}  />
+                                        <img src={`data:image/jpeg;base64,${currentUser.getprofileImage}`}  />
                                     </Avatar>
                                 ) : (
-                                    <Avatar 
-                                        
-                                    />
+                                    <Avatar  
+                                        style={{
+                                            backgroundColor: getAvatarColor(currentUser.name),
+                                            width: "60px",
+                                            height: "60px"
+                                        }} 
+                                    >
+                                    </Avatar>
                                 )
                             }
                         </div>
                         <div className="user-detail-info">
                             <div className="user-summary">
-                                <div className="username">{user.username}</div>
-                                <div className="full-name">{user.name}</div>
-                                <div className="user-joined">
-                                    Joined {formatDateTime(user.joinedAt)}
-                                </div>
+                                <div className="username">{currentUser.username}</div>
+                                <div className="full-name">{currentUser.name}</div>
                             </div>
-                        </div> */}
+                        </div>
                     </div>
 
 
@@ -395,7 +406,7 @@ function EditProfile({currentUser}) {
                                     size="large"
                                     name="name"
                                     authoComplete="off"
-                                    placeholder={name.value || "Please input your full name!"}
+                                    placeholder={currentUser.name || "Please input your full name!"}
                                     allowClear="true"
                                     onChange={(e) => {onChangedName(e)}}
                                 />
@@ -410,7 +421,7 @@ function EditProfile({currentUser}) {
                                     size="large"
                                     name="username"
                                     authoComplete="off"
-                                    placeholder={username.value || "Please input your username!"}
+                                    placeholder={currentUser.username || "Please input your username!"}
                                     allowClear="true"
                                     onChange={(e) => {onChangedUsername(e)}}
                                 />
@@ -449,7 +460,7 @@ function EditProfile({currentUser}) {
                                 validateStatus={phoneNumber.validateStatus}
                                 help={phoneNumber.errorMsg}
                             >
-                                <Input 
+                                 <Input 
                                     size="large"
                                     name="phoneNumber"
                                     authoComplete="off"

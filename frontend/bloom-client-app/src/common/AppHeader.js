@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import {Link, useLocation } from 'react-router-dom';
 import { Menu, Dropdown, Input, Avatar } from 'antd';
-import { HomeOutlined, UserOutlined,EditOutlined, SearchOutlined  } from '@ant-design/icons';
+import { HomeOutlined, UserOutlined,EditOutlined, SearchOutlined, CaretDownOutlined ,GlobalOutlined } from '@ant-design/icons';
 import logo from '../img/Bloom_logo.png';
 import {getAvatarColor} from '../util/Colors';
 
@@ -44,7 +44,7 @@ function SearchUserDropdownMenu({users}) {
     <Dropdown 
       overlay={dropdownMenu} >
       <a className="ant-dropdown-link">
-        <SearchOutlined  className="nav-icon" onClick={(e) => e.preventDefault()} style={{marginTop:"8px"}} /> 
+        <CaretDownOutlined  className="nav-icon" onClick={(e) => e.preventDefault()} style={{marginTop:"12px", fontSize:"25px"}} /> 
       </a>
     </Dropdown>
   );
@@ -118,6 +118,11 @@ function AppHeader(props) {
               </Link>
             </Menu.Item>,
             <Menu.Item>
+              <Link to="/explore">
+                <GlobalOutlined />
+              </Link>
+            </Menu.Item>,
+            <Menu.Item>
               <Link to='/post/new'>
                 <EditOutlined />
               </Link>
@@ -150,7 +155,7 @@ function AppHeader(props) {
 
     return (
       <div className="nav">
-        <Link to="/explore">
+        <Link to="/bloom">
           <img
             src={logo}
             className="logo_size"

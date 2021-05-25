@@ -1,13 +1,7 @@
 .posts-container {
-    border: 1px solid black;
+    /* border: 1px solid black; */
     display: flex;
     flex-direction: row;
-}
-
-.flower-container {
-    border: 1px solid black;
-    margin-top: 20px;
-    margin-left: 50px;
-    width: 30%;
-    height: 60vh;
+    justify-content: center;
+    align-items: center;
 }

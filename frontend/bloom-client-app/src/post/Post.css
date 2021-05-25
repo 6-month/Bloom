@@ -5,6 +5,10 @@
     align-items: center;
     height: 450px;
 }
+.post-creator-profile-image {
+    display: flex;
+    flex-direction: row;
+}
 
 .post-image {
     /* border: 1px solid black; */
@@ -66,6 +70,7 @@
     justify-content: center;
     align-items: center;
     padding: 5px;
+    margin-left: 10px;
 }
 
 .post-comment-container {
