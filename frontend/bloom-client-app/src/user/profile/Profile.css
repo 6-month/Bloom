@@ -21,6 +21,17 @@
     padding-bottom: 20px;
 }
 
+/* @media screen and (max-width: 768px) {
+    .user-profile-body {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .user-flower-container {
+        margin-top: 40px;
+    }
+} */
+
 .user-details {
     border: 1px solid black;
     background-color: white;

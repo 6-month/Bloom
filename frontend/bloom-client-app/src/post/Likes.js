@@ -70,9 +70,9 @@ function Likes({postId, pushedLike, totalLikes}) {
                         <form 
                             className="like-form"
                             type="submit" 
-                            onClick={handleSaveLike}
+                            onClick={handleCancelLike}
                         >
-                            <HeartOutlined />
+                            <HeartFilled />
                         </form>
                         <div>{tLike} likes.</div>
                     </div>
@@ -84,7 +84,8 @@ function Likes({postId, pushedLike, totalLikes}) {
                             type="submit"
                             onClick={handleSaveLike}
                         >
-                            <HeartFilled
+                            <HeartOutlined 
+
                                 style={{
                                     color: "#D5C6E3"
                                 }}  />

@@ -187,7 +187,7 @@ public PagedResponse<PostResponse> getFollowedUserPosts(UserPrincipal currentUse
 	}
 	
 	public void deletePost(Long postId) {
-		Post post = postRepository.findById(postId).orElseThrow();
+		Post post = postRepository.getOne(postId);
 		
 		postRepository.delete(post);
 	}

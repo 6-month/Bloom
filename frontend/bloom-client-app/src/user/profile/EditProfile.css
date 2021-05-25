@@ -1,5 +1,4 @@
 .edit-profile-container {
-    border: 1px solid black;
     background-color: #fafafa;
     display: flex;
     align-items: center;
@@ -7,13 +6,14 @@
 }
 
 .edit-profile-base-container {
-    border: 0.2px solid #d5c6e3;
+    border: 1px solid #d5c6e3;
     background-color: white;
-    width: 70vw;
+    width: 900px;
     height: 100vh;
-    margin-top: 40px;
+    margin-top: 60px;
     margin-bottom: 40px;
     display: flex;
+    border-radius: 5px;
 }
 
 .edit-profile-menubar {
@@ -40,8 +40,6 @@
     width: 30vw;
     padding: 20px;
     margin-left: 20px;
-    /* display: flex; */
-    /* flex-direction: column; */
 }
 
 .for-profile-user-details {

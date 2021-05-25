@@ -88,6 +88,7 @@ function App() {
             exact path="/"
             component={Intro}
           />
+          {/* /bloom : followed User post */}
           <Route 
             path="/bloom" 
             render = {(props) => 
@@ -95,6 +96,17 @@ function App() {
                 {...props}
                 currentUser={currentUser} 
                 onLogout={handleLogout}
+              />}
+          />
+          {/* /explore : all post */}
+          <Route 
+            path="/explore" 
+            render = {(props) => 
+              <PostList 
+                {...props}
+                currentUser={currentUser} 
+                onLogout={handleLogout}
+                type="explore"
               />}
           />
           <Route 
