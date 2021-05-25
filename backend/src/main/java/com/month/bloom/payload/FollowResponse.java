@@ -2,7 +2,7 @@ package com.month.bloom.payload;
 
 public class FollowResponse {
 	private Long totalFollowers;
-	private Long totalFollings;
+	private Long totalFollowings;
 	
 	public Long getTotalFollowers() {
 		return totalFollowers;
@@ -10,11 +10,11 @@ public class FollowResponse {
 	public void setTotalFollowers(Long totalFollowers) {
 		this.totalFollowers = totalFollowers;
 	}
-	public Long getTotalFollings() {
-		return totalFollings;
+	public Long getTotalFollowings() {
+		return totalFollowings;
 	}
-	public void setTotalFollings(Long totalFollings) {
-		this.totalFollings = totalFollings;
+	public void setTotalFollowings(Long totalFollowings) {
+		this.totalFollowings = totalFollowings;
 	}
 	
 	

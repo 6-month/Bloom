@@ -39,6 +39,20 @@ export function saveComment(commentRequest) {
     })   
 }
 
+export function deleteComment(commentId) {
+    return request({
+        url : API_BASE_URL + "/posts/comments?commentId=" + commentId,
+        method : "DELETE",
+    })
+}
+
+export function updateIsDeletedComment(commentId) {
+    return request({
+        url : API_BASE_URL + "/posts/comments?commentId=" + commentId,
+        method : "PUT",
+    })
+}
+
 export function login(loginRequest) {
     return request({
         url: API_BASE_URL + "/auth/signin",

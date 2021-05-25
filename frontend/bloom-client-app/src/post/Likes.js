@@ -1,5 +1,6 @@
 import { notification } from 'antd';
 import React, { useEffect, useState } from 'react';
+import { HeartOutlined, HeartFilled } from '@ant-design/icons';
 import {addLike, cancelLike} from '../util/APIUtils';
 import "./Like.css"
 
@@ -65,19 +66,33 @@ function Likes({postId, pushedLike, totalLikes}) {
             {
                 pLike ? (
                     // like cancel
-                    <div>
-                        <span>Liked by : {tLike}</span>
-                        <form >
-                            <button type="submit" onClick={handleCancelLike}>like</button>
+                    <div className="like-container">
+                        <form 
+                            className="like-form"
+                            type="submit" 
+                            onClick={handleCancelLike}
+                        >
+                            <HeartFilled />
                         </form>
+                        <div>{tLike} likes.</div>
                     </div>
                 ) : (
                     //like save
-                    <div>
-                        <span>Liked by : {tLike}</span>
-                        <form >
-                            <button type="submit" onClick={handleSaveLike}>like</button>
+                    <div className="like-container">
+                        <form 
+                            className="like-form"
+                            type="submit"
+                            onClick={handleSaveLike}
+                        >
+                            <HeartOutlined 
+
+                                style={{
+                                    color: "#D5C6E3"
+                                }}  />
                         </form>
+                        <div className="like-sentences">
+                            {tLike} likes.
+                        </div>
                     </div>
                 )
             }

@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -171,5 +172,35 @@ public class PostController {
 		}
 	}
 	
+	@DeleteMapping("/comments")
+	@PreAuthorize("hasRole('USER')")
+	public ResponseEntity<?> deleteComment(@CurrentUser UserPrincipal currentUser, 
+											@RequestParam(value = "commentId") Long commentId) {
+		Comment comment = commentRepository.getOne(commentId);
+		commentRepository.delete(comment);
+		
+		return ResponseEntity.created(null)
+				.body(new ApiResponse(true, "Post Successfully deleted"));
+	}
 	
+	@PutMapping("/comments")
+	@PreAuthorize("hasRole('USER')")
+	public CommentResponse updateIsDeletedComment(@RequestParam(value = "commentId") Long commentId) {
+		Comment comment = commentRepository.getOne(commentId);
+		commentRepository.updateIsDelete(commentId, "Deleted Comment");
+		
+		if(comment.getUser().getUserProfileImage() != null) {
+			UserSummary userSummary = new UserSummary(comment.getUser().getId(), comment.getUser().getUsername(), comment.getUser().getName(), comment.getUser().getUserProfileImage().getData());
+			CommentResponse commentResponse = new CommentResponse(comment.getId(), comment.getText(), 
+					userSummary, comment.getCreatedAt(), comment.getComment().getId());
+			return commentResponse;
+		}
+		else {
+			UserSummary userSummary = new UserSummary(comment.getUser().getId(), comment.getUser().getUsername(), comment.getUser().getName(), null);
+			CommentResponse commentResponse = new CommentResponse(comment.getId(), comment.getText(),
+					userSummary, comment.getCreatedAt(), comment.getComment().getId());
+			return commentResponse;
+		}
+	}
+
 }

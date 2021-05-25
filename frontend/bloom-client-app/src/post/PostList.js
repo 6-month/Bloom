@@ -42,6 +42,9 @@ function PostList({username, type}) {
                 promise = getUserCreatedPosts(username, page, size)
             }
         } 
+        else if(type == "FOLLOWING_USER_POST") {
+
+        }
         else {
             promise =  getAllPosts(page, size);
         }
