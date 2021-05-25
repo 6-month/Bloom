@@ -9,11 +9,13 @@
     border: 1px solid #d5c6e3;
     background-color: white;
     width: 900px;
-    height: 100vh;
+    height: 600px;
     margin-top: 60px;
     margin-bottom: 40px;
     display: flex;
     border-radius: 5px;
+    margin-left: 10px;
+    margin-right: 10px;
 }
 
 .edit-profile-menubar {
@@ -48,6 +50,6 @@
     display: flex;
     align-items: center;
     width: 400px;
-    height: 200px;
+    height: 120px;
     /* margin-right: 20px; */
 }

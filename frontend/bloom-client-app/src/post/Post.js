@@ -67,22 +67,20 @@ function Post({post}) {
                                 src={`data:image/jpeg;base64,${post.createdBy.profileImage}`}>  
                             </Avatar>
                         </Link>
+                        <div className="post-creator-detail">
+                            <span className="post-creator-username">
+                                <Link to={profileURL}>
+                                    {post.createdBy.username}
+                                </Link>
+                            </span>
+                        </div>
                     </div>
-                    <div className="post-creator-detail">
-                        <span className="post-creator-name">
-                            {post.createdBy.name}
-                        </span>
-                        <span className="post-creator-username">
-                            <Link to={profileURL}>
-                                {post.createdBy.username}
-                            </Link>
-                        </span>
-                    </div>
+
                     <div className="post-setting-container">
                         {
                             setting ? (
                                 <div className="deleteButton" onClick={deltePostSubmit}>
-                                    <DeleteOutlined />
+                                    <DeleteOutlined style={{fontSize:"20px"}} />
                                 </div>
                             ) : (
                                 null
