@@ -1,0 +1,11 @@
+.profile-post-image-container{
+    display:flex;
+    justify-content: center;
+    width: 100%;
+    border: 1px solid black;
+}
+
+.test{
+    border: 1px solid black;
+}
+

@@ -4,6 +4,8 @@ import java.io.IOException;
 
 import javax.validation.Valid;
 
+import com.month.bloom.model.UserProfilePost;
+import com.month.bloom.payload.ProfilePostRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -52,17 +54,28 @@ public class AccountsController {
 		
         User user = userRepository.getOne(currentUser.getId());
         
-        
-		try {
+        UserProfileImage on_userProfileImage = user.getUserProfileImage();
+
+        try {
             if(fileName.contains("..")) {
                 throw new FileStorageException("Sorry! Filename contains invalid path sequence " + fileName);
             }
-            UserProfileImage userProfileImage = new UserProfileImage();
-            userProfileImage.setFileName(fileName);
-            userProfileImage.setFileType(file.getContentType());
-            userProfileImage.setData(file.getBytes());
-            
-            user.setUserProfileImage(userProfileImage);
+            if (on_userProfileImage == null) {
+				UserProfileImage userProfileImage = new UserProfileImage();
+
+
+				userProfileImage.setFileName(fileName);
+				userProfileImage.setFileType(file.getContentType());
+				userProfileImage.setData(file.getBytes());
+				user.setUserProfileImage(userProfileImage);
+			} else {
+
+				on_userProfileImage.setFileName(fileName);
+				on_userProfileImage.setFileType(file.getContentType());
+				on_userProfileImage.setData(file.getBytes());
+				user.setUserProfileImage(on_userProfileImage);
+			}
+
             
         } catch (IOException ex) {
             throw new FileStorageException("Could not store file " + fileName + ". Please try again!", ex);
@@ -105,10 +118,62 @@ public class AccountsController {
         		.body(new ApiResponse(true, "User Info Successfully Udated!"));
         
 	}
+
+
 	
 //	@PostMappping("/accounts/edit/password")
 //	@PreAuthorize("hasRole('USER')")
 //	public ResponseEntity<?> editUserPassword(@Valid @RequestBody PasswordRequest passwordRequest){
 //		
 //	}
+
+
+
+	@PostMapping("/accounts/edits/pro_post")
+	@PreAuthorize("hasRole('USER')")
+	public ResponseEntity<?> editUserProfilePost(@CurrentUser UserPrincipal currentUser,
+												  @Valid @ModelAttribute ProfilePostRequest postRequest) {
+
+		System.out.println("currentUser : " + currentUser);
+		System.out.println("postRequest : " + postRequest.getProfilePost());
+
+		MultipartFile file = postRequest.getProfilePost();
+
+		String fileName = StringUtils.cleanPath(file.getOriginalFilename());
+
+		User user = userRepository.getOne(currentUser.getId());
+
+		UserProfilePost on_userProfilePost = user.getUserProfilePost();
+
+		try {
+			if(fileName.contains("..")) {
+				throw new FileStorageException("Sorry! Filename contains invalid path sequence " + fileName);
+			}
+			if (on_userProfilePost == null) {
+				UserProfilePost userProfilePost = new UserProfilePost();
+
+
+				userProfilePost.setFileName(fileName);
+				userProfilePost.setFileType(file.getContentType());
+				userProfilePost.setData(file.getBytes());
+				user.setUserProfilePost(userProfilePost);
+			} else {
+
+				on_userProfilePost.setFileName(fileName);
+				on_userProfilePost.setFileType(file.getContentType());
+				on_userProfilePost.setData(file.getBytes());
+				user.setUserProfilePost(on_userProfilePost);
+			}
+
+
+		} catch (IOException ex) {
+			throw new FileStorageException("Could not store file " + fileName + ". Please try again!", ex);
+		}
+
+		userRepository.save(user);
+
+
+		return ResponseEntity.created(null)
+				.body(new ApiResponse(true, "Profile Image Successfully Updated!"));
+	}
 }

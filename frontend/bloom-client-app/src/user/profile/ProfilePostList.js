@@ -1,16 +1,17 @@
 import React, { useEffect, useState } from 'react';
-import LoadingIndicator from '../common/LoadingIndicator';
-import { POST_LIST_SIZE } from '../constants';
-import {getAllPosts, getUserCreatedPosts } from '../util/APIUtils'
+import LoadingIndicator from '../../common/LoadingIndicator';
+import { POST_LIST_SIZE } from '../../constants';
+import {getAllPosts, getUserCreatedPosts } from '../../util/APIUtils';
 import {Button } from 'antd';
-import Post from './Post';
+import ProfilePost from './ProfilePost';
+import Post from '../../post/Post';
 import Icon from '@ant-design/icons';
-import "./PostList.css";
-import NotFound from '../common/NotFound';
+import "./ProfilePostList.css";
+import NotFound from '../../common/NotFound';
 import { isCompositeComponent } from 'react-dom/test-utils';
  
 
-function PostList({currentUser, username, type}) {
+function ProfilePostList({currentUser, username, type}) {
     const [posts, setPosts] =useState([]);
 
     const [page, setPage] = useState(0);
@@ -19,6 +20,7 @@ function PostList({currentUser, username, type}) {
     const [totalPages, setTotalPages] = useState(0);
     const [isLast, setIsLast] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
+
 
     useEffect(() => {
         loadPostList();
@@ -63,22 +65,71 @@ function PostList({currentUser, username, type}) {
     const handleLoadMore = () => {
         loadPostList(page +1);
     }
+    
 
-    const postViews = [];
-    posts.forEach((post) => {
-        postViews.push(
-            <Post 
-                post = {post}
-                currentUser = {currentUser}
-            />
-        )
-    })
+
+    const ProfilepostViews1 = [];
+    const ProfilepostViews2 = [];
+    const ProfilepostViews3 = [];
+
+
+
+    posts.forEach(function(post, index) {
+
+        if (index %3 === 0){
+            ProfilepostViews1.push(            
+                <div className="profile-post-posts">
+                                          
+                    <ProfilePost
+                        // onClick = { modalOpen } 
+                        post = {post}
+                        currentUser = {currentUser}
+                        />
+                        
+                </div>
+                )            
+        }else if(index%3 === 1){
+            ProfilepostViews2.push(            
+                <div className="profile-post-posts">
+                    <ProfilePost 
+                        post = {post}
+                        currentUser = {currentUser}
+                        />
+                </div>
+                )            
+        }else{
+            ProfilepostViews3.push(            
+                <div className="profile-post-posts">
+                    <ProfilePost 
+                        post = {post}
+                        currentUser = {currentUser}
+                        />
+                </div>
+                )
+            }
+
+        }
+    )
+
+    // window.location.pathname => 
+    
     return (
-        <div className="posts-container">
 
-            <div className="post-body">
-                {postViews}
+
+        <div className="profile-posts-container">
+            <div className="profile-post-body">
+                <div className="profile-post-column1">
+                    {ProfilepostViews1}
+                </div>
+                <div className="profile-post-column2">
+                    {ProfilepostViews2}
+                </div>
+                <div className="profile-post-column3">
+                    {ProfilepostViews3}
+                </div>
+
             </div>
+
             {
                 isLoading && posts.length === 0 ? (
                     <div className="no-posts-found">
@@ -100,7 +151,8 @@ function PostList({currentUser, username, type}) {
             }
 
         </div>
+
     );
 }
 
-export default PostList;
+export default ProfilePostList;

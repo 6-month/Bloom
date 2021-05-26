@@ -1,11 +1,12 @@
 import Avatar from 'antd/lib/avatar/avatar';
 import React ,{useEffect, useState } from 'react';
 import PostList from '../../post/PostList';
+import ProfilePostList from './ProfilePostList';
 import Follow from '../follow/Follow';
 import {  getCurrentUser, getUserProfile } from '../../util/APIUtils';
 import {getAvatarColor} from '../../util/Colors';
 import { formatDateTime } from '../../util/Helpers';
-import "./Profile.css";
+import "./ProfilePostList.css";
 import EditProfile from './EditProfile';
 import { Button } from 'antd';
 import {useHistory} from "react-router-dom"
@@ -20,6 +21,7 @@ function Profile(props) {
     
     const [isLoading, setIsLoading] = useState(false);
     
+
 
     useEffect(() => {
         // loadUserProfile (username) => username 자리에 db에 등록된 username을 입력하면 해당 유저의 profile정보를 표시해줌
@@ -122,6 +124,12 @@ function Profile(props) {
                                         Joined {formatDateTime(user.joinedAt)}
                                     </div>
                                 </div>
+                                <div className ="user-profile-post">
+                                    profile-post : 
+                                    <img src={`data:image/jpeg;base64,${user.profilePost}`} className= "post-image"/>
+                        
+                    
+                                </div>
                                 <div className="user-bio-container">
                                     Bio : {user.bio}
                                 </div>
@@ -131,7 +139,7 @@ function Profile(props) {
                             </div>
                         </div>
                         <div className="user-post-list">
-                            <PostList currentUser={props.currentUser} username={user.username} type="USER_CREATED_POSTS"/>
+                            <ProfilePostList currentUser={props.currentUser} username={user.username} type="USER_CREATED_POSTS"/>
                         </div>
                     </div>
                 ) : null

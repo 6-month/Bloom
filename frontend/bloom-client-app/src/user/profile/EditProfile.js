@@ -19,6 +19,7 @@ function EditProfileImage() {
     })
 
     const onChangedImages = (e) => {
+
         setImages({
             ...images,
             value : e.target.files[0],
@@ -76,6 +77,9 @@ function EditProfileImage() {
     );
 }
 
+
+
+
 function EditProfile({currentUser}) {
     // 현재 edit 하고 있는 유저의 username, email을 제외하고 validate를 진행하는 코드를 만들어야함.
     const [user, setUser] = useState(null);
@@ -111,6 +115,9 @@ function EditProfile({currentUser}) {
     const [email, setEmail] = useState({
         value : '',
     })
+    const [profilePost, setProfilePost] = useState({
+        value: '',
+    })
     const [bio, setBio] = useState({
         value: '',
     })
@@ -118,15 +125,68 @@ function EditProfile({currentUser}) {
         value : '',
     })
 
+    const handleprofilePostSubmit = (e) => {
+        e.preventDefault();
+        
+        const formData = new FormData();
+        formData.append('profilePost', profilePost.value);
+      
+        const config = {
+            headers : {
+                'Content-Type' : 'multipart/form-data',
+                'Authorization' : `Bearer ${localStorage.getItem(ACCESS_TOKEN)}`
+            }
+        }
+
+        return post(API_BASE_URL+'/accounts/edits/pro_post', formData, config)
+            .then(response => {
+                notification.success({
+                    message : 'Bloom',
+                    description : 'Successfully edit profile image!'
+                })
+            })
+            .catch(error => {
+                notification.error({
+                    message : 'Bloom',
+                    description : error.message || 'Sorry Somthing was wrong'
+                })
+            })
+    }
     const handleEditSubmit = () => {
+        
         const UserEditInfo = {
             userId : user.id,
             name : name.value,
             username : username.value,
             email : email.value,
+            // profilePost : profilePost.value,
             bio : bio.value,
             phoneNumber : phoneNumber.value
         };
+
+        const formData = new FormData();
+        formData.append('profilePost', profilePost.value);
+        
+        const config = {
+            headers : {
+                'Content-Type' : 'multipart/form-data',
+                'Authorization' : `Bearer ${localStorage.getItem(ACCESS_TOKEN)}`
+            }
+        }
+        
+        post(API_BASE_URL+'/accounts/edits/pro_post', formData, config)
+            .then(response => {
+                notification.success({
+                    message : 'Bloom',
+                    description : 'Successfully edit profile image!'
+                })
+            })
+            .catch(error => {
+                notification.error({
+                    message : 'Bloom',
+                    description : error.message || 'Sorry Somthing was wrong'
+                })
+            })
 
         const profileURL = "/users/" + user.username;
 
@@ -171,6 +231,17 @@ function EditProfile({currentUser}) {
             ...email,
             value : value,
             ...validateEmail()
+        })
+    }
+
+    
+    const onChangeProfilePost = (event) => {
+        console.log(event);
+        setProfilePost({
+            ...profilePost,
+            value : event.target.files[0],
+            validateStatus : 'success',
+            errorMsg : null
         })
     }
 
@@ -328,6 +399,9 @@ function EditProfile({currentUser}) {
         }
     }
     
+    
+
+
     return (
         <div className="edit-profile-container">
             <EditProfileImage />
@@ -380,6 +454,15 @@ function EditProfile({currentUser}) {
                     />
                 </FormItem>
 
+                <FormItem
+                    label = "ProfilePost"
+                    validateStatus={profilePost.validateStatus}
+                    help={profilePost.errorMsg}
+                >
+                    <input type="file" onChange={(e) => {onChangeProfilePost(e)}}/>
+
+                </FormItem>
+                
                 <FormItem
                     label="Bio"
                     validateStatus={bio.validateStatus}

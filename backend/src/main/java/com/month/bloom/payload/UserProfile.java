@@ -14,11 +14,12 @@ public class UserProfile {
    private Long totalFollowers;
    private Long totalFollowings;
 
+   private byte[] profilepost;
    private String bio;
    private String phoneNumber;
    
    public UserProfile(Long id, String username, String name, Instant joinedAt, Long postCount, byte[] profileImage,
-         Long totalFollowers, Long totalFollowings, String bio, String phoneNumber) {
+         Long totalFollowers, Long totalFollowings, byte[] profilepost, String bio, String phoneNumber) {
       this.id = id;
       this.username = username;
       this.name = name;
@@ -27,6 +28,7 @@ public class UserProfile {
       this.profileImage = profileImage;
       this.totalFollowers = totalFollowers;
       this.totalFollowings = totalFollowings;
+      this.profilepost = profilepost;
       this.bio = bio;
       this.phoneNumber = phoneNumber;
    }
@@ -93,6 +95,14 @@ public class UserProfile {
 
    public void setTotalFollowings(Long totalFollowings) {
       this.totalFollowings = totalFollowings;
+   }
+
+   public byte[] getProfilePost() {
+      return profilepost;
+   }
+
+   public void setProfilepost(byte[] profilepost) {
+      this.profilepost = profilepost;
    }
 
    public String getBio() {

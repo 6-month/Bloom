@@ -1,5 +1,6 @@
 package com.month.bloom.controller;
-
+// response ;;     // response ;;     // response ;;
+import com.month.bloom.model.UserProfilePost;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -59,7 +60,6 @@ public class UserController {
    @PreAuthorize("hasRole('USER')")
     public UserSummary getCurrentUser(@CurrentUser UserPrincipal currentUser) {
         User user = userRepository.getOne(currentUser.getId());
-      
         if(user.getUserProfileImage() != null) {
            UserSummary userSummary = 
                  new UserSummary(currentUser.getId(), currentUser.getUsername(), currentUser.getName(), user.getUserProfileImage().getData());
@@ -137,48 +137,94 @@ public class UserController {
        Long totalFollowings = followRepository.countByFollowingId(user.getId());
        
        UserProfileImage userProfileImage = user.getUserProfileImage();
-             
-       if(userProfileImage != null ) {
-          if(user.getBio() != null) {
-             if(user.getPhoneNumber() != null) {
-                UserProfile userProfile = new UserProfile(user.getId(), user.getUsername(),
-                        user.getName(), user.getCreatedAt(), postCount, userProfileImage.getData(),
-                        totalFollowers, totalFollowings, user.getBio(), user.getPhoneNumber());
-                 return userProfile;
-             }
-             else {
-                UserProfile userProfile = new UserProfile(user.getId(), user.getUsername(),
-                        user.getName(), user.getCreatedAt(), postCount, userProfileImage.getData(),
-                        totalFollowers, totalFollowings, user.getBio(), null);
-                 return userProfile;
-             }
-          }
-          UserProfile userProfile = new UserProfile(user.getId(), user.getUsername(),
-                 user.getName(), user.getCreatedAt(), postCount, userProfileImage.getData(), totalFollowers, totalFollowings, null, null);
-          return userProfile;
-       }
-       else {
-          if(user.getBio() != null) {
-             if(user.getPhoneNumber() != null) {
-                UserProfile userProfile = new UserProfile(user.getId(), user.getUsername(),
-                       user.getName(), user.getCreatedAt(), postCount, null, 
-                       totalFollowers, totalFollowings, user.getBio(), user.getPhoneNumber());
-                  return userProfile;
-             }
-             else {
-                UserProfile userProfile = new UserProfile(user.getId(), user.getUsername(),
-                       user.getName(), user.getCreatedAt(), postCount, null, 
-                       totalFollowers, totalFollowings, user.getBio(), null);
-                  return userProfile;
-             }
-          }
-          UserProfile userProfile = new UserProfile(user.getId(), user.getUsername(),
-                user.getName(), user.getCreatedAt(), postCount, null, 
-                totalFollowers, totalFollowings, null, null);
-           return userProfile;
-       }       
-    }
-    
+
+       UserProfilePost userProfilePost = user.getUserProfilePost();
+
+        if(userProfilePost != null){
+           if(userProfileImage != null ) {
+              if(user.getBio() != null) {
+                 if(user.getPhoneNumber() != null) {
+                    UserProfile userProfile = new UserProfile(user.getId(), user.getUsername(),
+                            user.getName(), user.getCreatedAt(), postCount, userProfileImage.getData(),
+                            totalFollowers, totalFollowings, userProfilePost.getData(), user.getBio(), user.getPhoneNumber());
+                    return userProfile;
+                }
+                else {
+                    UserProfile userProfile = new UserProfile(user.getId(), user.getUsername(),
+                            user.getName(), user.getCreatedAt(), postCount, userProfileImage.getData(),
+                            totalFollowers, totalFollowings, userProfilePost.getData(), user.getBio(), null);
+                    return userProfile;
+                }
+            }
+            UserProfile userProfile = new UserProfile(user.getId(), user.getUsername(),
+                     user.getName(), user.getCreatedAt(), postCount, userProfileImage.getData(), totalFollowers, totalFollowings,userProfilePost.getData(), null, null);
+            return userProfile;
+        }
+        else {
+              if(user.getBio() != null) {
+                 if(user.getPhoneNumber() != null) {
+                    UserProfile userProfile = new UserProfile(user.getId(), user.getUsername(),
+                           user.getName(), user.getCreatedAt(), postCount, null,
+                        totalFollowers, totalFollowings, userProfilePost.getData(), user.getBio(), user.getPhoneNumber());
+                    return userProfile;
+                }
+                else {
+                    UserProfile userProfile = new UserProfile(user.getId(), user.getUsername(),
+                           user.getName(), user.getCreatedAt(), postCount, null,
+                           totalFollowers, totalFollowings, userProfilePost.getData(), user.getBio(), null);
+                    return userProfile;
+                }
+            }
+            UserProfile userProfile = new UserProfile(user.getId(), user.getUsername(),
+                    user.getName(), user.getCreatedAt(), postCount, null,
+                    totalFollowers, totalFollowings,userProfilePost.getData(), null, null);
+            return userProfile;
+        }
+        }else{
+            if(userProfileImage != null ) {
+            if(user.getBio() != null) {
+                if(user.getPhoneNumber() != null) {
+                    UserProfile userProfile = new UserProfile(user.getId(), user.getUsername(),
+                            user.getName(), user.getCreatedAt(), postCount, userProfileImage.getData(),
+                            totalFollowers, totalFollowings, null, user.getBio(), user.getPhoneNumber());
+                    return userProfile;
+                }
+                else {
+                    UserProfile userProfile = new UserProfile(user.getId(), user.getUsername(),
+                            user.getName(), user.getCreatedAt(), postCount, userProfileImage.getData(),
+                            totalFollowers, totalFollowings, null, user.getBio(), null);
+                    return userProfile;
+                }
+            }
+            UserProfile userProfile = new UserProfile(user.getId(), user.getUsername(),
+                    user.getName(), user.getCreatedAt(), postCount, userProfileImage.getData(), totalFollowers, totalFollowings,null, null, null);
+            return userProfile;
+        }
+        else {
+            if(user.getBio() != null) {
+                if(user.getPhoneNumber() != null) {
+                    UserProfile userProfile = new UserProfile(user.getId(), user.getUsername(),
+                            user.getName(), user.getCreatedAt(), postCount, null,
+                            totalFollowers, totalFollowings, null, user.getBio(), user.getPhoneNumber());
+                    return userProfile;
+                }
+                else {
+                    UserProfile userProfile = new UserProfile(user.getId(), user.getUsername(),
+                            user.getName(), user.getCreatedAt(), postCount, null,
+                            totalFollowers, totalFollowings, null, user.getBio(), null);
+                    return userProfile;
+                }
+            }
+            UserProfile userProfile = new UserProfile(user.getId(), user.getUsername(),
+                    user.getName(), user.getCreatedAt(), postCount, null,
+                    totalFollowers, totalFollowings,null, null, null);
+            return userProfile;
+        }
+
+        }
+        }
+
+
     @GetMapping("/users/{username}/posts")
     public PagedResponse<PostResponse> getPollsCreatedBy(@PathVariable(value = "username") String username,
                                                          @CurrentUser UserPrincipal currentUser,

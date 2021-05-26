@@ -10,11 +10,12 @@ import javax.persistence.Lob;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
+import com.month.bloom.model.audit.UserDateAudit;
 import org.hibernate.annotations.GenericGenerator;
 
 @Entity
 @Table(name = "user_profile_images")
-public class UserProfileImage {
+public class UserProfileImage extends UserDateAudit {
 
 	@Id
 	@GeneratedValue(generator = "uuid")
@@ -29,10 +30,8 @@ public class UserProfileImage {
 	
 	@Lob
 	private byte[] data;
-	
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "user_id")
-    private User user;
+
+
 	
 	public UserProfileImage() {
 		
@@ -76,13 +75,6 @@ public class UserProfileImage {
 		this.data = data;
 	}
 
-	public User getUser() {
-		return user;
-	}
 
-	public void setUser(User user) {
-		this.user = user;
-	}
 
-	
 }

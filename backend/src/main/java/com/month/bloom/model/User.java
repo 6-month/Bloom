@@ -59,7 +59,8 @@ public class User extends DateAudit {
 
 	@Size(max = 50)
 	private String phoneNumber;
-	
+
+
 	@Size(max = 300)
 	private String bio;
 
@@ -92,7 +93,11 @@ public class User extends DateAudit {
 	@OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "image_id", referencedColumnName = "id")
     private UserProfileImage userProfileImage;
-	
+
+	@OneToOne(cascade = CascadeType.ALL)
+	@JoinColumn(name = "profile_post_id", referencedColumnName = "id")
+	private UserProfilePost userProfilePost;
+
 	public User() {
 
 	}
@@ -205,7 +210,15 @@ public class User extends DateAudit {
 		this.userProfileImage = userProfileImage;
 	}
 
-	
+	public UserProfilePost getUserProfilePost() {
+		return userProfilePost;
+	}
+
+	public void setUserProfilePost(UserProfilePost userProfilePost) {
+		this.userProfilePost = userProfilePost;
+	}
+
+
 	public Set<Role> getRoles() {
 		return roles;
 	}
