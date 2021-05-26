@@ -13,6 +13,7 @@
     margin-top: 60px;
     margin-bottom: 40px;
     display: flex;
+
     border-radius: 5px;
     margin-left: 10px;
     margin-right: 10px;
@@ -26,8 +27,18 @@
 
 .edit-profile {
     text-align: center;
-    font-size: 18px;
     margin: 40px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.edit-profile-image {
+    text-align: center;
+    margin: 40px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 .edit-profile-image-sub {
