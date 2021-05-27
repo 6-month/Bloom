@@ -170,6 +170,8 @@ function Comments({post}) {
     const [pComments, setPComments] = useState(comments.filter(comment => comment.p_comment_id === null))
     const [sComments, setSComments] = useState(comments.filter(comment => comment.p_comment_id !== null))
 
+    const [showComment, setShowComment] = useState(true);
+
     const handleCommentChange = (e) => {
         setCommentContents({
             ...commentContents,
@@ -283,19 +285,23 @@ function Comments({post}) {
                 <DeleteOutlined 
                     onClick={(e) => handleDeleteComment(e, comment)}
                 />
-                {/* <MessageOutlined
+                <MessageOutlined
                     style={{
                         cursor: "pointer",
                         marginLeft: "10px"
                     }}
                     onClick={(e) => setShowComment(!showComment)}
-                /> */}
-                <ReplyComments postId={post.id} p_comment_id={comment.id} pComment={sComments.filter(sComment => sComment.p_comment_id === comment.id)} />
+                />
+                {
+                    showComment ? (
+                        <ReplyComments postId={post.id} p_comment_id={comment.id} pComment={sComments.filter(sComment => sComment.p_comment_id === comment.id)} />
+                    ) : (
+                        null
+                    )
+                }
             </Comment>
         )
     })
-
-    const [showComment, setShowComment] = useState(true);
 
     return (
         <div className="comment-container">

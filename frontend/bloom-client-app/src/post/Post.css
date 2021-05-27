@@ -26,9 +26,9 @@
     padding: 20px;
 }
 
-/* .post-like-container {
-    border-top: 0.2px solid #D5C6E3;
-} */
+.post-like-container {
+    /* border-top: 0.2px solid #D5C6E3; */
+}
 
 /* tile uploaded pictures */
 .comment-action {
@@ -86,4 +86,8 @@
 .deleteButton {
     padding: 5px;
     cursor: pointer;
+}
+
+.show-comment-btn {
+    margin-left: 10px;
 }

@@ -4,7 +4,7 @@ import { Avatar, Input, Button, notification, Form } from 'antd';
 import { Link, Route, useHistory } from 'react-router-dom';
 import { getAvatarColor } from '../util/Colors';
 import { formatDateTime } from '../util/Helpers';
-import { DeleteOutlined  } from '@ant-design/icons';
+import { DeleteOutlined,MessageOutlined  } from '@ant-design/icons';
 
 import './Post.css'
 import Comments from './Comments';
@@ -22,6 +22,8 @@ function Post({post}) {
 
     const [currentUser, setCurrentUser] = useState([]);
     const [setting, setSetting] = useState(false);
+    const [showComment, setShowComment] = useState(false);
+
 
     useEffect(() => {
         getCurrentUser()
@@ -103,8 +105,24 @@ function Post({post}) {
                 <div className="post-like-container">
                     <Likes postId={post.id} pushedLike={post.pushedLike} totalLikes={post.totalLikes} />
                 </div>
+                <div className="show-comment-btn">
+                        <MessageOutlined
+                            style={{
+                                cursor: "pointer",
+                                marginLeft: "10px",
+                                
+                            }}
+                            onClick={(e) => setShowComment(!showComment)}
+                        />
+                    </div>
                 <div className="post-comment-container">
-                    <Comments post={post} />
+                    {
+                        showComment ? (
+                            <Comments post={post} />
+                        ) : (
+                            null
+                        )
+                    }
                 </div>
             </div>
         </div>
