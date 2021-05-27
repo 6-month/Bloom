@@ -13,6 +13,7 @@ import second from '../../img/Bloom2.png';
 import thrid from '../../img/Bloom3.png';
 import fourth from '../../img/Bloom4.png';
 import { SettingOutlined } from '@ant-design/icons';
+import YouTube from 'react-youtube';
 
 function Profile(props) {
     // console을 한번 찍을줄 알았는데 4번 찍는다 이유는?
@@ -101,6 +102,7 @@ function Profile(props) {
                                         <div className="user-summary">
                                             <div className="edit-container">
                                                 <div className="username">{user.username}</div>
+
                                                 {
                                                     profileCheck ? (
                                                         <div>
@@ -115,6 +117,7 @@ function Profile(props) {
                                                 }
                                             </div>
                                             <div className="full-name">{user.name}</div>
+                                            <div className="bio">{user.bio}</div>
                                             <div className="user-joined">
                                                 Joined {formatDateTime(user.joinedAt)}
                                             </div>
@@ -140,7 +143,16 @@ function Profile(props) {
                                     </div>
                                 </div>
                                 <div className="user-bio-container">
-                                    Bio : {user.bio}
+                                    <YouTube 
+                                        videoId="HMqhO_pSjg4" 
+                                        opts={{
+                                            width: "550px",
+                                            height: "300px",
+                                            playerVars : {
+                                                autoplay : 1,
+                                            }
+                                        }}
+                                    />
                                 </div>
                             </div>
                             <div className="user-flower-container">

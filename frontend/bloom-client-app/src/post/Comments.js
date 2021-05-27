@@ -7,6 +7,8 @@ import HashMap from 'hashmap';
 import ArrayList from "arraylist";
 import "./Comment.css"
 
+import { DeleteOutlined, MessageOutlined } from '@ant-design/icons';
+
 const FormItem = Form.Item;
 
 function ReplyComments({postId,p_comment_id, pComment}) {
@@ -15,6 +17,10 @@ function ReplyComments({postId,p_comment_id, pComment}) {
         validateStatus : "false"
     });
     const [comments, setComments] = useState(pComment);
+
+    // useEffect(()=>{
+    //     console.log(comments)
+    // }, [comments])
 
     const handleCommentChange = (e) => {
         setCommentContents({
@@ -74,8 +80,7 @@ function ReplyComments({postId,p_comment_id, pComment}) {
             .then(response => {
                 for(var i = 0; i< comments.length; i++) {
                     if(comments[i].id === response.id) {
-                        setComments(comments.concat(comments.pop(comments[i])))
-                        setComments(comments.concat(response))
+                        setComments(comments.filter(comment => comment !== comments[i])) 
                     }
                 }
                 notification.success({
@@ -97,7 +102,7 @@ function ReplyComments({postId,p_comment_id, pComment}) {
 
     const commentView = [];
 
-    if(pComment !== null) {
+    if(comments !== null) {
         comments.forEach((comment) => {
             commentView.push(
                 <Comment
@@ -119,7 +124,9 @@ function ReplyComments({postId,p_comment_id, pComment}) {
                 >
                     {
                         comment.text !== "Deleted Comment" ? (
-                            <Button onClick={(e)=> handleDeleteComment(e, comment.id)}>delete</Button>
+                            <DeleteOutlined 
+                                onClick={(e) => handleDeleteComment(e, comment.id)}
+                            />
                         ) : (
                             null
                         )
@@ -160,14 +167,8 @@ function Comments({post}) {
     
     const [comments, setComments] = useState(post.comments);
 
-    // useEffect(() => {
-    //     comments.forEach(comment => {
-    //         // if(comment.p_comment_id === null) {
-    //         //     console.log(comment)
-    //         // }
-    //         console.log(comment)
-    //     })
-    // }, [comments])
+    const [pComments, setPComments] = useState(comments.filter(comment => comment.p_comment_id === null))
+    const [sComments, setSComments] = useState(comments.filter(comment => comment.p_comment_id !== null))
 
     const handleCommentChange = (e) => {
         setCommentContents({
@@ -203,6 +204,7 @@ function Comments({post}) {
         saveComment(commentRequest)
             .then(response => {
                 setComments(comments.concat(response));
+                setPComments(pComments.concat(response))
                 notification.success({
                     message : "Bloom",
                     description : "Successfully registered comments"
@@ -222,25 +224,6 @@ function Comments({post}) {
         })
     }
 
-    var map = new HashMap();
-        
-    comments.forEach((comment) => {
-        if(comment.p_comment_id !== null) {
-            if(map.get(comment.p_comment_id) === undefined) {
-                var list = new ArrayList()
-                list.add(comment);
-                map.set(comment.p_comment_id, list)
-            }
-            else {
-                var list = map.get(comment.p_comment_id);
-                list.add(comment);
-                map.set(comment.p_comment_id, list)
-            }
-            
-        }    
-    })
-    
-
     const handleDeleteComment = (e, comment) => {
         e.preventDefault();
     
@@ -248,20 +231,16 @@ function Comments({post}) {
 
         deleteComment(commentId) 
             .then(response => {
-                for(var i = 0; i< comments.length; i++) {
-                    if(comments[i].p_comment_id === null) {
-                        if(comments[i].id === commentId) {
-                            console.log(comments[i])
-                            setComments(comments.concat(comments.pop(comments[i])))
-                            setComments(comments)
-                        }
-                    }
-                }
-                console.log(comments)
+                setPComments(pComments.filter((comment) => comment.id !== commentId))
+                setSComments(sComments.filter((comment) => comment.p_comment_id !== commentId))
+
                 notification.success({
                     message : "Bloom",
                     description : "Successfully deleted comments"
                 })
+
+                // recomment가 바뀌지 않아 임시방편으로 만들어놈..
+                window.location.replace(window.location.pathname)
             })
             .catch(error => {
                 notification.error({
@@ -271,62 +250,52 @@ function Comments({post}) {
             })
     }
 
+    useEffect(() => {
+        console.log(pComments)
+    }, [pComments])
+
+    useEffect(() => {
+        console.log(sComments)
+    }, [sComments])
+
     const commentView = [];
 
-    comments.forEach((comment) => {
-        if(comment.p_comment_id === null) {
-            if(map.get(comment.id) !== undefined ) {
-                commentView.push(
-                    <Comment
-                        author={comment.createdBy.username}
-                        avatar={
-                            <Avatar className="post-creator-avatar"
-                                src={`data:image/jpeg;base64,${comment.createdBy.profileImage}`} />  
-                        }
-                        content={
-                            <p>
-                                {comment.text}
-                            </p>
-                        }
-                        datetime={
-                            <Tooltip title={moment().format('YYYY-MM-DD HH:mm:ss')}>
-                                <span>{moment().fromNow()}</span>
-                            </Tooltip>
-                        }
-                    >
-                        <Button onClick={(e) => handleDeleteComment(e, comment)}>delete</Button>
-                        <ReplyComments postId={post.id} p_comment_id={comment.id} pComment={map.get(comment.id)} />
-                    </Comment>
-                )
+    pComments.forEach((comment) => {;
 
-            }
-            
-            else {
-                commentView.push(
-                    <Comment
-                        author={comment.createdBy.username}
-                        avatar={
-                            <Avatar className="post-creator-avatar"
-                                src={`data:image/jpeg;base64,${comment.createdBy.profileImage}`} />  
-                        }
-                        content={
-                            <p>
-                                {comment.text}
-                            </p>
-                        }
-                        datetime={
-                            <Tooltip title={moment().format('YYYY-MM-DD HH:mm:ss')}>
-                                <span>{moment().fromNow()}</span>
-                            </Tooltip>
-                        }
-                    >
-                        <Button onClick={(e) => handleDeleteComment(e, comment)}>delete</Button>
-                        <ReplyComments postId={post.id} p_comment_id={comment.id} pComment={[]}/>
-                    </Comment>
-                )
-            }
-        }
+        commentView.push(
+            <Comment
+                author={comment.createdBy.username}
+                avatar={
+                    <Avatar className="post-creator-avatar"
+                        src={`data:image/jpeg;base64,${comment.createdBy.profileImage}`} />  
+                }
+                content={
+                    <p>
+                        {comment.text}
+                    </p>
+                }
+                datetime={
+                    <Tooltip title={moment().format('YYYY-MM-DD HH:mm:ss')}>
+                        <span>{moment().fromNow()}</span>
+                    </Tooltip>
+                }
+            >
+                <DeleteOutlined 
+                    onClick={(e) => handleDeleteComment(e, comment)}
+                />
+                {/* <MessageOutlined
+                    style={{
+                        cursor: "pointer",
+                        marginLeft: "10px"
+                    }}
+                    onClick={(e) => setShowComment(!showComment)}
+                /> */}
+                <ReplyComments postId={post.id} p_comment_id={comment.id} pComment={sComments.filter(sComment => sComment.p_comment_id === comment.id)} />
+            </Comment>
+        )
     })
+
+    const [showComment, setShowComment] = useState(true);
 
     return (
         <div className="comment-container">
