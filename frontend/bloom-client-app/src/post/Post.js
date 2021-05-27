@@ -106,14 +106,14 @@ function Post({post}) {
                     <Likes postId={post.id} pushedLike={post.pushedLike} totalLikes={post.totalLikes} />
                 </div>
                 <div className="show-comment-btn">
-                        <MessageOutlined
-                            style={{
-                                cursor: "pointer",
-                                marginLeft: "10px",
-                                
-                            }}
-                            onClick={(e) => setShowComment(!showComment)}
-                        />
+                    <MessageOutlined
+                        style={{
+                            cursor: "pointer",
+                            marginLeft: "10px",
+                            
+                        }}
+                        onClick={(e) => setShowComment(!showComment)}
+                    />
                     </div>
                 <div className="post-comment-container">
                     {

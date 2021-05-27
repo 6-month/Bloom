@@ -11,26 +11,17 @@
 }
 
 .post-image {
-    /* border: 1px solid black; */
-
-    /* border-right: 0.2px solid #d5c6e3; */
+    border-right: 0.2px solid #d5c6e3;
     max-width: 100%;
     max-height: 100%;
 }
 
 .post-text {
-    /* border: 1px solid black; */
-
     border-top: 0.2px solid #d5c6e3;
     border-bottom: 0.2px solid #d5c6e3;
     padding: 20px;
 }
 
-.post-like-container {
-    /* border-top: 0.2px solid #D5C6E3; */
-}
-
-/* tile uploaded pictures */
 .comment-action {
     padding-left: 8px;
     cursor: 'auto';
@@ -43,18 +34,13 @@
 .post-content {
     border: 0.2px solid #d5c6e3;
     background-color: white;
-    /* max-width: 80vw; */
-    width: 500px;
+    width: 450px;
     margin: 30px;
 }
 
 .post-header {
     border-bottom: 0.2px solid #d5c6e3;
 }
-
-/* .post-body {
-    border: 1px solid black;
-} */
 
 .post-creator-info {
     display: flex;
