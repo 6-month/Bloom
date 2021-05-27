@@ -35,11 +35,6 @@ function PostList({username, type}) {
         loadPostList();
     }, [username])
 
-    useEffect(() => {
-        console.log(type)
-        console.log(posts)
-    }, [posts])
-
     const loadPostList = (page = 0, size = POST_LIST_SIZE) => {
         let promise;
         if(type === "USER_CREATED_POSTS") {
