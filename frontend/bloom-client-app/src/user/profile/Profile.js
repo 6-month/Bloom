@@ -78,6 +78,17 @@ function Profile(props) {
         history.push("/accounts/edit")
     }
 
+    const [youtubeId, setYoutubeId] = useState("cPyovQwFmhE");
+    const [youtubeURL, setYoutubeURL] = useState("");
+
+    const handleYoutubeURL = () => {
+        // https://www.youtube.com/watch?v=cPyovQwFmhE
+        var regExp = /^.*((youtu.be\/)|(v\/)|(\/u\/\w\/)|(embed\/)|(watch\?))\??v?=?([^#\&\?]*).*/;
+        var matchs = youtubeURL.match(regExp)
+        console.log(matchs[7])
+        setYoutubeId(matchs[7]);
+    }
+
     return (
         <div className="profile">
 
@@ -144,7 +155,7 @@ function Profile(props) {
                                 </div>
                                 <div className="user-bio-container">
                                     <YouTube 
-                                        videoId="HMqhO_pSjg4" 
+                                        videoId={youtubeId}
                                         opts={{
                                             width: "550px",
                                             height: "300px",
@@ -153,6 +164,22 @@ function Profile(props) {
                                             }
                                         }}
                                     />
+                                    <div
+                                        style={{
+                                            display: 'flex',
+                                            justifyContent:"flex-end",
+                                        }}
+                                    >
+                                        <input 
+                                            type="text" 
+                                            placeholder="Please enter Youtube url..." 
+                                            style={{
+                                                width:"300px",
+                                            }}
+                                            onChange={(e) => setYoutubeURL(e.target.value)} 
+                                        />
+                                        <Button onClick={handleYoutubeURL}>chacnge</Button>
+                                    </div>
                                 </div>
                             </div>
                             <div className="user-flower-container">
