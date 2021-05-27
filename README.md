@@ -1,4 +1,6 @@
 # Bloom
+###### 2021.02.15 ~ 2021.05.31
+
 <h3 align="center"> Try blooming in your tree </h3>
 
 <p align="center"> <img src="./img/Bloom4.png" height="300" weigth="300"/> </p>
@@ -7,7 +9,7 @@
 1. About The Project
 2. Getting Started
 3. Usage
-4. Contributor
+4. Contributors
 
 <br/>
 
@@ -28,11 +30,28 @@ Of course, no one SNS will serve all projects since your needs may be different.
 - skill
   - react
   - spring
-- language
-  - javascript
-  - java
+- languages
+  - Javascript
+  - Java
+  - CSS
+  - HTML
 
-### 4. Contributor
+### 2. Getting Started
+This is an example of how you may give instructions on setting up your project locally. To get a local copy up and running follow these simple example steps.
+
+#### Prerequisites
+- npm / yarn
+- ant design
+
+#### Installation
+- Clone the repo
+- Install NPM / YARN packages
+- Install Ant Design
+
+### 3. Usage
+Use this space to show your efforts have made you achieve your goals. If you post everyday, your tree can grow up fast.Imagine your tree blooming.
+
+### 4. Contributors
 - Minchang Jeong
 - Seongbin Bae
 - Yeji Seo
