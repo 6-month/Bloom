@@ -49,7 +49,9 @@ This is an example of how you may give instructions on setting up your project l
 - Install Ant Design
 
 ### 3. Usage
-Use this space to show your efforts have made you achieve your goals. If you post everyday, your tree can grow up fast.Imagine your tree blooming.
+Use this space to show your efforts have made you achieve your goals. 
+<br/>
+If you post everyday, your tree can grow up fast.Imagine your tree blooming.
 
 ### 4. Contributors
 - Minchang Jeong
