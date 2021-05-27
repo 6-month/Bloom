@@ -4,19 +4,17 @@
 </p>
 <h3 align="center">Try blooming in your tree!!</h3>
 
-<h4>Table of Contents</h4>
+###Table of Contents
 1. About The Project
-  - Built With
 2. Getting Started
-  - Prerequisites
-  - Installation
 3. Usage
 4. Roadmap
 5. Contact
 
-<h3>About The Project</h3>
+####About The Project
+- 
 
-<h4>개발 목적</h4>
+####개발 목적
 한 그루의 나무에 꽃이 피는 것을 SNS와 결합한 프로젝트로 SNS의 핵심기능을 구현하고자 프로젝트를 진행하였다.
 
   
