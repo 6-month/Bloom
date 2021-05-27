@@ -14,7 +14,7 @@
 <br/>
 
 ### 1. About The Project
-There are many great SNS available on Web, however, We didn't find one that really suit my needs so We create this enhanced one. We want to create a Website so amazing that it will be the last one you ever need -- We think this it it😊
+There are many great SNS available on Web, however, We didn't find one that really suit my needs so We create this enhanced one. We want to create a Website so amazing that it will be the last one you ever need -- We think this is it😊
 
 Here is why we create it :
   - To make a website where anyone can write down their goals
