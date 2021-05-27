@@ -29,12 +29,18 @@ Of course, no one SNS will serve all projects since your needs may be different.
 #### Built With
 - skill
   - react
-  - spring
+    - hooks
+  - spring-boot
+    - hibernate
+    - JPA
+    - JPQL
 - languages
   - Javascript
   - Java
   - CSS
   - HTML
+- db
+  - mysql 
 
 ### 2. Getting Started
 This is an example of how you may give instructions on setting up your project locally. To get a local copy up and running follow these simple example steps.
