@@ -124,7 +124,7 @@ function NewPost() {
           message : 'Bloom',
           description : 'Successfully create post!'
         })
-        history.push("/bloom")
+        history.push("/explore")
       })
       .catch(error => {
         notification.error({
