@@ -21,16 +21,16 @@
     padding-bottom: 20px;
 }
 
-/* @media screen and (max-width: 768px) {
+@media screen and (max-width: 768px) {
     .user-profile-body {
         flex-direction: column;
         align-items: center;
     }
 
     .user-flower-container {
-        margin-top: 40px;
+        margin-top: 80px;
     }
-} */
+}
 
 .user-details {
     /* border: 1px solid black; */
@@ -80,13 +80,17 @@
 .user-flower-container {
     /* border: 1px solid black; */
     background-color: white;
-    width: 240px;
+    width: 260px;
     height: 400px;
     margin-left: 20px;
     display: flex;
     justify-content: center;
 }
 
+.bloom {
+    width: 100%;
+    height: 100%;
+}
 .user-post-list {
     width: 75vw;
 }
