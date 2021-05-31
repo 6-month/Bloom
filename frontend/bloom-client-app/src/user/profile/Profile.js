@@ -172,9 +172,10 @@ function Profile(props) {
                                     >
                                         <input 
                                             type="text" 
-                                            placeholder="Please enter Youtube url..." 
+                                            placeholder="Please enter Youtube url…" 
                                             style={{
-                                                width:"300px",
+                                                width: "550px",
+                                                border: "0"
                                             }}
                                             onChange={(e) => setYoutubeURL(e.target.value)} 
                                         />
