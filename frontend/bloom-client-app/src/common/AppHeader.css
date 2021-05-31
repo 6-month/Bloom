@@ -1,12 +1,20 @@
 .nav {
-    border: 1px solid #d5c6e3;
+    border-bottom: 1px solid #d5c6e3;
     background-color: white;
     display: flex;
     align-items: center;
-    justify-content: space-between;
-    /* padding-left: 180px;
-    padding-right: 180px; */
+    justify-content: space-around;
 }
+
+/* .nav {
+    border-bottom: 1px solid #d5c6e3;
+    background-color: white;
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    padding-left: 180px;
+    padding-right: 180px;
+} */
 
 .logo_size {
     width: 93px;
