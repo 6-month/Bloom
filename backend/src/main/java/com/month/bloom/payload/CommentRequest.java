@@ -4,7 +4,9 @@ import javax.validation.constraints.NotBlank;
 
 public class CommentRequest {
 	private Long postId;
+	
 	private Long p_comment_id;
+	
 	@NotBlank
 	private String text;
 
