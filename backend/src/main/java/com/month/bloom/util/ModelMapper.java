@@ -42,11 +42,11 @@ public class ModelMapper {
 			User createUser = comment.getUser();
 			if(createUser.getUserProfileImage() != null) {
 				UserSummary userSummary = new UserSummary(createUser.getId(), createUser.getUsername(), createUser.getName(), createUser.getUserProfileImage().getData());
-				commentResponse.setCreatedBy(userSummary);
+				commentResponse.setCreatedBy(creatorSummary);
 			}
 			else {
 				UserSummary userSummary = new UserSummary(createUser.getId(), createUser.getUsername(), createUser.getName(), null);
-				commentResponse.setCreatedBy(userSummary);
+				commentResponse.setCreatedBy(creatorSummary);
 			}
 			
 			commentResponse.setCreationDateTime(comment.getCreatedAt());
