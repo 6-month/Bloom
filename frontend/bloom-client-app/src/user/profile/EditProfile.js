@@ -201,7 +201,7 @@ function EditProfile() {
     }, [currentUser])
 
     useEffect(() => {
-        console.log(user)
+        console.log(user.id)
     }, [user])
 
     const [name, setName] = useState({
@@ -232,7 +232,7 @@ function EditProfile() {
 
     const handleEditSubmit = () => {
         const UserEditInfo = {
-            userId : user.id,
+            userId : currentUser.id,
             name : name.value,
             username : username.value,
             email : email.value,
