@@ -1,16 +1,28 @@
 import { API_BASE_URL, POST_LIST_SIZE, ACCESS_TOKEN } from '../constants';
 
 const request = (options) => {
+    
     const headers = new Headers({
         'Content-Type': 'application/json',
-    })
-    
-    if(localStorage.getItem(ACCESS_TOKEN)) {
-        headers.append('Authorization', 'Bearer ' + localStorage.getItem(ACCESS_TOKEN))
-    }
+	'Access-Control-Allow-Origin' : '*',
+	'Accept': 'application/json',
+     })
 
-    const defaults = {headers: headers};
-    options = Object.assign({}, defaults, options);
+	
+    if(localStorage.getItem(ACCESS_TOKEN)){
+        headers.append('Authorization', 'Bearer ' + localStorage.getItem(ACCESS_TOKEN))
+   }
+    // const defaults = {Origin: 'http://3.36.148.234:3000/signup', cache: 'no-cache', credentials : 'same-origin', headers: headers, redirect: 'follow'};
+    const defaults = {mode : 'cors', cache: 'no-cache', credentials: 'same-origin', headers: headers, redirect:'follow', referrer:'no-reffer'};
+
+	options = Object.assign({}, defaults, options);
+	
+	
+	let test = fetch(options.url, options)
+	// console.log(options.url);
+	console.log(test);
+	
+	
 
     return fetch(options.url, options)
     .then(response => 
@@ -18,22 +30,18 @@ const request = (options) => {
             if(!response.ok) {
                 return Promise.reject(json);
             }
+            console.log(json)
             return json;
         })
     );
+
+	  
 };
 
-// export function createPost(postData) {
-//     return request({
-//         url: API_BASE_URL + "/posts",
-//         method: 'POST',
-//         body: JSON.stringify(postData)         
-//     });
-// }
 
 export function saveComment(commentRequest) {
     return request({
-        url : API_BASE_URL + "/posts/comments",
+        url : API_BASE_URL+"/posts/comments",
         method : "POST",
         body : JSON.stringify(commentRequest)
     })   
@@ -54,14 +62,15 @@ export function updateIsDeletedComment(commentId) {
 }
 
 export function login(loginRequest) {
-    return request({
-        url: API_BASE_URL + "/auth/signin",
-        method: 'POST',
+    return request({ 
+	    url: API_BASE_URL + "/auth/signin",
+	method: 'POST',
         body: JSON.stringify(loginRequest)
     });
 }
 
 export function signup(signupRequest) {
+	console.log(signupRequest);
     return request({
         url: API_BASE_URL + "/auth/signup",
         method: 'POST',
@@ -77,9 +86,12 @@ export function findUserByUsernameOrName(usernameOrName) {
 }
 
 export function checkUsernameAvailability(username) {
+    
     return request({
-        url: API_BASE_URL + "/user/checkUsernameAvailability?username=" + username,
-        method: 'GET'
+	   url: API_BASE_URL+"/user/checkUsernameAvailability?username=" + username,
+	   // url: "http://172.31.47.139:8080/api/user/checkUsernameAvailability?username=" + username,
+
+	    method: 'GET'
     });
 }
 

@@ -49,13 +49,13 @@ function SignupFuction() {
         signup(signupRequest)
             .then(response => {
                 notification.success({
-                    message: 'Polling App',
+                    message: 'Bloom',
                     description: "Thank you! You're successfully registered. Please Login to continue!",
                 });
                 history.push("/login");          
             }).catch(error => {
                 notification.error({
-                    message: 'Polling App',
+                    message: 'Bloom',
                     description: error.message || 'Sorry! Something went wrong. Please try again!'
                 });
             });
@@ -72,6 +72,7 @@ function SignupFuction() {
 
     const onChangedUsername = (event) => {
         var { value } = event.target;
+	    console.log(value);
 
         setUsername({
             ...username,
@@ -103,8 +104,9 @@ function SignupFuction() {
         if(username.validateStatus === null){
             checkUsernameAvailability(username.value)
                 .then(response => {
+		    console.log(response);
                     if(response.available){
-                        setUsername({
+			setUsername({
                             ...username,
                             value : username.value,
                             validateStatus : 'success',
@@ -121,11 +123,12 @@ function SignupFuction() {
                     }
                 })
                 .catch(error => {
-                    setUsername({
+			console.log(error.message)
+			setUsername({
                         ...username,
                         value : username.value,
                         validateStatus : 'error',
-                        errorMsg : 'Somthing was wrong'
+                        errorMsg : error.message || 'Somthing was wrong'
                     })
                 })
         }
@@ -152,11 +155,12 @@ function SignupFuction() {
                     }
                 })   
                 .catch(error => {
+			console.log(error.message)
                     setEmail({
                         ...email,
                         value : email.value,
                         validateStatus : 'error',
-                        errorMsg : 'error : '+ error
+                        errorMsg : 'error : '+ error.message
                     })
                 })         
         }

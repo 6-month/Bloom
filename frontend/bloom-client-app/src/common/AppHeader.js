@@ -7,6 +7,7 @@ import {getAvatarColor} from '../util/Colors';
 
 import './AppHeader.css';
 import { findUserByUsernameOrName } from '../util/APIUtils';
+import { ACCESS_TOKEN } from '../constants';
 
 const {Search} = Input;
 
@@ -100,6 +101,7 @@ function AppHeader(props) {
     const [searchCheck, setSearchCheck] = useState(false);
 
     useEffect(() => {
+	    if(localStorage.getItem(ACCESS_TOKEN) !== null) {
       findUserByUsernameOrName(usernameOrName)
         .then(response => {
           setUsers(response);
@@ -107,6 +109,7 @@ function AppHeader(props) {
         .catch(error => {
           console.log(error.message);
         })
+	}
     }, [usernameOrName])
 
     let menuItems;
