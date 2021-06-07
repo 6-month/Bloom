@@ -127,7 +127,7 @@ public class PostController {
 		
 	}
 	
-	@DeleteMapping("/likes")
+	@DeleteMapping("/deletelikes")
 	@PreAuthorize("hasRole('USER')")
 	public LikeResponse cancelLike(@CurrentUser UserPrincipal currentUser,
 										@Valid @RequestBody LikeRequest likeRequest) {
@@ -179,7 +179,7 @@ public class PostController {
 		}
 	}
 	
-	@DeleteMapping("/comments")
+	@DeleteMapping("/deletecomments")
 	@PreAuthorize("hasRole('USER')")
 	public ResponseEntity<?> deleteComment(@CurrentUser UserPrincipal currentUser, 
 											@RequestParam(value = "commentId") Long commentId) {
@@ -187,10 +187,10 @@ public class PostController {
 		commentRepository.delete(comment);
 		
 		return ResponseEntity.created(null)
-				.body(new ApiResponse(true, "Post Successfully deleted"));
+				.body(new ApiResponse(true, "Comment Successfully deleted"));
 	}
 	
-	@PutMapping("/comments")
+	@GetMapping("/updateIsDeletedcomments")
 	@PreAuthorize("hasRole('USER')")
 	public CommentResponse updateIsDeletedComment(@RequestParam(value = "commentId") Long commentId) {
 		Comment comment = commentRepository.getOne(commentId);
