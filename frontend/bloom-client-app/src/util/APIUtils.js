@@ -18,18 +18,14 @@ const request = (options) => {
             if(!response.ok) {
                 return Promise.reject(json);
             }
+            console.log(json)
             return json;
         })
     );
-};
 
-// export function createPost(postData) {
-//     return request({
-//         url: API_BASE_URL + "/posts",
-//         method: 'POST',
-//         body: JSON.stringify(postData)         
-//     });
-// }
+
+
+};
 
 export function saveComment(commentRequest) {
     return request({
@@ -41,15 +37,15 @@ export function saveComment(commentRequest) {
 
 export function deleteComment(commentId) {
     return request({
-        url : API_BASE_URL + "/posts/comments?commentId=" + commentId,
+        url : API_BASE_URL + "/posts/deletecomments?commentId=" + commentId,
         method : "DELETE",
     })
 }
 
 export function updateIsDeletedComment(commentId) {
     return request({
-        url : API_BASE_URL + "/posts/comments?commentId=" + commentId,
-        method : "PUT",
+        url : API_BASE_URL + "/posts/updateIsDeletedcomments?commentId=" + commentId,
+        method : "GET",
     })
 }
 
@@ -162,7 +158,7 @@ export function addLike(likeRequest) {
 
 export function cancelLike(likeRequest) {
     return request({
-        url: API_BASE_URL + "/posts/likes",
+        url: API_BASE_URL + "/posts/deletelikes",
         method: 'DELETE',
         body: JSON.stringify(likeRequest)
     })

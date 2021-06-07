@@ -49,6 +49,13 @@ public class Post extends UserDateAudit {
 			orphanRemoval = true)
 	private List<Comment> comments = new ArrayList<>();
 	
+	@OneToMany(
+			mappedBy="post",
+			cascade = CascadeType.ALL,
+			fetch = FetchType.EAGER,
+			orphanRemoval = true)
+	private List<Like> likes = new ArrayList<>();
+	
 	@ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
@@ -113,6 +120,16 @@ public class Post extends UserDateAudit {
 	public void setUser(User user) {
 		this.user = user;
 	}
+
+	public List<Like> getLikes() {
+		return likes;
+	}
+
+	public void setLikes(List<Like> likes) {
+		this.likes = likes;
+	}
+	
+	
 	
 	
 }
