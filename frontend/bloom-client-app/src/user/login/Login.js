@@ -13,6 +13,7 @@ function Login() {
         const loginRequest = Object.assign({}, values);
         login(loginRequest)
             .then(response => {
+		   
                 localStorage.setItem(ACCESS_TOKEN, response.accessToken);
                 notification.success({
                     message: 'Bloom',
