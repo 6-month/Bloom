@@ -1,8 +1,8 @@
-import React, {useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Avatar, Input, Button, notification, Form } from 'antd';
 import { Comment, Tooltip } from 'antd';
 import moment from 'moment';
-import {saveComment, deleteComment, updateIsDeletedComment} from '../util/APIUtils';
+import { saveComment, deleteComment, updateIsDeletedComment, getCurrentUser } from '../util/APIUtils';
 import HashMap from 'hashmap';
 import ArrayList from "arraylist";
 import "./Comment.css"
@@ -11,10 +11,10 @@ import { DeleteOutlined, MessageOutlined } from '@ant-design/icons';
 
 const FormItem = Form.Item;
 
-function ReplyComments({postId,p_comment_id, pComment}) {
+function ReplyComments({ postId, p_comment_id, pComment, currentUser }) {
     const [commentContents, setCommentContents] = useState({
-        value : "",
-        validateStatus : "false"
+        value: "",
+        validateStatus: "false"
     });
     const [comments, setComments] = useState(pComment);
 
@@ -25,20 +25,20 @@ function ReplyComments({postId,p_comment_id, pComment}) {
     const handleCommentChange = (e) => {
         setCommentContents({
             ...commentContents,
-            value : e.target.value,
+            value: e.target.value,
             ...isFormValid()
         });
     }
 
     const isFormValid = () => {
-        if(commentContents.value.length<3) {
+        if (commentContents.value.length < 3) {
             return {
-                validateStatus : "false"
+                validateStatus: "false"
             }
         }
         else {
             return {
-                validateStatus : ""
+                validateStatus: ""
             }
         }
     }
@@ -47,65 +47,65 @@ function ReplyComments({postId,p_comment_id, pComment}) {
         e.preventDefault()
 
         const commentRequest = {
-            postId : postId,
-            p_comment_id : p_comment_id,
-            text : commentContents.value,
+            postId: postId,
+            p_comment_id: p_comment_id,
+            text: commentContents.value,
         }
 
         saveComment(commentRequest)
             .then(response => {
                 setComments(comments.concat(response));
                 notification.success({
-                    message : "Bloom",
-                    description : "Successfully registered comments"
+                    message: "Bloom",
+                    description: "Successfully registered comments"
                 })
             })
             .catch(err => {
                 notification.error({
-                    message : "Bloom",
-                    description : err.message || "Failed registered comments..."
+                    message: "Bloom",
+                    description: err.message || "Failed registered comments..."
                 })
             })
         setCommentContents({
             ...commentContents,
-            value : "",
-            validateStatus : "false"
+            value: "",
+            validateStatus: "false"
         })
     }
 
     const handleDeleteComment = (e, commentId) => {
         e.preventDefault();
-    
-        updateIsDeletedComment(commentId) 
+
+        updateIsDeletedComment(commentId)
             .then(response => {
-                for(var i = 0; i< comments.length; i++) {
-                    if(comments[i].id === response.id) {
-                        setComments(comments.filter(comment => comment !== comments[i])) 
+                for (var i = 0; i < comments.length; i++) {
+                    if (comments[i].id === response.id) {
+                        setComments(comments.filter(comment => comment !== comments[i]))
                     }
                 }
                 notification.success({
-                    message : "Bloom",
-                    description : "Successfully deleted comments"
+                    message: "Bloom",
+                    description: "Successfully deleted comments"
                 })
             })
             .catch(error => {
                 notification.error({
-                    message : "Bloom",
-                    description : error.message || "Failed deleted commnet..."
+                    message: "Bloom",
+                    description: error.message || "Failed deleted commnet..."
                 })
             })
     }
 
     const commentView = [];
 
-    if(comments !== null) {
+    if (comments !== null) {
         comments.forEach((comment) => {
             commentView.push(
                 <Comment
                     author={comment.createdBy.username}
                     avatar={
                         <Avatar className="post-creator-avatar"
-                            src={`data:image/jpeg;base64,${comment.createdBy.profileImage}`} />  
+                            src={`data:image/jpeg;base64,${comment.createdBy.profileImage}`} />
                     }
                     content={
                         <p>
@@ -120,14 +120,18 @@ function ReplyComments({postId,p_comment_id, pComment}) {
                 >
                     {
                         comment.text !== "Deleted Comment" ? (
-                            <DeleteOutlined 
-                                onClick={(e) => handleDeleteComment(e, comment.id)}
-                            />
+                            comment.createdBy.username === currentUser.username ? (
+                                <DeleteOutlined
+                                    onClick={(e) => handleDeleteComment(e, comment.id)}
+                                />
+                            ) : (
+                                null
+                            )
                         ) : (
                             null
                         )
-                    }    
-                    </Comment>
+                    }
+                </Comment>
             )
         })
     }
@@ -137,7 +141,7 @@ function ReplyComments({postId,p_comment_id, pComment}) {
         <div className="re-comment-container" id="showRecomments">
             {commentView}
             <form className="comment-form" id="comment-form">
-                <input 
+                <input
                     type="text"
                     onChange={(e) => handleCommentChange(e)}
                     placeholder="Please enter comments.."
@@ -155,12 +159,12 @@ function ReplyComments({postId,p_comment_id, pComment}) {
     );
 }
 
-function Comments({post}) {
+function Comments({ post }) {
     const [commentContents, setCommentContents] = useState({
-        value : "",
-        validateStatus : "false"
+        value: "",
+        validateStatus: "false"
     })
-    
+
     const [comments, setComments] = useState(post.comments);
 
     const [pComments, setPComments] = useState(comments.filter(comment => comment.p_comment_id === null))
@@ -168,23 +172,35 @@ function Comments({post}) {
 
     const [showComment, setShowComment] = useState(true);
 
+    const [currentUser, setCurrentUser] = useState('');
+
+    useEffect(() => {
+        getCurrentUser()
+            .then(response => {
+                setCurrentUser(response);
+            })
+            .catch(error => {
+                console.log(error.message)
+            })
+    }, [])
+
     const handleCommentChange = (e) => {
         setCommentContents({
             ...commentContents,
-            value : e.target.value,
+            value: e.target.value,
             ...isFormValid()
         });
     }
 
     const isFormValid = () => {
-        if(commentContents.value.length<3) {
+        if (commentContents.value.length < 3) {
             return {
-                validateStatus : "false"
+                validateStatus: "false"
             }
         }
         else {
             return {
-                validateStatus : ""
+                validateStatus: ""
             }
         }
     }
@@ -193,9 +209,9 @@ function Comments({post}) {
         e.preventDefault()
 
         const commentRequest = {
-            postId : post.id,
-            p_comment_id : null,
-            text : commentContents.value,
+            postId: post.id,
+            p_comment_id: null,
+            text: commentContents.value,
         }
 
 
@@ -204,37 +220,37 @@ function Comments({post}) {
                 setComments(comments.concat(response));
                 setPComments(pComments.concat(response))
                 notification.success({
-                    message : "Bloom",
-                    description : "Successfully registered comments"
+                    message: "Bloom",
+                    description: "Successfully registered comments"
                 })
             })
             .catch(error => {
                 notification.error({
-                    message : "Bloom",
-                    description : "Failed registered commnet..."
+                    message: "Bloom",
+                    description: "Failed registered commnet..."
                 })
             })
-        
+
         setCommentContents({
             ...commentContents,
-            value : commentContents.value,
-            validateStatus : "false"
+            value: commentContents.value,
+            validateStatus: "false"
         })
     }
 
     const handleDeleteComment = (e, comment) => {
         e.preventDefault();
-    
+
         let commentId = comment.id;
 
-        deleteComment(commentId) 
+        deleteComment(commentId)
             .then(response => {
                 setPComments(pComments.filter((comment) => comment.id !== commentId))
                 setSComments(sComments.filter((comment) => comment.p_comment_id !== commentId))
 
                 notification.success({
-                    message : "Bloom",
-                    description : "Successfully deleted comments"
+                    message: "Bloom",
+                    description: "Successfully deleted comments"
                 })
 
                 // recomment가 바뀌지 않아 임시방편으로 만들어놈..
@@ -242,8 +258,8 @@ function Comments({post}) {
             })
             .catch(error => {
                 notification.error({
-                    message : "Bloom",
-                    description : error.message || "Failed deleted commnet..."
+                    message: "Bloom",
+                    description: error.message || "Failed deleted commnet..."
                 })
             })
     }
@@ -258,14 +274,15 @@ function Comments({post}) {
 
     const commentView = [];
 
-    pComments.forEach((comment) => {;
+    pComments.forEach((comment) => {
+        ;
 
         commentView.push(
             <Comment
                 author={comment.createdBy.username}
                 avatar={
                     <Avatar className="post-creator-avatar"
-                        src={`data:image/jpeg;base64,${comment.createdBy.profileImage}`} />  
+                        src={`data:image/jpeg;base64,${comment.createdBy.profileImage}`} />
                 }
                 content={
                     <p>
@@ -278,9 +295,15 @@ function Comments({post}) {
                     </Tooltip>
                 }
             >
-                <DeleteOutlined 
-                    onClick={(e) => handleDeleteComment(e, comment)}
-                />
+                {
+                    comment.createdBy.username === currentUser.username ? (
+                        <DeleteOutlined
+                            onClick={(e) => handleDeleteComment(e, comment.id)}
+                        />
+                    ) : (
+                        null
+                    )
+                }
                 <MessageOutlined
                     style={{
                         cursor: "pointer",
@@ -290,7 +313,12 @@ function Comments({post}) {
                 />
                 {
                     showComment ? (
-                        <ReplyComments postId={post.id} p_comment_id={comment.id} pComment={sComments.filter(sComment => sComment.p_comment_id === comment.id)} />
+                        <ReplyComments
+                            postId={post.id}
+                            p_comment_id={comment.id}
+                            pComment={sComments.filter(sComment => sComment.p_comment_id === comment.id)}
+                            currentUser={currentUser}
+                        />
                     ) : (
                         null
                     )
@@ -302,7 +330,7 @@ function Comments({post}) {
     return (
         <div className="comment-container">
             <form className="comment-form">
-                <input 
+                <input
                     type="text"
                     onChange={(e) => handleCommentChange(e)}
                     placeholder="Please enter coments.."
@@ -318,7 +346,7 @@ function Comments({post}) {
             </form>
             {commentView}
         </div>
-        
+
     );
 }
 
