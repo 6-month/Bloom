@@ -2,7 +2,7 @@ import React, {useState, useEffect } from 'react';
 import { Avatar, Input, Button, notification, Form } from 'antd';
 import { Comment, Tooltip } from 'antd';
 import moment from 'moment';
-import {saveComment, deleteComment, updateIsDeletedComment} from '../util/APIUtils';
+import {saveComment, deleteComment, updateIsDeletedComment, getCurrentUser} from '../util/APIUtils';
 import HashMap from 'hashmap';
 import ArrayList from "arraylist";
 import "./Comment.css"
@@ -120,13 +120,17 @@ function ReplyComments({postId,p_comment_id, pComment}) {
                 >
                     {
                         comment.text !== "Deleted Comment" ? (
-                            <DeleteOutlined 
-                                onClick={(e) => handleDeleteComment(e, comment.id)}
-                            />
+                            comment.createdBy.username === currentUser.username ? (
+                                <DeleteOutlined 
+                                    onClick={(e) => handleDeleteComment(e, comment.id)}
+                                />
+                            ) : (
+                                null
+                            )
                         ) : (
                             null
                         )
-                    }    
+                    }
                     </Comment>
             )
         })
@@ -167,6 +171,18 @@ function Comments({post}) {
     const [sComments, setSComments] = useState(comments.filter(comment => comment.p_comment_id !== null))
 
     const [showComment, setShowComment] = useState(true);
+
+    const [currentUser, setCurrentUser] = useState('');
+
+    useEffect(() => {
+        getCurrentUser()
+            .then(response => {
+                setCurrentUser(response);
+            })
+            .catch(error => {
+                console.log(error.message)
+            })
+    }, [])
 
     const handleCommentChange = (e) => {
         setCommentContents({
@@ -278,9 +294,15 @@ function Comments({post}) {
                     </Tooltip>
                 }
             >
-                <DeleteOutlined 
-                    onClick={(e) => handleDeleteComment(e, comment)}
-                />
+                {
+                    comment.createdBy.username === currentUser.username ? (
+                        <DeleteOutlined 
+                            onClick={(e) => handleDeleteComment(e, comment.id)}
+                        />
+                    ) : (
+                        null
+                    )
+                }
                 <MessageOutlined
                     style={{
                         cursor: "pointer",
@@ -290,7 +312,12 @@ function Comments({post}) {
                 />
                 {
                     showComment ? (
-                        <ReplyComments postId={post.id} p_comment_id={comment.id} pComment={sComments.filter(sComment => sComment.p_comment_id === comment.id)} />
+                        <ReplyComments 
+                            postId={post.id} 
+                            p_comment_id={comment.id} 
+                            pComment={sComments.filter(sComment => sComment.p_comment_id === comment.id)} 
+                            currentUser={currentUser}
+                        />
                     ) : (
                         null
                     )

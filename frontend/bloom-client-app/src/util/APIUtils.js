@@ -1,56 +1,51 @@
 import { API_BASE_URL, POST_LIST_SIZE, ACCESS_TOKEN } from '../constants';
 
 const request = (options) => {
-
     const headers = new Headers({
         'Content-Type': 'application/json',
-        'Access-Control-Allow-Origin': '*',
-        'Accept': 'application/json',
     })
-
-
-    if (localStorage.getItem(ACCESS_TOKEN)) {
+    
+    if(localStorage.getItem(ACCESS_TOKEN)) {
         headers.append('Authorization', 'Bearer ' + localStorage.getItem(ACCESS_TOKEN))
     }
-    // const defaults = {Origin: 'http://3.36.148.234:3000/signup', cache: 'no-cache', credentials : 'same-origin', headers: headers, redirect: 'follow'};
-    const defaults = { mode: 'cors', cache: 'no-cache', credentials: 'same-origin', headers: headers, redirect: 'follow', referrer: 'no-reffer' };
 
+    const defaults = {headers: headers};
     options = Object.assign({}, defaults, options);
 
     return fetch(options.url, options)
-        .then(response =>
-            response.json().then(json => {
-                if (!response.ok) {
-                    return Promise.reject(json);
-                }
-                console.log(json)
-                return json;
-            })
-        );
+    .then(response => 
+        response.json().then(json => {
+            if(!response.ok) {
+                return Promise.reject(json);
+            }
+            console.log(json)
+            return json;
+        })
+    );
+
 
 
 };
 
-
 export function saveComment(commentRequest) {
     return request({
-        url: API_BASE_URL + "/posts/comments",
-        method: "POST",
-        body: JSON.stringify(commentRequest)
-    })
+        url : API_BASE_URL + "/posts/comments",
+        method : "POST",
+        body : JSON.stringify(commentRequest)
+    })   
 }
 
 export function deleteComment(commentId) {
     return request({
-        url: API_BASE_URL + "/posts/deletecomments?commentId=" + commentId,
-        method: "GET",
+        url : API_BASE_URL + "/posts/deletecomments?commentId=" + commentId,
+        method : "DELETE",
     })
 }
 
 export function updateIsDeletedComment(commentId) {
     return request({
-        url: API_BASE_URL + "/posts/updateIsDeletedcomments?commentId=" + commentId,
-        method: "GET",
+        url : API_BASE_URL + "/posts/updateIsDeletedcomments?commentId=" + commentId,
+        method : "GET",
     })
 }
 
@@ -93,20 +88,20 @@ export function checkEmailAvailability(email) {
 
 export function checkEditUsernameAvailability(username) {
     return request({
-        url: API_BASE_URL + "/user/checkEditUsernameAvailability?username=" + username,
+        url : API_BASE_URL + "/user/checkEditUsernameAvailability?username=" +username,
         method: 'GET'
     });
 }
 
 export function checkEditEmailAvailability(email) {
     return request({
-        url: API_BASE_URL + "/user/checkEditEmailAvailability?email=" + email,
+        url : API_BASE_URL + "/user/checkEditEmailAvailability?email=" +email,
         method: 'GET'
     });
 }
 
 export function getCurrentUser() {
-    if (!localStorage.getItem(ACCESS_TOKEN)) {
+    if(!localStorage.getItem(ACCESS_TOKEN)) {
         return Promise.reject("No access token set.");
     }
 
@@ -164,14 +159,14 @@ export function addLike(likeRequest) {
 export function cancelLike(likeRequest) {
     return request({
         url: API_BASE_URL + "/posts/deletelikes",
-        method: 'POST',
+        method: 'DELETE',
         body: JSON.stringify(likeRequest)
     })
 }
 
 export function deletePost(postId) {
     return request({
-        url: API_BASE_URL + "/posts?postId=" + postId,
+        url: API_BASE_URL + "/posts?postId=" +postId,
         method: "DELETE"
     })
 }
@@ -179,29 +174,29 @@ export function deletePost(postId) {
 export function followUser(username) {
     return request({
         url: API_BASE_URL + "/users/" + username + "/follow",
-        method: "GET"
+        method : "GET"
     })
 }
 
 export function unfollowUser(username) {
     return request({
         url: API_BASE_URL + "/users/" + username + "/unfollow",
-        method: "GET"
+        method : "GET"
     })
 }
 
 export function checkingFollow(username) {
     return request({
         url: API_BASE_URL + "/users/" + username + "/checking",
-        method: "GET"
+        method : "GET"
     })
 }
 
 export function editUserInfo(UserEditInfo) {
     return request({
-        url: API_BASE_URL + "/accounts/edit",
-        method: "POST",
-        body: JSON.stringify(UserEditInfo)
+        url : API_BASE_URL + "/accounts/edit",
+        method : "POST",
+        body : JSON.stringify(UserEditInfo)
     })
 }
 
