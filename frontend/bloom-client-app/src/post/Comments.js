@@ -96,10 +96,6 @@ function ReplyComments({postId,p_comment_id, pComment}) {
             })
     }
 
-    useEffect(() => {
-
-    }, [])
-
     const commentView = [];
 
     if(comments !== null) {
