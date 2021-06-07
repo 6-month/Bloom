@@ -2,7 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { Avatar, Input, Button, notification, Form } from 'antd';
 import { Comment, Tooltip } from 'antd';
 import moment from 'moment';
-import { saveComment, deleteComment, updateIsDeletedComment, getCurrentUser } from '../util/APIUtils';
+
+import {saveComment, deleteComment, updateIsDeletedComment, getCurrentUser} from '../util/APIUtils';
 import HashMap from 'hashmap';
 import ArrayList from "arraylist";
 import "./Comment.css"
@@ -121,7 +122,7 @@ function ReplyComments({ postId, p_comment_id, pComment, currentUser }) {
                     {
                         comment.text !== "Deleted Comment" ? (
                             comment.createdBy.username === currentUser.username ? (
-                                <DeleteOutlined
+                                <DeleteOutlined 
                                     onClick={(e) => handleDeleteComment(e, comment.id)}
                                 />
                             ) : (
@@ -297,7 +298,8 @@ function Comments({ post }) {
             >
                 {
                     comment.createdBy.username === currentUser.username ? (
-                        <DeleteOutlined
+
+                        <DeleteOutlined 
                             onClick={(e) => handleDeleteComment(e, comment.id)}
                         />
                     ) : (
@@ -313,10 +315,11 @@ function Comments({ post }) {
                 />
                 {
                     showComment ? (
-                        <ReplyComments
-                            postId={post.id}
-                            p_comment_id={comment.id}
-                            pComment={sComments.filter(sComment => sComment.p_comment_id === comment.id)}
+
+                        <ReplyComments 
+                            postId={post.id} 
+                            p_comment_id={comment.id} 
+                            pComment={sComments.filter(sComment => sComment.p_comment_id === comment.id)} 
                             currentUser={currentUser}
                         />
                     ) : (

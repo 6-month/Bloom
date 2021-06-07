@@ -101,15 +101,15 @@ function AppHeader(props) {
     const [searchCheck, setSearchCheck] = useState(false);
 
     useEffect(() => {
-	    if(localStorage.getItem(ACCESS_TOKEN) !== null) {
-      findUserByUsernameOrName(usernameOrName)
-        .then(response => {
-          setUsers(response);
-        })
-        .catch(error => {
-          console.log(error.message);
-        })
-	}
+      if(localStorage.getItem(ACCESS_TOKEN) !== null) {
+        findUserByUsernameOrName(usernameOrName)
+          .then(response => {
+            setUsers(response);
+          })
+          .catch(error => {
+            console.log(error.message);
+          })
+      }
     }, [usernameOrName])
 
     let menuItems;
