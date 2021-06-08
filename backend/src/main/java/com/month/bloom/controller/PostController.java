@@ -140,43 +140,39 @@ public class PostController {
 	@PreAuthorize("hasRole('USER')")
 	public CommentResponse saveComment(@CurrentUser UserPrincipal currentUser, 
 									    @Valid @RequestBody CommentRequest commentRequest) {
-		Comment comment = postService.createComment(currentUser, commentRequest);
-		
-		Comment commentRes = commentRepository.getOne(comment.getId());
-		
+		Comment comment = postService.createComment(currentUser, commentRequest) {
+
+	User user= userRepository.getOne(currentUser.getId());
 		
 		if(commentRequest.getP_comment_id() == null) {
-			if(commentRes.getUser().getUserProfileImage() != null) {
-				UserSummary userSummary = new UserSummary(commentRes.getUser().getId(), commentRes.getUser().getUsername(), commentRes.getUser().getName(), commentRes.getUser().getUserProfileImage().getData());
-				CommentResponse commentResponse = new CommentResponse(commentRes.getId(),
-						commentRes.getText(), userSummary, commentRes.getCreatedAt(), null);
-				
+			if(user.getUserProfileImage() != null) {
+				UserSummary userSummary = new UserSummary(user.getId(), user.getUsername(), user.getName(), user.getUserProfileImage().getData());
+				CommentResponse commentResponse = new CommentResponse(comment.getId(), commentRequest.getText(),
+						userSummary, comment.getCreatedAt(), null);
 				return commentResponse;
 			}
 			else {
-				UserSummary userSummary = new UserSummary(commentRes.getUser().getId(), commentRes.getUser().getUsername(), commentRes.getUser().getName(), null);
-				CommentResponse commentResponse = new CommentResponse(commentRes.getId(),
-						commentRes.getText(), userSummary, commentRes.getCreatedAt(), null);
-				
+				UserSummary userSummary = new UserSummary(user.getId(), user.getUsername(), user.getName(), null);
+				CommentResponse commentResponse = new CommentResponse(comment.getId(), commentRequest.getText(),
+						 userSummary, comment.getCreatedAt(), null);
+				return commentResponse;
+			}
+		}
+		else {
+			if(user.getUserProfileImage() != null) {
+				UserSummary userSummary = new UserSummary(user.getId(), user.getUsername(), user.getName(), user.getUserProfileImage().getData());
+				CommentResponse commentResponse = new CommentResponse(comment.getId(), commentRequest.getText(),
+						userSummary, comment.getCreatedAt(), commentRequest.getP_comment_id());
+				return commentResponse;
+			}
+			else {
+				UserSummary userSummary = new UserSummary(user.getId(), user.getUsername(), user.getName(), null);
+				CommentResponse commentResponse = new CommentResponse(comment.getId(), commentRequest.getText(),
+						userSummary, comment.getCreatedAt(), commentRequest.getP_comment_id());
 				return commentResponse;
 			}
 			
-		}
-		else {
-			Comment recomment = commentRes.getComments().get(commentRes.getComments().size()-1);
-			if(recomment.getUser().getUserProfileImage() != null) {
-				UserSummary userSummary = new UserSummary(recomment.getUser().getId(), recomment.getUser().getUsername(), recomment.getUser().getName(), recomment.getUser().getUserProfileImage().getData());
-				CommentResponse commentResponse = new CommentResponse(recomment.getId(), recomment.getText(), 
-						userSummary, recomment.getCreatedAt(), commentRequest.getP_comment_id());
-				return commentResponse;
-			}
-			else {
-				UserSummary userSummary = new UserSummary(recomment.getUser().getId(), recomment.getUser().getUsername(), recomment.getUser().getName(), null);
-				CommentResponse commentResponse = new CommentResponse(recomment.getId(), recomment.getText(), 
-						userSummary, recomment.getCreatedAt(), commentRequest.getP_comment_id());
-				return commentResponse;
-			}
-		}
+		}	
 	}
 	
 	@DeleteMapping("/deletecomments")

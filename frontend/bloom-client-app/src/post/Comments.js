@@ -306,26 +306,12 @@ function Comments({ post }) {
                         null
                     )
                 }
-                <MessageOutlined
-                    style={{
-                        cursor: "pointer",
-                        marginLeft: "10px"
-                    }}
-                    onClick={(e) => setShowComment(!showComment)}
-                />
-                {
-                    showComment ? (
-
-                        <ReplyComments 
-                            postId={post.id} 
-                            p_comment_id={comment.id} 
-                            pComment={sComments.filter(sComment => sComment.p_comment_id === comment.id)} 
-                            currentUser={currentUser}
-                        />
-                    ) : (
-                        null
-                    )
-                }
+                <ReplyComments 
+                    postId={post.id} 
+                    p_comment_id={comment.id} 
+                    sComment={sComments.filter(sComment => sComment.p_comment_id === comment.id)} 
+                    currentUser={currentUser}
+                /> 
             </Comment>
         )
     })

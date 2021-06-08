@@ -4,7 +4,7 @@ import { Avatar, Input, Button, notification, Form } from 'antd';
 import { Link, Route, useHistory } from 'react-router-dom';
 import { getAvatarColor } from '../util/Colors';
 import { formatDateTime } from '../util/Helpers';
-import { DeleteOutlined,MessageOutlined  } from '@ant-design/icons';
+import { DeleteOutlined,MessageOutlined,RightCircleOutlined,LeftCircleOutlined  } from '@ant-design/icons';
 
 import './Post.css'
 import Comments from './Comments';
@@ -15,7 +15,6 @@ import {deletePost, getCurrentUser} from "../util/APIUtils";
 const FormItem = Form.Item;
 
 function Post({post}) {
-    // delte 후 response로 post들의 정보를 받고 state로 관리해야할것 같음..
 
     let history = useHistory();
     const profileURL ="/users/" + post.createdBy.username;
@@ -59,6 +58,9 @@ function Post({post}) {
             })
     }
 
+    const [postIdx, setPostIdx] = useState(0);
+
+
     return (
         <div className="post-content">
             <div className="post-header">
@@ -92,10 +94,42 @@ function Post({post}) {
                 </div>
             </div>
             <div className="post-body">
-                <div className="post-image-container">
+               	<div className="post-image-container">
                     {
-                    post.images.map((image) => 
-                        <img src={`data:image/jpeg;base64,${image.data}`} className= "post-image"/>
+                        post.images.length >1 ? (
+                            <div className="image-list">                          
+                                <img src={`data:image/jpeg;base64,${post.images[postIdx].data}`} className= "post-image" />
+                                {
+                                    postIdx !== 0 ? (
+                                        <LeftCircleOutlined 
+                                            className="left-btn" 
+                                            style={{
+                                                fontSize:"30px", 
+                                                marginLeft:"10px",
+                                                color: "#d5c6e3"
+                                            }}
+                                            onClick={() => setPostIdx(postIdx-1)}    
+                                        />
+                                    ) : (
+                                        null
+                                    )
+                                }
+                                {
+                                    postIdx !== post.images.length-1 ? (
+                                        <RightCircleOutlined 
+                                            className="right-btn" 
+                                            style={{
+                                                fontSize:"30px", 
+                                                marginRight:"10px",
+                                                color: "#d5c6e3"
+                                            }}
+                                            onClick={() => setPostIdx(postIdx+1)}    
+                                        />  
+                                    ) : null
+                                }
+                            </div>
+                        ) : (
+                            <img src={`data:image/jpeg;base64,${post.images[postIdx].data}`} className= "post-image"/>
                         )
                     }
                 </div>
