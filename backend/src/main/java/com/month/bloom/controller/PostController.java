@@ -146,6 +146,7 @@ public class PostController {
 		
 		
 		if(commentRequest.getP_comment_id() == null) {
+			System.out.println(comment.getUser().getUsername());
 			if(commentRes.getUser().getUserProfileImage() != null) {
 				UserSummary userSummary = new UserSummary(commentRes.getUser().getId(), commentRes.getUser().getUsername(), commentRes.getUser().getName(), commentRes.getUser().getUserProfileImage().getData());
 				CommentResponse commentResponse = new CommentResponse(commentRes.getId(),
@@ -163,7 +164,8 @@ public class PostController {
 			
 		}
 		else {
-			Comment recomment = commentRes.getComments().get(commentRes.getComments().size()-1);
+			Comment recomment = commentRepository.getOne(comment.getId());
+			System.out.println(recomment.getUser().getUsername());
 			if(recomment.getUser().getUserProfileImage() != null) {
 				UserSummary userSummary = new UserSummary(recomment.getUser().getId(), recomment.getUser().getUsername(), recomment.getUser().getName(), recomment.getUser().getUserProfileImage().getData());
 				CommentResponse commentResponse = new CommentResponse(recomment.getId(), recomment.getText(), 

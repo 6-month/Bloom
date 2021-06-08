@@ -11,7 +11,7 @@ import { DeleteOutlined, MessageOutlined } from '@ant-design/icons';
 
 const FormItem = Form.Item;
 
-function ReplyComments({postId,p_comment_id, pComment}) {
+function ReplyComments({postId,p_comment_id, pComment, currentUser}) {
     const [commentContents, setCommentContents] = useState({
         value : "",
         validateStatus : "false"
@@ -95,10 +95,6 @@ function ReplyComments({postId,p_comment_id, pComment}) {
                 })
             })
     }
-
-    useEffect(() => {
-
-    }, [])
 
     const commentView = [];
 
@@ -280,6 +276,7 @@ function Comments({post}) {
 
     pComments.forEach((comment) => {;
 
+        console.log(comment)
         commentView.push(
             <Comment
                 author={comment.createdBy.username}

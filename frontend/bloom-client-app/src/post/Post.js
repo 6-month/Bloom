@@ -26,6 +26,7 @@ function Post({post}) {
 
 
     useEffect(() => {
+        console.log(post)
         getCurrentUser()
             .then(response => {
                 setCurrentUser(response)

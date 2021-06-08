@@ -39,14 +39,16 @@ public class ModelMapper {
 			CommentResponse commentResponse = new CommentResponse();
 			commentResponse.setId(comment.getId());
 			commentResponse.setText(comment.getText());
+			
 			User createUser = comment.getUser();
+			System.out.println(comment.getPost().getId()+" : "+comment.getText()+" / "+createUser.getUsername());
 			if(createUser.getUserProfileImage() != null) {
 				UserSummary userSummary = new UserSummary(createUser.getId(), createUser.getUsername(), createUser.getName(), createUser.getUserProfileImage().getData());
-				commentResponse.setCreatedBy(creatorSummary);
+				commentResponse.setCreatedBy(userSummary);
 			}
 			else {
 				UserSummary userSummary = new UserSummary(createUser.getId(), createUser.getUsername(), createUser.getName(), null);
-				commentResponse.setCreatedBy(creatorSummary);
+				commentResponse.setCreatedBy(userSummary);
 			}
 			
 			commentResponse.setCreationDateTime(comment.getCreatedAt());
