@@ -18,7 +18,6 @@ const request = (options) => {
             if(!response.ok) {
                 return Promise.reject(json);
             }
-            console.log(json)
             return json;
         })
     );

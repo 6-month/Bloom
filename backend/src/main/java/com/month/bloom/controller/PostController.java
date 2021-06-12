@@ -23,6 +23,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.month.bloom.model.Comment;
 import com.month.bloom.model.Post;
+import com.month.bloom.model.User;
 import com.month.bloom.payload.ApiResponse;
 import com.month.bloom.payload.CommentRequest;
 import com.month.bloom.payload.CommentResponse;
@@ -140,9 +141,9 @@ public class PostController {
 	@PreAuthorize("hasRole('USER')")
 	public CommentResponse saveComment(@CurrentUser UserPrincipal currentUser, 
 									    @Valid @RequestBody CommentRequest commentRequest) {
-		Comment comment = postService.createComment(currentUser, commentRequest) {
+		Comment comment = postService.createComment(currentUser, commentRequest);
 
-	User user= userRepository.getOne(currentUser.getId());
+		User user= userRepository.getOne(currentUser.getId());
 		
 		if(commentRequest.getP_comment_id() == null) {
 			if(user.getUserProfileImage() != null) {
