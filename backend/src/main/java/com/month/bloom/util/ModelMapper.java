@@ -39,6 +39,7 @@ public class ModelMapper {
 			CommentResponse commentResponse = new CommentResponse();
 			commentResponse.setId(comment.getId());
 			commentResponse.setText(comment.getText());
+			
 			User createUser = comment.getUser();
 			System.out.println(comment.getPost().getId()+" : "+comment.getText()+" / "+createUser.getUsername());
 			if(createUser.getUserProfileImage() != null) {
