@@ -4,13 +4,16 @@ import { Avatar, Input, Button, notification, Form } from 'antd';
 import { Link, Route, useHistory } from 'react-router-dom';
 import { getAvatarColor } from '../util/Colors';
 import { formatDateTime } from '../util/Helpers';
+
 import { DeleteOutlined, MessageOutlined, RightCircleOutlined, LeftCircleOutlined } from '@ant-design/icons';
+
 
 import './Post.css'
 import Comments from './Comments';
 import Likes from "./Likes";
 import Profile from "../user/profile/Profile";
-import { deletePost, getCurrentUser } from "../util/APIUtils";
+
+import {deletePost, getCurrentUser} from "../util/APIUtils";
 
 const FormItem = Form.Item;
 
@@ -61,7 +64,6 @@ function Post({ post }) {
 
     const [postIdx, setPostIdx] = useState(0);
 
-
     return (
         <div className="post-content">
             <div className="post-header">
@@ -110,6 +112,7 @@ function Post({ post }) {
                                                 color: "#d5c6e3"
                                             }}
                                             onClick={() => setPostIdx(postIdx - 1)}
+
                                         />
                                     ) : (
                                         null
@@ -131,6 +134,7 @@ function Post({ post }) {
                             </div>
                         ) : (
                             <img src={`data:image/jpeg;base64,${post.images[postIdx].data}`} className="post-image" />
+
                         )
                     }
                 </div>
