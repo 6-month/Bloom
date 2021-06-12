@@ -73,21 +73,6 @@ public class User extends DateAudit {
 	private Set<Role> roles = new HashSet<>();
 
 	//relation Follow (Recursive Relationship , ManyToMany Relationship)
-	@OneToMany
-	@JoinTable(name = "followes",
-				joinColumns = 
-					@JoinColumn(name="follower_id"),
-				inverseJoinColumns = 
-					@JoinColumn(name = "following_id"))
-	private List<User> followers;
-	
-	@ManyToMany
-	@JoinTable(name = "followes",
-				joinColumns = 
-					@JoinColumn(name="following_id"),
-				inverseJoinColumns = 
-					@JoinColumn(name = "follower_id"))
-	private List<User> followings;
 	
 	@OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "image_id", referencedColumnName = "id")
@@ -152,22 +137,6 @@ public class User extends DateAudit {
 	public void setPhoneNumber(String phoneNumber) {
 		this.phoneNumber = phoneNumber;
 	}
-
-	public List<User> getFollowers() {
-		return followers;
-	}
-
-	public void setFollowers(List<User> followers) {
-		this.followers = followers;
-	}
-
-	public List<User> getFollowings() {
-		return followings;
-	}
-
-	public void setFollowings(List<User> followings) {
-		this.followings = followings;
-	}
 	
 	public String getBio() {
 		return bio;
@@ -175,26 +144,6 @@ public class User extends DateAudit {
 
 	public void setBio(String bio) {
 		this.bio = bio;
-	}
-
-	public void addFollower(User follower) {
-		followers.add(follower);
-		follower.setFollowers(followers);
-	}
-	
-	public void removeFollower(User follower) {
-		followers.remove(follower);
-		follower.setFollowers(followers);
-	}
-	
-	public void addFollowing(User following) {
-		followings.add(following);
-		following.setFollowings(followings);
-	}
-	
-	public void removeFollowing(User following) {
-		followings.remove(following);
-		following.setFollowings(followings);
 	}
 
 	public UserProfileImage getUserProfileImage() {
