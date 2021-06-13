@@ -2,16 +2,18 @@ import React, {useState, useEffect } from 'react';
 import { Avatar, Input, Button, notification, Form } from 'antd';
 import { Comment, Tooltip } from 'antd';
 import moment from 'moment';
+
+import { saveComment, deleteComment, updateIsDeletedComment, getCurrentUser } from '../util/APIUtils';
 import {saveComment, deleteComment, updateIsDeletedComment, getCurrentUser} from '../util/APIUtils';
-import HashMap from 'hashmap';
-import ArrayList from "arraylist";
 import "./Comment.css"
 
-import { DeleteOutlined, MessageOutlined } from '@ant-design/icons';
+import { DeleteOutlined } from '@ant-design/icons';
 
 const FormItem = Form.Item;
 
+
 function ReplyComments({postId,p_comment_id, sComment, currentUser}) {
+
     const [commentContents, setCommentContents] = useState({
         value : "",
         validateStatus : "false"
@@ -118,7 +120,7 @@ function ReplyComments({postId,p_comment_id, sComment, currentUser}) {
                     {
                         comment.text !== "Deleted Comment" ? (
                             comment.createdBy.username === currentUser.username ? (
-                                <DeleteOutlined 
+                                <DeleteOutlined
                                     onClick={(e) => handleDeleteComment(e, comment.id)}
                                 />
                             ) : (
@@ -294,18 +296,21 @@ function Comments({post}) {
                 {
                     comment.createdBy.username === currentUser.username ? (
                         <DeleteOutlined 
+
                             onClick={(e) => handleDeleteComment(e, comment)}
                         />
                     ) : (
                         null
                     )
                 }
+
                 <ReplyComments 
                     postId={post.id} 
                     p_comment_id={comment.id} 
                     sComment={sComments.filter(sComment => sComment.p_comment_id === comment.id)} 
                     currentUser={currentUser}
                 /> 
+
             </Comment>
         )
     })

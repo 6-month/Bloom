@@ -185,13 +185,13 @@ function Profile(props) {
                             </div>
                             <div className="user-flower-container">
                                 {
-                                    user.postCount <= 5 ? (
+                                    user.postCount < 5 ? (
                                         <img src={first} className="bloom"/>
                                     ) : (
-                                        user.postCount <= 10 ? (
+                                       user.postCount >= 5 && user.postCount < 10 ? (
                                             <img src={second} className="bloom"/>
                                         ) :(
-                                            user.postCount <= 15 ? (
+                                           user.postCount >=10 && user.postCount <= 15 ? (
                                                 <img src={thrid} className="bloom"/>
                                             ) : (
                                                     <img src={fourth} className="bloom"/>

@@ -142,7 +142,6 @@ public class PostController {
 									    @Valid @RequestBody CommentRequest commentRequest) {
 		System.out.println(commentRequest.getText()+ " : "+ commentRequest.getP_comment_id());
 		Comment comment = postService.createComment(currentUser, commentRequest);
-		
 		User user= userRepository.getOne(currentUser.getId());
 		
 		if(commentRequest.getP_comment_id() == null) {
@@ -185,7 +184,7 @@ public class PostController {
 		commentRepository.delete(comment);
 		
 		return ResponseEntity.created(null)
-				.body(new ApiResponse(true, "Comment Successfully deleted"));
+				.body(new ApiResponse(true, "Post Successfully deleted"));
 	}
 	
 	@GetMapping("/updateIsDeletedcomments")

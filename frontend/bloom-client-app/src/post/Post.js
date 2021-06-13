@@ -1,23 +1,25 @@
 
-import React, {useState, useEffect, createElement } from 'react';
+import React, { useState, useEffect, createElement } from 'react';
 import { Avatar, Input, Button, notification, Form } from 'antd';
 import { Link, Route, useHistory } from 'react-router-dom';
 import { getAvatarColor } from '../util/Colors';
 import { formatDateTime } from '../util/Helpers';
+
 import { DeleteOutlined,MessageOutlined,RightCircleOutlined,LeftCircleOutlined  } from '@ant-design/icons';
+
 
 import './Post.css'
 import Comments from './Comments';
 import Likes from "./Likes";
 import Profile from "../user/profile/Profile";
+
 import {deletePost, getCurrentUser} from "../util/APIUtils";
 const FormItem = Form.Item;
 
-function Post({post}) {
-    // delte 후 response로 post들의 정보를 받고 state로 관리해야할것 같음..
+function Post({ post }) {
 
     let history = useHistory();
-    const profileURL ="/users/" + post.createdBy.username;
+    const profileURL = "/users/" + post.createdBy.username;
 
     const [currentUser, setCurrentUser] = useState([]);
     const [setting, setSetting] = useState(false);
@@ -37,20 +39,20 @@ function Post({post}) {
 
 
     useEffect(() => {
-        if(currentUser.username == post.createdBy.username) {
+        if (currentUser.username == post.createdBy.username) {
             setSetting(true)
         }
     }, [currentUser])
 
-    const deltePostSubmit = () => {    
+    const deltePostSubmit = () => {
         deletePost(post.id)
             .then(response => {
                 notification.success({
-                    message : "Bloom",
+                    message: "Bloom",
                     description: "Successfully deleted post"
                 })
                 window.location.replace("/");
-            }) 
+            })
             .catch(error => {
                 notification.error({
                     message: "Bloom",
@@ -68,7 +70,7 @@ function Post({post}) {
                     <div className="post-creator-profile-image">
                         <Link className="creator-link">
                             <Avatar className="post-creator-avatar"
-                                src={`data:image/jpeg;base64,${post.createdBy.profileImage}`}>  
+                                src={`data:image/jpeg;base64,${post.createdBy.profileImage}`}>
                             </Avatar>
                         </Link>
                         <div className="post-creator-detail">
@@ -84,7 +86,7 @@ function Post({post}) {
                         {
                             setting ? (
                                 <div className="deleteButton" onClick={deltePostSubmit}>
-                                    <DeleteOutlined style={{fontSize:"20px"}} />
+                                    <DeleteOutlined style={{ fontSize: "20px" }} />
                                 </div>
                             ) : (
                                 null
@@ -96,6 +98,7 @@ function Post({post}) {
             <div className="post-body">
                 <div className="post-image-container">
                     {
+
                         post.images.length >1 ? (
                             <div className="image-list">                          
                                 <img src={`data:image/jpeg;base64,${post.images[postIdx].data}`} className= "post-image" />
@@ -109,6 +112,7 @@ function Post({post}) {
                                                 color: "#d5c6e3"
                                             }}
                                             onClick={() => setPostIdx(postIdx-1)}    
+
                                         />
                                     ) : (
                                         null
@@ -125,11 +129,14 @@ function Post({post}) {
                                             }}
                                             onClick={() => setPostIdx(postIdx+1)}    
                                         />  
+
                                     ) : null
                                 }
                             </div>
                         ) : (
-                            <img src={`data:image/jpeg;base64,${post.images[postIdx].data}`} className= "post-image"/>
+
+                            <img src={`data:image/jpeg;base64,${post.images[postIdx].data}`} className="post-image" />
+
                         )
                     }
                 </div>
@@ -144,11 +151,11 @@ function Post({post}) {
                         style={{
                             cursor: "pointer",
                             marginLeft: "10px",
-                            
+
                         }}
                         onClick={(e) => setShowComment(!showComment)}
                     />
-                    </div>
+                </div>
                 <div className="post-comment-container">
                     {
                         showComment ? (
