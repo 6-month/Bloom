@@ -185,7 +185,7 @@ public class PostController {
 		commentRepository.delete(comment);
 		
 		return ResponseEntity.created(null)
-				.body(new ApiResponse(true, "Post Successfully deleted"));
+				.body(new ApiResponse(true, "Comment Successfully deleted"));
 	}
 	
 	@GetMapping("/updateIsDeletedcomments")
