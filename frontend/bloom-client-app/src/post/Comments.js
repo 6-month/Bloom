@@ -12,7 +12,7 @@ import { DeleteOutlined } from '@ant-design/icons';
 const FormItem = Form.Item;
 
 
-function ReplyComments({ postId, p_comment_id, sComment, currentUser }) {
+function ReplyComments({postId,p_comment_id, sComment, currentUser}) {
 
     const [commentContents, setCommentContents] = useState({
         value : "",
@@ -26,6 +26,7 @@ function ReplyComments({ postId, p_comment_id, sComment, currentUser }) {
             value : e.target.value,
             ...isFormValid()
         });
+        
     }
 
     const isFormValid = () => {
@@ -294,8 +295,7 @@ function Comments({post}) {
             >
                 {
                     comment.createdBy.username === currentUser.username ? (
-
-                        <DeleteOutlined
+                        <DeleteOutlined 
 
                             onClick={(e) => handleDeleteComment(e, comment)}
                         />
@@ -304,12 +304,12 @@ function Comments({post}) {
                     )
                 }
 
-                <ReplyComments
-                    postId={post.id}
-                    p_comment_id={comment.id}
-                    sComment={sComments.filter(sComment => sComment.p_comment_id === comment.id)}
+                <ReplyComments 
+                    postId={post.id} 
+                    p_comment_id={comment.id} 
+                    sComment={sComments.filter(sComment => sComment.p_comment_id === comment.id)} 
                     currentUser={currentUser}
-                />
+                /> 
 
             </Comment>
         )

@@ -5,7 +5,7 @@ import { Link, Route, useHistory } from 'react-router-dom';
 import { getAvatarColor } from '../util/Colors';
 import { formatDateTime } from '../util/Helpers';
 
-import { DeleteOutlined, MessageOutlined, RightCircleOutlined, LeftCircleOutlined } from '@ant-design/icons';
+import { DeleteOutlined,MessageOutlined,RightCircleOutlined,LeftCircleOutlined  } from '@ant-design/icons';
 
 
 import './Post.css'
@@ -14,7 +14,6 @@ import Likes from "./Likes";
 import Profile from "../user/profile/Profile";
 
 import {deletePost, getCurrentUser} from "../util/APIUtils";
-
 const FormItem = Form.Item;
 
 function Post({ post }) {
@@ -99,19 +98,20 @@ function Post({ post }) {
             <div className="post-body">
                 <div className="post-image-container">
                     {
-                        post.images.length > 1 ? (
-                            <div className="image-list">
-                                <img src={`data:image/jpeg;base64,${post.images[postIdx].data}`} className="post-image" />
+
+                        post.images.length >1 ? (
+                            <div className="image-list">                          
+                                <img src={`data:image/jpeg;base64,${post.images[postIdx].data}`} className= "post-image" />
                                 {
                                     postIdx !== 0 ? (
-                                        <LeftCircleOutlined
-                                            className="left-btn"
+                                        <LeftCircleOutlined 
+                                            className="left-btn" 
                                             style={{
-                                                fontSize: "30px",
-                                                marginLeft: "10px",
+                                                fontSize:"30px", 
+                                                marginLeft:"10px",
                                                 color: "#d5c6e3"
                                             }}
-                                            onClick={() => setPostIdx(postIdx - 1)}
+                                            onClick={() => setPostIdx(postIdx-1)}    
 
                                         />
                                     ) : (
@@ -119,20 +119,22 @@ function Post({ post }) {
                                     )
                                 }
                                 {
-                                    postIdx !== post.images.length - 1 ? (
-                                        <RightCircleOutlined
-                                            className="right-btn"
+                                    postIdx !== post.images.length-1 ? (
+                                        <RightCircleOutlined 
+                                            className="right-btn" 
                                             style={{
-                                                fontSize: "30px",
-                                                marginRight: "10px",
+                                                fontSize:"30px", 
+                                                marginRight:"10px",
                                                 color: "#d5c6e3"
                                             }}
-                                            onClick={() => setPostIdx(postIdx + 1)}
-                                        />
+                                            onClick={() => setPostIdx(postIdx+1)}    
+                                        />  
+
                                     ) : null
                                 }
                             </div>
                         ) : (
+
                             <img src={`data:image/jpeg;base64,${post.images[postIdx].data}`} className="post-image" />
 
                         )
