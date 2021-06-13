@@ -11,16 +11,12 @@ import { DeleteOutlined, MessageOutlined } from '@ant-design/icons';
 
 const FormItem = Form.Item;
 
-function ReplyComments({postId,p_comment_id, pComment, currentUser}) {
+function ReplyComments({postId,p_comment_id, sComment, currentUser}) {
     const [commentContents, setCommentContents] = useState({
         value : "",
         validateStatus : "false"
     });
-    const [comments, setComments] = useState(pComment);
-
-    // useEffect(()=>{
-    //     console.log(comments)
-    // }, [comments])
+    const [comments, setComments] = useState(sComment);
 
     const handleCommentChange = (e) => {
         setCommentContents({
@@ -28,6 +24,7 @@ function ReplyComments({postId,p_comment_id, pComment, currentUser}) {
             value : e.target.value,
             ...isFormValid()
         });
+        
     }
 
     const isFormValid = () => {
@@ -170,8 +167,6 @@ function Comments({post}) {
     const [pComments, setPComments] = useState(comments.filter(comment => comment.p_comment_id === null))
     const [sComments, setSComments] = useState(comments.filter(comment => comment.p_comment_id !== null))
 
-    const [showComment, setShowComment] = useState(true);
-
     const [currentUser, setCurrentUser] = useState('');
 
     useEffect(() => {
@@ -242,6 +237,7 @@ function Comments({post}) {
         e.preventDefault();
     
         let commentId = comment.id;
+        console.log(commentId)
 
         deleteComment(commentId) 
             .then(response => {
@@ -298,31 +294,18 @@ function Comments({post}) {
                 {
                     comment.createdBy.username === currentUser.username ? (
                         <DeleteOutlined 
-                            onClick={(e) => handleDeleteComment(e, comment.id)}
+                            onClick={(e) => handleDeleteComment(e, comment)}
                         />
                     ) : (
                         null
                     )
                 }
-                <MessageOutlined
-                    style={{
-                        cursor: "pointer",
-                        marginLeft: "10px"
-                    }}
-                    onClick={(e) => setShowComment(!showComment)}
-                />
-                {
-                    showComment ? (
-                        <ReplyComments 
-                            postId={post.id} 
-                            p_comment_id={comment.id} 
-                            pComment={sComments.filter(sComment => sComment.p_comment_id === comment.id)} 
-                            currentUser={currentUser}
-                        />
-                    ) : (
-                        null
-                    )
-                }
+                <ReplyComments 
+                    postId={post.id} 
+                    p_comment_id={comment.id} 
+                    sComment={sComments.filter(sComment => sComment.p_comment_id === comment.id)} 
+                    currentUser={currentUser}
+                /> 
             </Comment>
         )
     })

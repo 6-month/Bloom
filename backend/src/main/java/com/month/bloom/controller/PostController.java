@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -23,6 +22,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.month.bloom.model.Comment;
 import com.month.bloom.model.Post;
+import com.month.bloom.model.User;
 import com.month.bloom.payload.ApiResponse;
 import com.month.bloom.payload.CommentRequest;
 import com.month.bloom.payload.CommentResponse;
@@ -140,45 +140,41 @@ public class PostController {
 	@PreAuthorize("hasRole('USER')")
 	public CommentResponse saveComment(@CurrentUser UserPrincipal currentUser, 
 									    @Valid @RequestBody CommentRequest commentRequest) {
+		System.out.println(commentRequest.getText()+ " : "+ commentRequest.getP_comment_id());
 		Comment comment = postService.createComment(currentUser, commentRequest);
 		
-		Comment commentRes = commentRepository.getOne(comment.getId());
-		
+		User user= userRepository.getOne(currentUser.getId());
 		
 		if(commentRequest.getP_comment_id() == null) {
-			System.out.println(comment.getUser().getUsername());
-			if(commentRes.getUser().getUserProfileImage() != null) {
-				UserSummary userSummary = new UserSummary(commentRes.getUser().getId(), commentRes.getUser().getUsername(), commentRes.getUser().getName(), commentRes.getUser().getUserProfileImage().getData());
-				CommentResponse commentResponse = new CommentResponse(commentRes.getId(),
-						commentRes.getText(), userSummary, commentRes.getCreatedAt(), null);
-				
+			if(user.getUserProfileImage() != null) {
+				UserSummary userSummary = new UserSummary(user.getId(), user.getUsername(), user.getName(), user.getUserProfileImage().getData());
+				CommentResponse commentResponse = new CommentResponse(comment.getId(), commentRequest.getText(),
+						userSummary, comment.getCreatedAt(), null);
 				return commentResponse;
 			}
 			else {
-				UserSummary userSummary = new UserSummary(commentRes.getUser().getId(), commentRes.getUser().getUsername(), commentRes.getUser().getName(), null);
-				CommentResponse commentResponse = new CommentResponse(commentRes.getId(),
-						commentRes.getText(), userSummary, commentRes.getCreatedAt(), null);
-				
+				UserSummary userSummary = new UserSummary(user.getId(), user.getUsername(), user.getName(), null);
+				CommentResponse commentResponse = new CommentResponse(comment.getId(), commentRequest.getText(),
+						 userSummary, comment.getCreatedAt(), null);
+				return commentResponse;
+			}
+		}
+		else {
+			if(user.getUserProfileImage() != null) {
+				UserSummary userSummary = new UserSummary(user.getId(), user.getUsername(), user.getName(), user.getUserProfileImage().getData());
+				CommentResponse commentResponse = new CommentResponse(comment.getId(), commentRequest.getText(),
+						userSummary, comment.getCreatedAt(), commentRequest.getP_comment_id());
+				return commentResponse;
+			}
+			else {
+				UserSummary userSummary = new UserSummary(user.getId(), user.getUsername(), user.getName(), null);
+				CommentResponse commentResponse = new CommentResponse(comment.getId(), commentRequest.getText(),
+						userSummary, comment.getCreatedAt(), commentRequest.getP_comment_id());
 				return commentResponse;
 			}
 			
 		}
-		else {
-			Comment recomment = commentRepository.getOne(comment.getId());
-			System.out.println(recomment.getUser().getUsername());
-			if(recomment.getUser().getUserProfileImage() != null) {
-				UserSummary userSummary = new UserSummary(recomment.getUser().getId(), recomment.getUser().getUsername(), recomment.getUser().getName(), recomment.getUser().getUserProfileImage().getData());
-				CommentResponse commentResponse = new CommentResponse(recomment.getId(), recomment.getText(), 
-						userSummary, recomment.getCreatedAt(), commentRequest.getP_comment_id());
-				return commentResponse;
-			}
-			else {
-				UserSummary userSummary = new UserSummary(recomment.getUser().getId(), recomment.getUser().getUsername(), recomment.getUser().getName(), null);
-				CommentResponse commentResponse = new CommentResponse(recomment.getId(), recomment.getText(), 
-						userSummary, recomment.getCreatedAt(), commentRequest.getP_comment_id());
-				return commentResponse;
-			}
-		}
+		
 	}
 	
 	@DeleteMapping("/deletecomments")

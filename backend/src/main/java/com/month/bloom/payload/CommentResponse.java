@@ -23,6 +23,7 @@ public class CommentResponse {
 		this.creationDateTime = creationDateTime;
 		this.p_comment_id = p_comment_id;
 	}
+	
 	public CommentResponse(String text, UserSummary createdBy, Instant creationDateTime, Long p_comment_id) {
 		this.text = text;
 		this.createdBy = createdBy;

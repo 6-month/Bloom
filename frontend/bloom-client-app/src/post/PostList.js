@@ -7,6 +7,7 @@ import Post from './Post';
 import Icon from '@ant-design/icons';
 import "./PostList.css";
 import NotFound from '../common/NotFound';
+import { __SECRET_INTERNALS_DO_NOT_USE_OR_YOU_WILL_BE_FIRED } from 'react-dom/cjs/react-dom.development';
  
 
 function PostList({username, type}) {
@@ -35,6 +36,10 @@ function PostList({username, type}) {
         loadPostList();
     }, [username])
 
+    useEffect(() => {
+        console.log(posts)
+    }, [posts])
+
     const loadPostList = (page = 0, size = POST_LIST_SIZE) => {
         let promise;
         if(type === "USER_CREATED_POSTS") {
@@ -54,6 +59,7 @@ function PostList({username, type}) {
 
         promise 
             .then(response => {
+                console.log(response)
                 setPosts(response.content);
                 setPage(response.page);
                 setSize(response.size);
@@ -63,7 +69,6 @@ function PostList({username, type}) {
     
             })
             .catch(error => {
-                setIsLoading(false);
                 console.log(error.message)
             })
     }
@@ -95,11 +100,12 @@ function PostList({username, type}) {
             } 
             {
                 !isLoading && isLast ? (
-                    <div className="load-more-polls"> 
-                        <Button type="dashed" onClick={handleLoadMore} disabled={isLoading}>
-                            <Icon type="plus" /> Load more
-                        </Button>
-                    </div>): null
+                        <div className="load-more-polls"> 
+                            <Button type="dashed" onClick={handleLoadMore} disabled={isLoading}>
+                                <Icon type="plus" /> Load more
+                            </Button>
+                        </div>
+                    ) : null
             }
             {
                 isLoading ? 
